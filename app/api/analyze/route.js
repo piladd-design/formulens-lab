@@ -8,6 +8,13 @@ export async function POST(req) {
   try {
     const body = await req.json()
     const inci = body.inci
+    const language = body.language || 'EN'
+
+    const languageInstruction = {
+      EN: 'Answer in English.',
+      DE: 'Answer in German.',
+      RU: 'Answer in Russian.',
+    }[language]
 
     if (!inci) {
       return Response.json({
@@ -25,6 +32,8 @@ export async function POST(req) {
           content: `
 You are FORMULENS LAB, a professional cosmetic formulation analyst.
 
+${languageInstruction}
+
 Analyze cosmetic INCI lists in a premium, clinical, structured way.
 
 Important rules:
@@ -33,10 +42,9 @@ Important rules:
 - Do not promise treatment or healing.
 - Use clear professional cosmetic language.
 - Keep the answer practical and easy to understand.
-- Answer in English.
-- Format the answer exactly with the sections below.
+- Keep section titles EXACTLY in English so the frontend can read them.
 
-Use this structure:
+Use this exact structure:
 
 FORMULA SCORE:
 Give a score from 0 to 100 and one short explanation.
