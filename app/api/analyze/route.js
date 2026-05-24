@@ -1,10 +1,30 @@
-messages: [
-  {
-    role: 'system',
-    content: `
+import OpenAI from 'openai'
+
+const client = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+})
+
+export async function POST(req) {
+  try {
+    const body = await req.json()
+    const inci = body.inci
+
+    if (!inci) {
+      return Response.json({
+        success: false,
+        message: 'No INCI list provided.',
+      })
+    }
+
+    const completion = await client.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        {
+          role: 'system',
+          content: `
 You are a professional cosmetic chemist and skincare analyst.
 
-Analyze cosmetic INCI lists professionally and return the response in EXACTLY this structure.
+Analyze cosmetic INCI lists professionally and return the response EXACTLY in this structure.
 
 FORMULA SCORE:
 85
@@ -49,9 +69,23 @@ YES
 FRAGRANCE FREE:
 YES
 `
-  },
-  {
-    role: 'user',
-    content: `Analyze this cosmetic INCI list:\n\n${inci}`
+        },
+        {
+          role: 'user',
+          content: `Analyze this cosmetic INCI list:\n\n${inci}`,
+        },
+      ],
+    })
+
+    return Response.json({
+      success: true,
+      message: completion.choices[0].message.content,
+    })
+  } catch (error) {
+    return Response.json({
+      success: false,
+      message: 'Analysis service is temporarily unavailable.',
+      error: error.message,
+    })
   }
-]
+}
