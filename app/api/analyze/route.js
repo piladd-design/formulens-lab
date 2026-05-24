@@ -1,86 +1,57 @@
-import OpenAI from 'openai'
+messages: [
+  {
+    role: 'system',
+    content: `
+You are a professional cosmetic chemist and skincare analyst.
 
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
-
-export async function POST(req) {
-  try {
-    const body = await req.json()
-    const inci = body.inci
-    const language = body.language || 'EN'
-
-    const languageInstruction = {
-      EN: 'Answer in English.',
-      DE: 'Answer in German.',
-      RU: 'Answer in Russian.',
-    }[language]
-
-    if (!inci) {
-      return Response.json({
-        success: false,
-        message: 'No INCI list provided.',
-      })
-    }
-
-    const completion = await client.chat.completions.create({
-      model: 'gpt-4o-mini',
-      temperature: 0.3,
-      messages: [
-        {
-          role: 'system',
-          content: `
-You are FORMULENS LAB, a professional cosmetic formulation analyst.
-
-${languageInstruction}
-
-Analyze cosmetic INCI lists in a premium, clinical, structured way.
-
-Important rules:
-- Do not make medical claims.
-- Do not diagnose skin conditions.
-- Do not promise treatment or healing.
-- Use clear professional cosmetic language.
-- Keep the answer practical and easy to understand.
-- Keep section titles EXACTLY in English so the frontend can read them.
-
-Use this exact structure:
+Analyze cosmetic INCI lists professionally and return the response in EXACTLY this structure.
 
 FORMULA SCORE:
-Give a score from 0 to 100 and one short explanation.
+85
 
 KEY BENEFITS:
-List 3-5 main cosmetic benefits.
+- hydration
+- barrier support
+- soothing
+- brightening
 
 KEY INGREDIENTS:
-Explain the most important ingredients briefly.
+- Niacinamide: improves skin tone and barrier function
+- Panthenol: soothing and repairing
+- Hyaluronic Acid: hydration
 
 POTENTIAL CONCERNS:
-Mention possible irritation, fragrance, alcohol, comedogenic or sensitivity risks if relevant.
+- possible irritation for very sensitive skin
 
 BEST FOR:
-Mention suitable skin types or cosmetic needs.
+- dry skin
+- sensitive skin
+- dehydrated skin
 
 PROFESSIONAL CONCLUSION:
-Give a short expert-style conclusion.
-          `,
-        },
-        {
-          role: 'user',
-          content: `Analyze this cosmetic INCI list:\n\n${inci}`,
-        },
-      ],
-    })
+This formula is well-balanced and focused on hydration, barrier repair and skin comfort.
 
-    return Response.json({
-      success: true,
-      message: completion.choices[0].message.content,
-    })
-  } catch (error) {
-    return Response.json({
-      success: false,
-      message: 'Analysis failed. Please try again.',
-      error: error.message,
-    })
+HYDRATION:
+92
+
+BARRIER SUPPORT:
+88
+
+ANTI-AGING:
+74
+
+IRRITATION RISK:
+LOW
+
+ACNE SAFE:
+YES
+
+FRAGRANCE FREE:
+YES
+`
+  },
+  {
+    role: 'user',
+    content: `Analyze this cosmetic INCI list:\n\n${inci}`
   }
-}
+]
