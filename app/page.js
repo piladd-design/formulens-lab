@@ -2,615 +2,590 @@
 
 import { useState } from 'react'
 
-const loadingSteps = {
-  EN: [
-    'Analyzing molecular structure...',
-    'Evaluating irritation profile...',
-    'Checking barrier support...',
-    'Scanning active ingredients...',
-    'Calculating hydration score...',
-    'Generating professional conclusion...',
-  ],
-  DE: [
-    'Molekulare Struktur wird analysiert...',
-    'Irritationsprofil wird bewertet...',
-    'Barriere-Support wird geprüft...',
-    'Aktive Inhaltsstoffe werden gescannt...',
-    'Feuchtigkeits-Score wird berechnet...',
-    'Professionelles Fazit wird erstellt...',
-  ],
-  RU: [
-    'Анализируем молекулярную структуру...',
-    'Оцениваем риск раздражения...',
-    'Проверяем поддержку кожного барьера...',
-    'Сканируем активные ингредиенты...',
-    'Рассчитываем уровень увлажнения...',
-    'Формируем профессиональный вывод...',
-  ],
-}
-
-const sections = [
-  'FORMULA SCORE',
-  'KEY BENEFITS',
-  'KEY INGREDIENTS',
-  'POTENTIAL CONCERNS',
-  'BEST FOR',
-  'PROFESSIONAL CONCLUSION',
-]
-
 const translations = {
   EN: {
     badge: 'AI COSMETIC INTELLIGENCE',
     title: 'Understand your cosmetic formula.',
     subtitle:
       'Paste an INCI list and receive a clear, clinical-style ingredient analysis for safety, benefits and potential concerns.',
+
     analyzeTitle: 'Analyze Formula',
     resultTitle: 'Analysis Result',
-    placeholder: 'Aqua, Glycerin, Niacinamide, Panthenol, Hyaluronic Acid...',
+
+    placeholder: 'Aqua, Glycerin, Niacinamide...',
     button: 'Analyze Formula',
-    empty: 'Your AI analysis will appear here after submitting a formula.',
-    score: 'Formula Score',
-    counter: 'characters',
-    metrics: {
-      hydration: 'Hydration',
-      barrier: 'Barrier Support',
-      antiAging: 'Anti-Aging',
-      acneSafety: 'Acne Safety',
-      irritation: 'Irritation Risk',
-    },
-    sectionNames: {
-      'KEY BENEFITS': 'KEY BENEFITS',
-      'KEY INGREDIENTS': 'KEY INGREDIENTS',
-      'POTENTIAL CONCERNS': 'POTENTIAL CONCERNS',
-      'BEST FOR': 'BEST FOR',
-      'PROFESSIONAL CONCLUSION': 'PROFESSIONAL CONCLUSION',
-    },
+    loading: 'Analyzing...',
+
+    empty:
+      'Your AI analysis will appear here after submitting a formula.',
+
+    formulaScore: 'Formula Score',
+    hydration: 'Hydration',
+    barrier: 'Barrier Support',
+    antiAging: 'Anti-Aging',
+    acne: 'Acne Safety',
+    irritation: 'Irritation Risk',
+
+    benefits: 'KEY BENEFITS',
+    ingredients: 'KEY INGREDIENTS',
+    concerns: 'POTENTIAL CONCERNS',
+    bestFor: 'BEST FOR',
+    conclusion: 'PROFESSIONAL CONCLUSION',
   },
+
   DE: {
     badge: 'KI-KOSMETIKANALYSE',
     title: 'Verstehen Sie Ihre kosmetische Formel.',
     subtitle:
-      'Fügen Sie eine INCI-Liste ein und erhalten Sie eine klare, professionell strukturierte Analyse zu Nutzen, Sicherheit und möglichen Risiken.',
+      'Fügen Sie eine INCI-Liste ein und erhalten Sie eine klare professionelle Analyse zu Nutzen, Sicherheit und möglichen Risiken.',
+
     analyzeTitle: 'Formel analysieren',
     resultTitle: 'Analyseergebnis',
-    placeholder: 'Aqua, Glycerin, Niacinamide, Panthenol, Hyaluronic Acid...',
+
+    placeholder: 'Aqua, Glycerin, Niacinamide...',
     button: 'Formel analysieren',
-    empty: 'Ihre KI-Analyse erscheint hier nach dem Absenden der Formel.',
-    score: 'Formel-Score',
-    counter: 'Zeichen',
-    metrics: {
-      hydration: 'Feuchtigkeit',
-      barrier: 'Barriere-Support',
-      antiAging: 'Anti-Aging',
-      acneSafety: 'Akne-Eignung',
-      irritation: 'Irritationsrisiko',
-    },
-    sectionNames: {
-      'KEY BENEFITS': 'HAUPTVORTEILE',
-      'KEY INGREDIENTS': 'WICHTIGE INHALTSSTOFFE',
-      'POTENTIAL CONCERNS': 'MÖGLICHE HINWEISE',
-      'BEST FOR': 'GEEIGNET FÜR',
-      'PROFESSIONAL CONCLUSION': 'PROFESSIONELLES FAZIT',
-    },
+    loading: 'Analyse läuft...',
+
+    empty:
+      'Ihre KI-Analyse erscheint hier nach dem Absenden der Formel.',
+
+    formulaScore: 'Formelbewertung',
+    hydration: 'Feuchtigkeit',
+    barrier: 'Barriere-Schutz',
+    antiAging: 'Anti-Aging',
+    acne: 'Akne-Sicherheit',
+    irritation: 'Reizungsrisiko',
+
+    benefits: 'WICHTIGE VORTEILE',
+    ingredients: 'WICHTIGE INHALTSSTOFFE',
+    concerns: 'MÖGLICHE RISIKEN',
+    bestFor: 'GEEIGNET FÜR',
+    conclusion: 'PROFESSIONELLES FAZIT',
   },
+
   RU: {
     badge: 'ИИ-АНАЛИЗ КОСМЕТИКИ',
     title: 'Поймите свою косметическую формулу.',
     subtitle:
       'Вставьте INCI-состав и получите понятный профессиональный анализ пользы, безопасности и возможных рисков.',
+
     analyzeTitle: 'Анализ формулы',
     resultTitle: 'Результат анализа',
-    placeholder: 'Aqua, Glycerin, Niacinamide, Panthenol, Hyaluronic Acid...',
+
+    placeholder: 'Aqua, Glycerin, Niacinamide...',
     button: 'Анализировать формулу',
-    empty: 'Результат ИИ-анализа появится здесь после отправки формулы.',
-    score: 'Оценка формулы',
-    counter: 'символов',
-    metrics: {
-      hydration: 'Увлажнение',
-      barrier: 'Поддержка барьера',
-      antiAging: 'Anti-Aging',
-      acneSafety: 'Подходит при акне',
-      irritation: 'Риск раздражения',
-    },
-    sectionNames: {
-      'KEY BENEFITS': 'КЛЮЧЕВЫЕ ПРЕИМУЩЕСТВА',
-      'KEY INGREDIENTS': 'ВАЖНЫЕ ИНГРЕДИЕНТЫ',
-      'POTENTIAL CONCERNS': 'ВОЗМОЖНЫЕ РИСКИ',
-      'BEST FOR': 'ПОДХОДИТ ДЛЯ',
-      'PROFESSIONAL CONCLUSION': 'ПРОФЕССИОНАЛЬНЫЙ ВЫВОД',
-    },
+    loading: 'Анализируем...',
+
+    empty:
+      'Результат ИИ-анализа появится здесь после отправки формулы.',
+
+    formulaScore: 'Оценка формулы',
+    hydration: 'Увлажнение',
+    barrier: 'Поддержка барьера',
+    antiAging: 'Антивозрастной эффект',
+    acne: 'Безопасность при акне',
+    irritation: 'Риск раздражения',
+
+    benefits: 'КЛЮЧЕВЫЕ ПРЕИМУЩЕСТВА',
+    ingredients: 'ВАЖНЫЕ ИНГРЕДИЕНТЫ',
+    concerns: 'ВОЗМОЖНЫЕ РИСКИ',
+    bestFor: 'ПОДХОДИТ ДЛЯ',
+    conclusion: 'ПРОФЕССИОНАЛЬНЫЙ ВЫВОД',
   },
 }
 
-function extractSection(text, title) {
-  if (!text) return ''
-
-  const start = text.indexOf(title + ':')
-  if (start === -1) return ''
-
-  const nextStarts = sections
-    .filter((s) => s !== title)
-    .map((s) => text.indexOf(s + ':', start + title.length))
-    .filter((i) => i !== -1)
-
-  const end = nextStarts.length ? Math.min(...nextStarts) : text.length
-
-  return text
-    .slice(start + title.length + 1, end)
-    .trim()
-    .replace(/\*\*/g, '')
-}
-
-function extractMetric(text, title, fallback) {
-  if (!text) return fallback
-
-  const match = text.match(new RegExp(`${title}:\\s*([^\\n]+)`, 'i'))
-  return match ? match[1].trim() : fallback
-}
-
-function getScore(text) {
-  const scoreText = extractSection(text, 'FORMULA SCORE')
-  const match = scoreText.match(/\d+/)
-  return match ? match[0] : '85'
-}
-
-function metricNumber(value, fallback) {
-  const match = String(value).match(/\d+/)
-  return match ? parseInt(match[0]) : fallback
-}
-
-function generateMetrics(text, score) {
-  const base = parseInt(score || 85)
-
-  return [
-    {
-      id: 'hydration',
-      value: metricNumber(extractMetric(text, 'HYDRATION', base + 7), Math.min(base + 7, 99)),
-      color: '#38bdf8',
-    },
-    {
-      id: 'barrier',
-      value: metricNumber(extractMetric(text, 'BARRIER SUPPORT', base + 3), Math.min(base + 3, 99)),
-      color: '#8b5cf6',
-    },
-    {
-      id: 'antiAging',
-      value: metricNumber(extractMetric(text, 'ANTI-AGING', base + 1), Math.min(base + 1, 99)),
-      color: '#ec4899',
-    },
-    {
-      id: 'acneSafety',
-      value:
-        extractMetric(text, 'ACNE SAFE', 'YES').toUpperCase().includes('YES')
-          ? Math.max(base - 6, 70)
-          : 45,
-      color: '#22c55e',
-    },
-    {
-      id: 'irritation',
-      value:
-        extractMetric(text, 'IRRITATION RISK', 'LOW').toUpperCase().includes('LOW')
-          ? 12
-          : extractMetric(text, 'IRRITATION RISK', 'LOW').toUpperCase().includes('MEDIUM')
-            ? 45
-            : 78,
-      color: '#f97316',
-    },
-  ]
-}
-
 export default function Home() {
-  const [inci, setInci] = useState('')
-  const [result, setResult] = useState(null)
-  const [loading, setLoading] = useState(false)
   const [language, setLanguage] = useState('EN')
-  const [loadingText, setLoadingText] = useState(loadingSteps.EN[0])
+  const [inci, setInci] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [result, setResult] = useState(null)
 
-  const current = translations[language]
-  const analysisText = result?.message || ''
-  const score = getScore(analysisText)
-  const metrics = generateMetrics(analysisText, score)
+  const t = translations[language]
 
-  const analyzeFormula = async () => {
+  async function analyzeFormula() {
     if (!inci.trim()) return
 
     setLoading(true)
-    setResult(null)
-    setLoadingText(loadingSteps[language][0])
-
-    let step = 0
-
-    const interval = setInterval(() => {
-      step = (step + 1) % loadingSteps[language].length
-      setLoadingText(loadingSteps[language][step])
-    }, 1400)
 
     try {
       const response = await fetch('/api/analyze', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ inci, language }),
+
+        headers: {
+          'Content-Type': 'application/json',
+        },
+
+        body: JSON.stringify({
+          inci,
+          language,
+        }),
       })
 
       const data = await response.json()
-      setResult(data)
+
+      if (data.success) {
+        setResult(data.data)
+      }
     } catch (error) {
-      setResult({
-        message: 'Analysis service is currently unavailable. Please try again.',
-      })
+      console.log(error)
     }
 
-    clearInterval(interval)
     setLoading(false)
+  }
+
+  const styles = {
+    page: {
+      minHeight: '100vh',
+      background: '#000',
+      color: '#fff',
+      padding: '80px 40px',
+      fontFamily: 'Inter, sans-serif',
+      backgroundImage:
+        'radial-gradient(circle at top left, rgba(120,0,255,0.35), transparent 40%)',
+    },
+
+    container: {
+      maxWidth: '1400px',
+      margin: '0 auto',
+    },
+
+    top: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+      marginBottom: '60px',
+    },
+
+    logo: {
+      fontSize: '18px',
+      letterSpacing: '3px',
+      color: '#b46cff',
+      marginBottom: '20px',
+    },
+
+    brand: {
+      fontSize: '52px',
+      fontWeight: '800',
+      marginBottom: '30px',
+    },
+
+    title: {
+      fontSize: '92px',
+      lineHeight: '0.95',
+      fontWeight: '900',
+      maxWidth: '820px',
+      marginBottom: '30px',
+    },
+
+    subtitle: {
+      fontSize: '20px',
+      lineHeight: '1.7',
+      color: '#d0d0d0',
+      maxWidth: '760px',
+    },
+
+    langWrap: {
+      display: 'flex',
+      gap: '12px',
+    },
+
+    langBtn: active => ({
+      padding: '10px 16px',
+      borderRadius: '12px',
+      border: active
+        ? '1px solid #ff00aa'
+        : '1px solid rgba(255,255,255,0.12)',
+
+      background: active
+        ? 'linear-gradient(90deg,#7c3aed,#ff00aa)'
+        : 'transparent',
+
+      color: '#fff',
+      cursor: 'pointer',
+      fontWeight: '700',
+    }),
+
+    grid: {
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
+      gap: '30px',
+      marginTop: '60px',
+    },
+
+    card: {
+      background: 'rgba(10,10,18,0.92)',
+      border: '1px solid rgba(255,255,255,0.06)',
+      borderRadius: '30px',
+      padding: '30px',
+    },
+
+    sectionTitle: {
+      fontSize: '24px',
+      fontWeight: '800',
+      marginBottom: '25px',
+    },
+
+    textarea: {
+      width: '100%',
+      height: '240px',
+      background: '#000',
+      color: '#fff',
+      border: '1px solid rgba(255,255,255,0.08)',
+      borderRadius: '20px',
+      padding: '20px',
+      fontSize: '18px',
+      resize: 'none',
+      outline: 'none',
+    },
+
+    button: {
+      width: '100%',
+      marginTop: '25px',
+      padding: '22px',
+      borderRadius: '18px',
+      border: 'none',
+      background:
+        'linear-gradient(90deg,#7c3aed 0%, #ff00aa 100%)',
+
+      color: '#fff',
+      fontWeight: '800',
+      fontSize: '18px',
+      cursor: 'pointer',
+    },
+
+    scoreCard: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '25px',
+      marginBottom: '25px',
+    },
+
+    scoreCircle: {
+      width: '90px',
+      height: '90px',
+      borderRadius: '50%',
+      background:
+        'linear-gradient(135deg,#7c3aed,#40c9ff)',
+
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+
+      fontSize: '42px',
+      fontWeight: '900',
+    },
+
+    metrics: {
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
+      gap: '16px',
+      marginBottom: '25px',
+    },
+
+    metricCard: {
+      background: 'rgba(255,255,255,0.03)',
+      borderRadius: '20px',
+      padding: '18px',
+    },
+
+    metricTop: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      marginBottom: '12px',
+      fontWeight: '700',
+    },
+
+    progressBg: {
+      width: '100%',
+      height: '10px',
+      borderRadius: '20px',
+      background: 'rgba(255,255,255,0.06)',
+    },
+
+    progress: value => ({
+      width: `${value}%`,
+      height: '10px',
+      borderRadius: '20px',
+      background:
+        'linear-gradient(90deg,#7c3aed,#ff00aa)',
+    }),
+
+    section: {
+      background: 'rgba(255,255,255,0.02)',
+      borderRadius: '24px',
+      padding: '24px',
+      marginTop: '20px',
+    },
+
+    sectionHeading: {
+      color: '#d48cff',
+      letterSpacing: '2px',
+      fontWeight: '800',
+      marginBottom: '20px',
+      fontSize: '15px',
+    },
+
+    list: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '14px',
+      color: '#f0f0f0',
+      lineHeight: '1.7',
+    },
+
+    emptyBox: {
+      opacity: 0.6,
+      lineHeight: '1.8',
+    },
   }
 
   return (
     <main style={styles.page}>
       <div style={styles.container}>
-        <header style={styles.header}>
+        <div style={styles.top}>
           <div>
-            <div style={styles.badge}>{current.badge}</div>
-            <div style={styles.logo}>FORMULENS LAB</div>
+            <div style={styles.logo}>{t.badge}</div>
+
+            <div style={styles.brand}>
+              FORMULENS LAB
+            </div>
+
+            <h1 style={styles.title}>
+              {t.title}
+            </h1>
+
+            <p style={styles.subtitle}>
+              {t.subtitle}
+            </p>
           </div>
 
-          <div style={styles.langs}>
-            {['EN', 'DE', 'RU'].map((lang) => (
+          <div style={styles.langWrap}>
+            {['EN', 'DE', 'RU'].map(lang => (
               <button
                 key={lang}
-                onClick={() => {
-                  setLanguage(lang)
-                  setResult(null)
-                  setLoadingText(loadingSteps[lang][0])
-                }}
-                style={{
-                  ...styles.langButton,
-                  ...(language === lang ? styles.langActive : {}),
-                }}
+                onClick={() => setLanguage(lang)}
+                style={styles.langBtn(
+                  language === lang
+                )}
               >
                 {lang}
               </button>
             ))}
           </div>
-        </header>
+        </div>
 
-        <section style={styles.hero}>
-          <h1 style={styles.title}>{current.title}</h1>
-          <p style={styles.subtitle}>{current.subtitle}</p>
-        </section>
-
-        <section style={styles.grid}>
+        <div style={styles.grid}>
           <div style={styles.card}>
-            <h2 style={styles.cardTitle}>{current.analyzeTitle}</h2>
+            <div style={styles.sectionTitle}>
+              {t.analyzeTitle}
+            </div>
 
             <textarea
               value={inci}
-              onChange={(e) => setInci(e.target.value)}
-              placeholder={current.placeholder}
+              onChange={e =>
+                setInci(e.target.value)
+              }
+              placeholder={t.placeholder}
               style={styles.textarea}
             />
 
-            <div style={styles.counter}>
-              {inci.length}/5000 {current.counter}
-            </div>
-
             <button
               onClick={analyzeFormula}
-              disabled={loading}
               style={styles.button}
             >
-              {loading ? loadingText : current.button}
+              {loading ? t.loading : t.button}
             </button>
           </div>
 
-          <div style={styles.resultColumn}>
-            <h2 style={styles.cardTitle}>{current.resultTitle}</h2>
+          <div style={styles.card}>
+            <div style={styles.sectionTitle}>
+              {t.resultTitle}
+            </div>
 
-            {!loading && !analysisText && (
-              <div style={styles.empty}>{current.empty}</div>
-            )}
-
-            {loading && (
-              <div style={styles.loadingCard}>
-                <div style={styles.loadingOrb}></div>
-                <div style={styles.loadingText}>{loadingText}</div>
+            {!result ? (
+              <div style={styles.emptyBox}>
+                {t.empty}
               </div>
-            )}
-
-            {!loading && analysisText && (
+            ) : (
               <>
                 <div style={styles.scoreCard}>
-                  <div style={styles.score}>{score}</div>
+                  <div style={styles.scoreCircle}>
+                    {result.formulaScore}
+                  </div>
 
                   <div>
-                    <h3 style={styles.scoreTitle}>{current.score}</h3>
-                    <p style={styles.text}>
-                      {extractSection(analysisText, 'FORMULA SCORE')}
-                    </p>
+                    <div
+                      style={{
+                        color: '#d48cff',
+                        fontWeight: '800',
+                        fontSize: '26px',
+                        marginBottom: '8px',
+                      }}
+                    >
+                      {t.formulaScore}
+                    </div>
+
+                    <div
+                      style={{
+                        fontSize: '20px',
+                      }}
+                    >
+                      {result.formulaScore}/100
+                    </div>
                   </div>
                 </div>
 
-                <div style={styles.metricsGrid}>
-                  {metrics.map((metric) => (
-                    <div key={metric.id} style={styles.metricCard}>
-                      <div style={styles.metricHeader}>
-                        <span style={styles.metricTitle}>
-                          {current.metrics[metric.id]}
+                <div style={styles.metrics}>
+                  {[
+                    {
+                      label: t.hydration,
+                      value: result.hydration,
+                    },
+
+                    {
+                      label: t.barrier,
+                      value: result.barrierSupport,
+                    },
+
+                    {
+                      label: t.antiAging,
+                      value: result.antiAging,
+                    },
+
+                    {
+                      label: t.acne,
+                      value: result.acneSafety,
+                    },
+
+                    {
+                      label: t.irritation,
+                      value:
+                        100 -
+                        result.irritationRisk,
+                    },
+                  ].map(metric => (
+                    <div
+                      key={metric.label}
+                      style={styles.metricCard}
+                    >
+                      <div style={styles.metricTop}>
+                        <span>
+                          {metric.label}
                         </span>
-                        <span
-                          style={{
-                            ...styles.metricValue,
-                            color: metric.color,
-                          }}
-                        >
+
+                        <span>
                           {metric.value}
                         </span>
                       </div>
 
-                      <div style={styles.metricBar}>
+                      <div style={styles.progressBg}>
                         <div
-                          style={{
-                            ...styles.metricFill,
-                            width: `${Math.min(metric.value, 100)}%`,
-                            background: metric.color,
-                          }}
+                          style={styles.progress(
+                            metric.value
+                          )}
                         />
                       </div>
                     </div>
                   ))}
                 </div>
 
-                {sections.slice(1).map((section) => {
-                  const content = extractSection(analysisText, section)
-                  if (!content) return null
+                <div style={styles.section}>
+                  <div
+                    style={styles.sectionHeading}
+                  >
+                    {t.benefits}
+                  </div>
 
-                  return (
-                    <div key={section} style={styles.resultCard}>
-                      <h3 style={styles.sectionTitle}>
-                        {current.sectionNames[section]}
-                      </h3>
-                      <p style={styles.text}>{content}</p>
-                    </div>
-                  )
-                })}
+                  <div style={styles.list}>
+                    {result.keyBenefits?.map(
+                      (item, index) => (
+                        <div key={index}>
+                          — {item}
+                        </div>
+                      )
+                    )}
+                  </div>
+                </div>
+
+                <div style={styles.section}>
+                  <div
+                    style={styles.sectionHeading}
+                  >
+                    {t.ingredients}
+                  </div>
+
+                  <div style={styles.list}>
+                    {result.keyIngredients?.map(
+                      (item, index) => (
+                        <div key={index}>
+                          <strong>
+                            {item.name}
+                          </strong>
+                          : {item.description}
+                        </div>
+                      )
+                    )}
+                  </div>
+                </div>
+
+                <div style={styles.section}>
+                  <div
+                    style={styles.sectionHeading}
+                  >
+                    {t.concerns}
+                  </div>
+
+                  <div style={styles.list}>
+                    {result.potentialConcerns?.map(
+                      (item, index) => (
+                        <div key={index}>
+                          — {item}
+                        </div>
+                      )
+                    )}
+                  </div>
+                </div>
+
+                <div style={styles.section}>
+                  <div
+                    style={styles.sectionHeading}
+                  >
+                    {t.bestFor}
+                  </div>
+
+                  <div style={styles.list}>
+                    {result.bestFor?.map(
+                      (item, index) => (
+                        <div key={index}>
+                          — {item}
+                        </div>
+                      )
+                    )}
+                  </div>
+                </div>
+
+                <div style={styles.section}>
+                  <div
+                    style={styles.sectionHeading}
+                  >
+                    {t.conclusion}
+                  </div>
+
+                  <div
+                    style={{
+                      lineHeight: '1.8',
+                    }}
+                  >
+                    {
+                      result.professionalConclusion
+                    }
+                  </div>
+                </div>
               </>
             )}
           </div>
-        </section>
+        </div>
       </div>
     </main>
   )
-}
-
-const styles = {
-  page: {
-    minHeight: '100vh',
-    background:
-      'radial-gradient(circle at top left, #2b1055 0%, #090909 40%)',
-    color: 'white',
-    padding: '40px',
-    fontFamily: 'Arial, sans-serif',
-  },
-  container: {
-    maxWidth: '1400px',
-    margin: '0 auto',
-  },
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '70px',
-  },
-  badge: {
-    color: '#b388ff',
-    letterSpacing: '3px',
-    fontSize: '14px',
-    marginBottom: '14px',
-  },
-  logo: {
-    fontSize: '32px',
-    fontWeight: '800',
-  },
-  langs: {
-    display: 'flex',
-    gap: '12px',
-  },
-  langButton: {
-    background: '#111',
-    color: 'white',
-    border: '1px solid #333',
-    borderRadius: '10px',
-    padding: '10px 18px',
-    cursor: 'pointer',
-    fontWeight: '700',
-  },
-  langActive: {
-    background: 'linear-gradient(90deg,#7b2ff7,#f107a3)',
-    border: '1px solid transparent',
-  },
-  hero: {
-    maxWidth: '820px',
-    marginBottom: '60px',
-  },
-  title: {
-    fontSize: 'clamp(48px, 7vw, 86px)',
-    lineHeight: '0.95',
-    margin: 0,
-    fontWeight: '900',
-  },
-  subtitle: {
-    fontSize: '24px',
-    lineHeight: '1.5',
-    color: '#d5d5dc',
-    marginTop: '32px',
-  },
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gap: '32px',
-    alignItems: 'start',
-  },
-  card: {
-    background: '#0d0d12',
-    border: '1px solid #242430',
-    borderRadius: '28px',
-    padding: '30px',
-  },
-  cardTitle: {
-    fontSize: '28px',
-    marginTop: 0,
-    marginBottom: '25px',
-  },
-  textarea: {
-    width: '100%',
-    height: '260px',
-    background: '#050505',
-    border: '1px solid #222',
-    borderRadius: '20px',
-    color: 'white',
-    padding: '20px',
-    fontSize: '17px',
-    resize: 'none',
-    outline: 'none',
-    boxSizing: 'border-box',
-  },
-  counter: {
-    marginTop: '12px',
-    color: '#777',
-    fontSize: '14px',
-  },
-  button: {
-    width: '100%',
-    marginTop: '24px',
-    padding: '20px',
-    border: 'none',
-    borderRadius: '18px',
-    background: 'linear-gradient(90deg,#7b2ff7,#f107a3)',
-    color: 'white',
-    fontSize: '17px',
-    fontWeight: '800',
-    cursor: 'pointer',
-  },
-  resultColumn: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '20px',
-  },
-  scoreCard: {
-    background: '#0d0d12',
-    border: '1px solid #242430',
-    borderRadius: '28px',
-    padding: '26px',
-    display: 'flex',
-    gap: '24px',
-    alignItems: 'center',
-  },
-  score: {
-    minWidth: '88px',
-    height: '88px',
-    borderRadius: '50%',
-    background: 'linear-gradient(135deg,#7b2ff7,#33d2ff)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: '38px',
-    fontWeight: '900',
-  },
-  scoreTitle: {
-    color: '#d19cff',
-    margin: 0,
-    marginBottom: '10px',
-    fontSize: '20px',
-  },
-  metricsGrid: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gap: '18px',
-  },
-  metricCard: {
-    background: '#0d0d12',
-    border: '1px solid #242430',
-    borderRadius: '20px',
-    padding: '20px',
-  },
-  metricHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '14px',
-  },
-  metricTitle: {
-    color: '#f5f5f5',
-    fontWeight: '700',
-    fontSize: '15px',
-  },
-  metricValue: {
-    fontWeight: '900',
-    fontSize: '22px',
-  },
-  metricBar: {
-    width: '100%',
-    height: '10px',
-    background: '#1a1a22',
-    borderRadius: '999px',
-    overflow: 'hidden',
-  },
-  metricFill: {
-    height: '100%',
-    borderRadius: '999px',
-  },
-  resultCard: {
-    background: '#0d0d12',
-    border: '1px solid #242430',
-    borderRadius: '24px',
-    padding: '26px',
-  },
-  sectionTitle: {
-    color: '#d19cff',
-    fontSize: '15px',
-    letterSpacing: '2px',
-    marginTop: 0,
-    marginBottom: '18px',
-  },
-  text: {
-    color: '#f2f2f2',
-    lineHeight: '1.8',
-    fontSize: '16px',
-    margin: 0,
-    whiteSpace: 'pre-wrap',
-  },
-  empty: {
-    background: '#0d0d12',
-    border: '1px solid #242430',
-    borderRadius: '28px',
-    padding: '30px',
-    color: '#999',
-    minHeight: '220px',
-    lineHeight: '1.7',
-  },
-  loadingCard: {
-    background: '#0d0d12',
-    border: '1px solid #242430',
-    borderRadius: '28px',
-    padding: '30px',
-    color: '#cfcfcf',
-    minHeight: '220px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    gap: '20px',
-  },
-  loadingOrb: {
-    width: '64px',
-    height: '64px',
-    borderRadius: '50%',
-    background: 'linear-gradient(135deg,#7b2ff7,#33d2ff)',
-    boxShadow: '0 0 50px rgba(123,47,247,0.8)',
-  },
-  loadingText: {
-    color: '#d5d5dc',
-    fontSize: '17px',
-    fontWeight: '700',
-    textAlign: 'center',
-  },
 }
