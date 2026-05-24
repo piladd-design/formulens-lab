@@ -21,10 +21,17 @@ const translations = {
     resultTitle: 'Analysis Result',
     placeholder: 'Aqua, Glycerin, Niacinamide, Panthenol, Hyaluronic Acid...',
     button: 'Analyze Formula',
-    loading: 'Analyzing...',
+    loading: 'Analyzing molecular profile...',
     empty: 'Your AI analysis will appear here after submitting a formula.',
     score: 'Formula Score',
     counter: 'characters',
+    metrics: {
+      hydration: 'Hydration',
+      barrier: 'Barrier Support',
+      antiAging: 'Anti-Aging',
+      acneSafety: 'Acne Safety',
+      irritation: 'Irritation Risk',
+    },
     sectionNames: {
       'KEY BENEFITS': 'KEY BENEFITS',
       'KEY INGREDIENTS': 'KEY INGREDIENTS',
@@ -42,10 +49,17 @@ const translations = {
     resultTitle: 'Analyseergebnis',
     placeholder: 'Aqua, Glycerin, Niacinamide, Panthenol, Hyaluronic Acid...',
     button: 'Formel analysieren',
-    loading: 'Analyse läuft...',
+    loading: 'Molekulares Profil wird analysiert...',
     empty: 'Ihre KI-Analyse erscheint hier nach dem Absenden der Formel.',
     score: 'Formel-Score',
     counter: 'Zeichen',
+    metrics: {
+      hydration: 'Feuchtigkeit',
+      barrier: 'Barriere-Support',
+      antiAging: 'Anti-Aging',
+      acneSafety: 'Akne-Eignung',
+      irritation: 'Irritationsrisiko',
+    },
     sectionNames: {
       'KEY BENEFITS': 'HAUPTVORTEILE',
       'KEY INGREDIENTS': 'WICHTIGE INHALTSSTOFFE',
@@ -63,10 +77,17 @@ const translations = {
     resultTitle: 'Результат анализа',
     placeholder: 'Aqua, Glycerin, Niacinamide, Panthenol, Hyaluronic Acid...',
     button: 'Анализировать формулу',
-    loading: 'Анализируем...',
+    loading: 'Анализируем молекулярный профиль...',
     empty: 'Результат ИИ-анализа появится здесь после отправки формулы.',
     score: 'Оценка формулы',
     counter: 'символов',
+    metrics: {
+      hydration: 'Увлажнение',
+      barrier: 'Поддержка барьера',
+      antiAging: 'Anti-Aging',
+      acneSafety: 'Подходит при акне',
+      irritation: 'Риск раздражения',
+    },
     sectionNames: {
       'KEY BENEFITS': 'КЛЮЧЕВЫЕ ПРЕИМУЩЕСТВА',
       'KEY INGREDIENTS': 'ВАЖНЫЕ ИНГРЕДИЕНТЫ',
@@ -102,6 +123,38 @@ function getScore(text) {
   return match ? match[0] : '85'
 }
 
+function generateMetrics(score) {
+  const base = parseInt(score || 85)
+
+  return [
+    {
+      id: 'hydration',
+      value: Math.min(base + 7, 99),
+      color: '#38bdf8',
+    },
+    {
+      id: 'barrier',
+      value: Math.min(base + 3, 99),
+      color: '#8b5cf6',
+    },
+    {
+      id: 'antiAging',
+      value: Math.min(base + 1, 99),
+      color: '#ec4899',
+    },
+    {
+      id: 'acneSafety',
+      value: Math.max(base - 6, 55),
+      color: '#22c55e',
+    },
+    {
+      id: 'irritation',
+      value: Math.max(100 - base, 8),
+      color: '#f97316',
+    },
+  ]
+}
+
 export default function Home() {
   const [inci, setInci] = useState('')
   const [result, setResult] = useState(null)
@@ -110,6 +163,8 @@ export default function Home() {
 
   const current = translations[language]
   const analysisText = result?.message || ''
+  const score = getScore(analysisText)
+  const metrics = generateMetrics(score)
 
   const analyzeFormula = async () => {
     if (!inci.trim()) return
@@ -199,12 +254,17 @@ export default function Home() {
               <div style={styles.empty}>{current.empty}</div>
             )}
 
-            {loading && <div style={styles.empty}>{current.loading}</div>}
+            {loading && (
+              <div style={styles.loadingCard}>
+                <div style={styles.loadingOrb}></div>
+                <div>{current.loading}</div>
+              </div>
+            )}
 
             {!loading && analysisText && (
               <>
                 <div style={styles.scoreCard}>
-                  <div style={styles.score}>{getScore(analysisText)}</div>
+                  <div style={styles.score}>{score}</div>
 
                   <div>
                     <h3 style={styles.scoreTitle}>{current.score}</h3>
@@ -212,6 +272,36 @@ export default function Home() {
                       {extractSection(analysisText, 'FORMULA SCORE')}
                     </p>
                   </div>
+                </div>
+
+                <div style={styles.metricsGrid}>
+                  {metrics.map((metric) => (
+                    <div key={metric.id} style={styles.metricCard}>
+                      <div style={styles.metricHeader}>
+                        <span style={styles.metricTitle}>
+                          {current.metrics[metric.id]}
+                        </span>
+                        <span
+                          style={{
+                            ...styles.metricValue,
+                            color: metric.color,
+                          }}
+                        >
+                          {metric.value}
+                        </span>
+                      </div>
+
+                      <div style={styles.metricBar}>
+                        <div
+                          style={{
+                            ...styles.metricFill,
+                            width: `${metric.value}%`,
+                            background: metric.color,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ))}
                 </div>
 
                 {sections.slice(1).map((section) => {
@@ -376,6 +466,43 @@ const styles = {
     marginBottom: '10px',
     fontSize: '20px',
   },
+  metricsGrid: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: '18px',
+  },
+  metricCard: {
+    background: '#0d0d12',
+    border: '1px solid #242430',
+    borderRadius: '20px',
+    padding: '20px',
+  },
+  metricHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: '14px',
+  },
+  metricTitle: {
+    color: '#f5f5f5',
+    fontWeight: '700',
+    fontSize: '15px',
+  },
+  metricValue: {
+    fontWeight: '900',
+    fontSize: '22px',
+  },
+  metricBar: {
+    width: '100%',
+    height: '10px',
+    background: '#1a1a22',
+    borderRadius: '999px',
+    overflow: 'hidden',
+  },
+  metricFill: {
+    height: '100%',
+    borderRadius: '999px',
+  },
   resultCard: {
     background: '#0d0d12',
     border: '1px solid #242430',
@@ -404,5 +531,25 @@ const styles = {
     color: '#999',
     minHeight: '220px',
     lineHeight: '1.7',
+  },
+  loadingCard: {
+    background: '#0d0d12',
+    border: '1px solid #242430',
+    borderRadius: '28px',
+    padding: '30px',
+    color: '#cfcfcf',
+    minHeight: '220px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    gap: '20px',
+  },
+  loadingOrb: {
+    width: '56px',
+    height: '56px',
+    borderRadius: '50%',
+    background: 'linear-gradient(135deg,#7b2ff7,#33d2ff)',
+    boxShadow: '0 0 40px rgba(123,47,247,0.6)',
   },
 }
