@@ -11,7 +11,7 @@ const sections = [
   'PROFESSIONAL CONCLUSION',
 ]
 
-const t = {
+const translations = {
   EN: {
     badge: 'AI COSMETIC INTELLIGENCE',
     title: 'Understand your cosmetic formula.',
@@ -19,12 +19,13 @@ const t = {
       'Paste an INCI list and receive a clear, clinical-style ingredient analysis for safety, benefits and potential concerns.',
     analyzeTitle: 'Analyze Formula',
     resultTitle: 'Analysis Result',
-    placeholder: 'Aqua, Glycerin, Niacinamide...',
+    placeholder: 'Aqua, Glycerin, Niacinamide, Panthenol, Hyaluronic Acid...',
     button: 'Analyze Formula',
     loading: 'Analyzing...',
     empty: 'Your AI analysis will appear here after submitting a formula.',
     score: 'Formula Score',
-    sections: {
+    counter: 'characters',
+    sectionNames: {
       'KEY BENEFITS': 'KEY BENEFITS',
       'KEY INGREDIENTS': 'KEY INGREDIENTS',
       'POTENTIAL CONCERNS': 'POTENTIAL CONCERNS',
@@ -36,15 +37,16 @@ const t = {
     badge: 'KI-KOSMETIKANALYSE',
     title: 'Verstehen Sie Ihre kosmetische Formel.',
     subtitle:
-      'Fügen Sie eine INCI-Liste ein und erhalten Sie eine klare, klinisch strukturierte Analyse zu Nutzen, Sicherheit und möglichen Risiken.',
+      'Fügen Sie eine INCI-Liste ein und erhalten Sie eine klare, professionell strukturierte Analyse zu Nutzen, Sicherheit und möglichen Risiken.',
     analyzeTitle: 'Formel analysieren',
     resultTitle: 'Analyseergebnis',
-    placeholder: 'Aqua, Glycerin, Niacinamide...',
+    placeholder: 'Aqua, Glycerin, Niacinamide, Panthenol, Hyaluronic Acid...',
     button: 'Formel analysieren',
     loading: 'Analyse läuft...',
     empty: 'Ihre KI-Analyse erscheint hier nach dem Absenden der Formel.',
     score: 'Formel-Score',
-    sections: {
+    counter: 'Zeichen',
+    sectionNames: {
       'KEY BENEFITS': 'HAUPTVORTEILE',
       'KEY INGREDIENTS': 'WICHTIGE INHALTSSTOFFE',
       'POTENTIAL CONCERNS': 'MÖGLICHE HINWEISE',
@@ -56,15 +58,16 @@ const t = {
     badge: 'ИИ-АНАЛИЗ КОСМЕТИКИ',
     title: 'Поймите свою косметическую формулу.',
     subtitle:
-      'Вставьте INCI-состав и получите понятный клинический анализ пользы, безопасности и возможных рисков.',
+      'Вставьте INCI-состав и получите понятный профессиональный анализ пользы, безопасности и возможных рисков.',
     analyzeTitle: 'Анализ формулы',
     resultTitle: 'Результат анализа',
-    placeholder: 'Aqua, Glycerin, Niacinamide...',
+    placeholder: 'Aqua, Glycerin, Niacinamide, Panthenol, Hyaluronic Acid...',
     button: 'Анализировать формулу',
     loading: 'Анализируем...',
     empty: 'Результат ИИ-анализа появится здесь после отправки формулы.',
     score: 'Оценка формулы',
-    sections: {
+    counter: 'символов',
+    sectionNames: {
       'KEY BENEFITS': 'КЛЮЧЕВЫЕ ПРЕИМУЩЕСТВА',
       'KEY INGREDIENTS': 'ВАЖНЫЕ ИНГРЕДИЕНТЫ',
       'POTENTIAL CONCERNS': 'ВОЗМОЖНЫЕ РИСКИ',
@@ -76,6 +79,7 @@ const t = {
 
 function extractSection(text, title) {
   if (!text) return ''
+
   const start = text.indexOf(title + ':')
   if (start === -1) return ''
 
@@ -104,7 +108,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
   const [language, setLanguage] = useState('EN')
 
-  const copy = t[language]
+  const current = translations[language]
   const analysisText = result?.message || ''
 
   const analyzeFormula = async () => {
@@ -136,7 +140,7 @@ export default function Home() {
       <div style={styles.container}>
         <header style={styles.header}>
           <div>
-            <div style={styles.badge}>{copy.badge}</div>
+            <div style={styles.badge}>{current.badge}</div>
             <div style={styles.logo}>FORMULENS LAB</div>
           </div>
 
@@ -160,41 +164,50 @@ export default function Home() {
         </header>
 
         <section style={styles.hero}>
-          <h1 style={styles.title}>{copy.title}</h1>
-          <p style={styles.subtitle}>{copy.subtitle}</p>
+          <h1 style={styles.title}>{current.title}</h1>
+          <p style={styles.subtitle}>{current.subtitle}</p>
         </section>
 
         <section style={styles.grid}>
           <div style={styles.card}>
-            <h2 style={styles.cardTitle}>{copy.analyzeTitle}</h2>
+            <h2 style={styles.cardTitle}>{current.analyzeTitle}</h2>
 
             <textarea
               value={inci}
               onChange={(e) => setInci(e.target.value)}
-              placeholder={copy.placeholder}
+              placeholder={current.placeholder}
               style={styles.textarea}
             />
 
-            <div style={styles.counter}>{inci.length}/5000 characters</div>
+            <div style={styles.counter}>
+              {inci.length}/5000 {current.counter}
+            </div>
 
-            <button onClick={analyzeFormula} disabled={loading} style={styles.button}>
-              {loading ? copy.loading : copy.button}
+            <button
+              onClick={analyzeFormula}
+              disabled={loading}
+              style={styles.button}
+            >
+              {loading ? current.loading : current.button}
             </button>
           </div>
 
           <div style={styles.resultColumn}>
-            <h2 style={styles.cardTitle}>{copy.resultTitle}</h2>
+            <h2 style={styles.cardTitle}>{current.resultTitle}</h2>
 
-            {!loading && !analysisText && <div style={styles.empty}>{copy.empty}</div>}
+            {!loading && !analysisText && (
+              <div style={styles.empty}>{current.empty}</div>
+            )}
 
-            {loading && <div style={styles.empty}>{copy.loading}</div>}
+            {loading && <div style={styles.empty}>{current.loading}</div>}
 
             {!loading && analysisText && (
               <>
                 <div style={styles.scoreCard}>
                   <div style={styles.score}>{getScore(analysisText)}</div>
+
                   <div>
-                    <h3 style={styles.scoreTitle}>{copy.score}</h3>
+                    <h3 style={styles.scoreTitle}>{current.score}</h3>
                     <p style={styles.text}>
                       {extractSection(analysisText, 'FORMULA SCORE')}
                     </p>
@@ -207,7 +220,9 @@ export default function Home() {
 
                   return (
                     <div key={section} style={styles.resultCard}>
-                      <h3 style={styles.sectionTitle}>{copy.sections[section]}</h3>
+                      <h3 style={styles.sectionTitle}>
+                        {current.sectionNames[section]}
+                      </h3>
                       <p style={styles.text}>{content}</p>
                     </div>
                   )
@@ -224,7 +239,8 @@ export default function Home() {
 const styles = {
   page: {
     minHeight: '100vh',
-    background: 'radial-gradient(circle at top left, #2b1055 0%, #090909 40%)',
+    background:
+      'radial-gradient(circle at top left, #2b1055 0%, #090909 40%)',
     color: 'white',
     padding: '40px',
     fontFamily: 'Arial, sans-serif',
@@ -248,7 +264,6 @@ const styles = {
   logo: {
     fontSize: '32px',
     fontWeight: '800',
-    letterSpacing: '0.02em',
   },
   langs: {
     display: 'flex',
@@ -268,7 +283,7 @@ const styles = {
     border: '1px solid transparent',
   },
   hero: {
-    maxWidth: '760px',
+    maxWidth: '820px',
     marginBottom: '60px',
   },
   title: {
