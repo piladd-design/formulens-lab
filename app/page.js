@@ -2,6 +2,33 @@
 
 import { useState } from 'react'
 
+const loadingSteps = {
+  EN: [
+    'Analyzing molecular structure...',
+    'Evaluating irritation profile...',
+    'Checking barrier support...',
+    'Scanning active ingredients...',
+    'Calculating hydration score...',
+    'Generating professional conclusion...',
+  ],
+  DE: [
+    'Molekulare Struktur wird analysiert...',
+    'Irritationsprofil wird bewertet...',
+    'Barriere-Support wird geprüft...',
+    'Aktive Inhaltsstoffe werden gescannt...',
+    'Feuchtigkeits-Score wird berechnet...',
+    'Professionelles Fazit wird erstellt...',
+  ],
+  RU: [
+    'Анализируем молекулярную структуру...',
+    'Оцениваем риск раздражения...',
+    'Проверяем поддержку кожного барьера...',
+    'Сканируем активные ингредиенты...',
+    'Рассчитываем уровень увлажнения...',
+    'Формируем профессиональный вывод...',
+  ],
+}
+
 const sections = [
   'FORMULA SCORE',
   'KEY BENEFITS',
@@ -21,7 +48,6 @@ const translations = {
     resultTitle: 'Analysis Result',
     placeholder: 'Aqua, Glycerin, Niacinamide, Panthenol, Hyaluronic Acid...',
     button: 'Analyze Formula',
-    loading: 'Analyzing molecular profile...',
     empty: 'Your AI analysis will appear here after submitting a formula.',
     score: 'Formula Score',
     counter: 'characters',
@@ -49,7 +75,6 @@ const translations = {
     resultTitle: 'Analyseergebnis',
     placeholder: 'Aqua, Glycerin, Niacinamide, Panthenol, Hyaluronic Acid...',
     button: 'Formel analysieren',
-    loading: 'Molekulares Profil wird analysiert...',
     empty: 'Ihre KI-Analyse erscheint hier nach dem Absenden der Formel.',
     score: 'Formel-Score',
     counter: 'Zeichen',
@@ -77,7 +102,6 @@ const translations = {
     resultTitle: 'Результат анализа',
     placeholder: 'Aqua, Glycerin, Niacinamide, Panthenol, Hyaluronic Acid...',
     button: 'Анализировать формулу',
-    loading: 'Анализируем молекулярный профиль...',
     empty: 'Результат ИИ-анализа появится здесь после отправки формулы.',
     score: 'Оценка формулы',
     counter: 'символов',
@@ -117,39 +141,59 @@ function extractSection(text, title) {
     .replace(/\*\*/g, '')
 }
 
+function extractMetric(text, title, fallback) {
+  if (!text) return fallback
+
+  const match = text.match(new RegExp(`${title}:\\s*([^\\n]+)`, 'i'))
+  return match ? match[1].trim() : fallback
+}
+
 function getScore(text) {
   const scoreText = extractSection(text, 'FORMULA SCORE')
   const match = scoreText.match(/\d+/)
   return match ? match[0] : '85'
 }
 
-function generateMetrics(score) {
+function metricNumber(value, fallback) {
+  const match = String(value).match(/\d+/)
+  return match ? parseInt(match[0]) : fallback
+}
+
+function generateMetrics(text, score) {
   const base = parseInt(score || 85)
 
   return [
     {
       id: 'hydration',
-      value: Math.min(base + 7, 99),
+      value: metricNumber(extractMetric(text, 'HYDRATION', base + 7), Math.min(base + 7, 99)),
       color: '#38bdf8',
     },
     {
       id: 'barrier',
-      value: Math.min(base + 3, 99),
+      value: metricNumber(extractMetric(text, 'BARRIER SUPPORT', base + 3), Math.min(base + 3, 99)),
       color: '#8b5cf6',
     },
     {
       id: 'antiAging',
-      value: Math.min(base + 1, 99),
+      value: metricNumber(extractMetric(text, 'ANTI-AGING', base + 1), Math.min(base + 1, 99)),
       color: '#ec4899',
     },
     {
       id: 'acneSafety',
-      value: Math.max(base - 6, 55),
+      value:
+        extractMetric(text, 'ACNE SAFE', 'YES').toUpperCase().includes('YES')
+          ? Math.max(base - 6, 70)
+          : 45,
       color: '#22c55e',
     },
     {
       id: 'irritation',
-      value: Math.max(100 - base, 8),
+      value:
+        extractMetric(text, 'IRRITATION RISK', 'LOW').toUpperCase().includes('LOW')
+          ? 12
+          : extractMetric(text, 'IRRITATION RISK', 'LOW').toUpperCase().includes('MEDIUM')
+            ? 45
+            : 78,
       color: '#f97316',
     },
   ]
@@ -160,17 +204,26 @@ export default function Home() {
   const [result, setResult] = useState(null)
   const [loading, setLoading] = useState(false)
   const [language, setLanguage] = useState('EN')
+  const [loadingText, setLoadingText] = useState(loadingSteps.EN[0])
 
   const current = translations[language]
   const analysisText = result?.message || ''
   const score = getScore(analysisText)
-  const metrics = generateMetrics(score)
+  const metrics = generateMetrics(analysisText, score)
 
   const analyzeFormula = async () => {
     if (!inci.trim()) return
 
     setLoading(true)
     setResult(null)
+    setLoadingText(loadingSteps[language][0])
+
+    let step = 0
+
+    const interval = setInterval(() => {
+      step = (step + 1) % loadingSteps[language].length
+      setLoadingText(loadingSteps[language][step])
+    }, 1400)
 
     try {
       const response = await fetch('/api/analyze', {
@@ -187,6 +240,7 @@ export default function Home() {
       })
     }
 
+    clearInterval(interval)
     setLoading(false)
   }
 
@@ -206,6 +260,7 @@ export default function Home() {
                 onClick={() => {
                   setLanguage(lang)
                   setResult(null)
+                  setLoadingText(loadingSteps[lang][0])
                 }}
                 style={{
                   ...styles.langButton,
@@ -243,7 +298,7 @@ export default function Home() {
               disabled={loading}
               style={styles.button}
             >
-              {loading ? current.loading : current.button}
+              {loading ? loadingText : current.button}
             </button>
           </div>
 
@@ -257,7 +312,7 @@ export default function Home() {
             {loading && (
               <div style={styles.loadingCard}>
                 <div style={styles.loadingOrb}></div>
-                <div>{current.loading}</div>
+                <div style={styles.loadingText}>{loadingText}</div>
               </div>
             )}
 
@@ -295,7 +350,7 @@ export default function Home() {
                         <div
                           style={{
                             ...styles.metricFill,
-                            width: `${metric.value}%`,
+                            width: `${Math.min(metric.value, 100)}%`,
                             background: metric.color,
                           }}
                         />
@@ -431,7 +486,7 @@ const styles = {
     borderRadius: '18px',
     background: 'linear-gradient(90deg,#7b2ff7,#f107a3)',
     color: 'white',
-    fontSize: '19px',
+    fontSize: '17px',
     fontWeight: '800',
     cursor: 'pointer',
   },
@@ -546,10 +601,16 @@ const styles = {
     gap: '20px',
   },
   loadingOrb: {
-    width: '56px',
-    height: '56px',
+    width: '64px',
+    height: '64px',
     borderRadius: '50%',
     background: 'linear-gradient(135deg,#7b2ff7,#33d2ff)',
-    boxShadow: '0 0 40px rgba(123,47,247,0.6)',
+    boxShadow: '0 0 50px rgba(123,47,247,0.8)',
+  },
+  loadingText: {
+    color: '#d5d5dc',
+    fontSize: '17px',
+    fontWeight: '700',
+    textAlign: 'center',
   },
 }
