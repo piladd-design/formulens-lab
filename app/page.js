@@ -2,6 +2,39 @@
 
 import { useState } from 'react'
 
+const sections = [
+  'FORMULA SCORE',
+  'KEY BENEFITS',
+  'KEY INGREDIENTS',
+  'POTENTIAL CONCERNS',
+  'BEST FOR',
+  'PROFESSIONAL CONCLUSION',
+]
+
+function extractSection(text, title) {
+  if (!text) return ''
+  const start = text.indexOf(title + ':')
+  if (start === -1) return ''
+
+  const nextStarts = sections
+    .filter((s) => s !== title)
+    .map((s) => text.indexOf(s + ':', start + title.length))
+    .filter((i) => i !== -1)
+
+  const end = nextStarts.length ? Math.min(...nextStarts) : text.length
+
+  return text
+    .slice(start + title.length + 1, end)
+    .trim()
+    .replace(/\*\*/g, '')
+}
+
+function getScore(text) {
+  const scoreText = extractSection(text, 'FORMULA SCORE')
+  const match = scoreText.match(/\d+/)
+  return match ? match[0] : '82'
+}
+
 export default function Home() {
   const [inci, setInci] = useState('')
   const [result, setResult] = useState(null)
@@ -11,6 +44,7 @@ export default function Home() {
     if (!inci.trim()) return
 
     setLoading(true)
+    setResult(null)
 
     try {
       const response = await fetch('/api/analyze', {
@@ -30,6 +64,9 @@ export default function Home() {
     setLoading(false)
   }
 
+  const text = result?.message || ''
+  const score = getScore(text)
+
   return (
     <main style={styles.page}>
       <section style={styles.hero}>
@@ -42,8 +79,8 @@ export default function Home() {
         </h1>
 
         <p style={styles.subtitle}>
-          Paste an INCI list and receive a clear, clinical-style ingredient
-          analysis for safety, benefits and potential concerns.
+          Paste an INCI list and receive a clinical-style ingredient analysis
+          with benefits, risks and professional conclusion.
         </p>
 
         <div style={styles.grid}>
@@ -60,20 +97,42 @@ export default function Home() {
             <div style={styles.counter}>{inci.length}/5000 characters</div>
 
             <button onClick={analyzeFormula} style={styles.button}>
-              {loading ? 'Analyzing...' : 'Analyze Formula'}
+              {loading ? 'Analyzing formula...' : 'Analyze Formula'}
             </button>
           </div>
 
           <div style={styles.card}>
             <h2 style={styles.cardTitle}>Analysis Result</h2>
 
-            {result ? (
-              <div style={styles.resultBox}>
-                <div style={styles.score}>82</div>
-                <div style={styles.scoreLabel}>Formula Score</div>
-                <p style={styles.resultText}>{result.message}</p>
+            {loading && (
+              <div style={styles.loadingBox}>
+                <div style={styles.pulse}></div>
+                <p>Analyzing molecular profile...</p>
               </div>
-            ) : (
+            )}
+
+            {!loading && result && (
+              <div style={styles.resultGrid}>
+                <div style={styles.scoreCard}>
+                  <div style={styles.score}>{score}</div>
+                  <div>
+                    <div style={styles.scoreLabel}>Formula Score</div>
+                    <p style={styles.smallText}>
+                      {extractSection(text, 'FORMULA SCORE')}
+                    </p>
+                  </div>
+                </div>
+
+                {sections.slice(1).map((section) => (
+                  <div key={section} style={styles.resultSection}>
+                    <h3 style={styles.sectionTitle}>{section}</h3>
+                    <p style={styles.resultText}>{extractSection(text, section)}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {!loading && !result && (
               <div style={styles.empty}>
                 Your AI analysis will appear here after submitting a formula.
               </div>
@@ -96,7 +155,7 @@ const styles = {
   page: {
     minHeight: '100vh',
     background:
-      'radial-gradient(circle at top left, rgba(130, 70, 255, 0.25), transparent 35%), #050506',
+      'radial-gradient(circle at top left, rgba(130,70,255,0.25), transparent 35%), #050506',
     color: '#fff',
     fontFamily: 'Arial, sans-serif',
     padding: '32px',
@@ -110,8 +169,8 @@ const styles = {
     display: 'inline-block',
     padding: '10px 16px',
     borderRadius: '999px',
-    background: 'rgba(140, 90, 255, 0.12)',
-    border: '1px solid rgba(180, 140, 255, 0.25)',
+    background: 'rgba(140,90,255,0.12)',
+    border: '1px solid rgba(180,140,255,0.25)',
     color: '#c9b6ff',
     fontSize: '14px',
     marginBottom: '28px',
@@ -133,11 +192,11 @@ const styles = {
   },
   grid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
     gap: '28px',
   },
   card: {
-    background: 'rgba(18,18,22,0.86)',
+    background: 'rgba(18,18,22,0.88)',
     border: '1px solid rgba(255,255,255,0.08)',
     borderRadius: '28px',
     padding: '30px',
@@ -179,32 +238,75 @@ const styles = {
     fontWeight: '700',
     cursor: 'pointer',
   },
-  resultBox: {
+  resultGrid: {
+    display: 'grid',
+    gap: '16px',
+  },
+  scoreCard: {
+    display: 'flex',
+    gap: '18px',
+    alignItems: 'center',
     background: '#080809',
     borderRadius: '22px',
-    padding: '24px',
+    padding: '20px',
     border: '1px solid rgba(255,255,255,0.08)',
   },
   score: {
-    width: '96px',
-    height: '96px',
+    minWidth: '88px',
+    height: '88px',
     borderRadius: '50%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     background: 'linear-gradient(135deg, #7b2ff7, #00e5ff)',
-    fontSize: '36px',
+    fontSize: '34px',
     fontWeight: '800',
-    marginBottom: '14px',
   },
   scoreLabel: {
     color: '#c9b6ff',
-    marginBottom: '22px',
+    fontWeight: '700',
+    marginBottom: '6px',
+  },
+  smallText: {
+    color: '#aaa',
+    lineHeight: '1.6',
+    margin: 0,
+    fontSize: '14px',
+  },
+  resultSection: {
+    background: '#080809',
+    borderRadius: '20px',
+    padding: '18px',
+    border: '1px solid rgba(255,255,255,0.08)',
+  },
+  sectionTitle: {
+    color: '#c9b6ff',
+    fontSize: '13px',
+    letterSpacing: '0.08em',
+    marginTop: 0,
+    marginBottom: '10px',
   },
   resultText: {
-    color: '#c8c8d0',
-    lineHeight: '1.8',
-    fontSize: '16px',
+    color: '#d5d5dd',
+    lineHeight: '1.7',
+    fontSize: '15px',
+    margin: 0,
+    whiteSpace: 'pre-line',
+  },
+  loadingBox: {
+    minHeight: '260px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    color: '#aaa',
+  },
+  pulse: {
+    width: '56px',
+    height: '56px',
+    borderRadius: '50%',
+    background: 'linear-gradient(135deg, #7b2ff7, #00e5ff)',
+    marginBottom: '18px',
   },
   empty: {
     color: '#777',
