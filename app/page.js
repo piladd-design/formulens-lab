@@ -13,7 +13,9 @@ const sections = [
 
 function extractSection(text, title) {
   if (!text) return ''
+
   const start = text.indexOf(title + ':')
+
   if (start === -1) return ''
 
   const nextStarts = sections
@@ -21,7 +23,9 @@ function extractSection(text, title) {
     .map((s) => text.indexOf(s + ':', start + title.length))
     .filter((i) => i !== -1)
 
-  const end = nextStarts.length ? Math.min(...nextStarts) : text.length
+  const end = nextStarts.length
+    ? Math.min(...nextStarts)
+    : text.length
 
   return text
     .slice(start + title.length + 1, end)
@@ -32,298 +36,340 @@ function extractSection(text, title) {
 function getScore(text) {
   const scoreText = extractSection(text, 'FORMULA SCORE')
   const match = scoreText.match(/\d+/)
-  return match ? match[0] : '82'
+
+  return match ? match[0] : '85'
 }
 
 export default function Home() {
   const [inci, setInci] = useState('')
   const [result, setResult] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [language, setLanguage] = useState('EN')
 
   const analyzeFormula = async () => {
     if (!inci.trim()) return
 
     setLoading(true)
-    setResult(null)
 
     try {
       const response = await fetch('/api/analyze', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ inci }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          inci,
+          language,
+        }),
       })
 
       const data = await response.json()
+
       setResult(data)
     } catch (error) {
       setResult({
-        message: 'Analysis service is currently unavailable. Please try again.',
+        message:
+          'Analysis service is currently unavailable. Please try again.',
       })
     }
 
     setLoading(false)
   }
 
-  const text = result?.message || ''
-  const score = getScore(text)
+  const analysisText = result?.message || ''
 
   return (
-    <main style={styles.page}>
-      <section style={styles.hero}>
-        <div style={styles.badge}>AI Cosmetic Intelligence</div>
+    <main
+      style={{
+        minHeight: '100vh',
+        background:
+          'radial-gradient(circle at top left, #2b1055 0%, #090909 40%)',
+        color: 'white',
+        padding: '40px',
+        fontFamily: 'Arial',
+      }}
+    >
+      <div
+        style={{
+          maxWidth: '1400px',
+          margin: '0 auto',
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '60px',
+          }}
+        >
+          <div>
+            <div
+              style={{
+                fontSize: '14px',
+                color: '#b388ff',
+                marginBottom: '12px',
+                letterSpacing: '2px',
+              }}
+            >
+              AI COSMETIC INTELLIGENCE
+            </div>
 
-        <h1 style={styles.title}>
-          Understand your
-          <br />
-          cosmetic formula.
-        </h1>
+            <h1
+              style={{
+                fontSize: '34px',
+                fontWeight: '700',
+                margin: 0,
+              }}
+            >
+              FORMULENS LAB
+            </h1>
+          </div>
 
-        <p style={styles.subtitle}>
-          Paste an INCI list and receive a clinical-style ingredient analysis
-          with benefits, risks and professional conclusion.
-        </p>
+          <div
+            style={{
+              display: 'flex',
+              gap: '10px',
+            }}
+          >
+            {['EN', 'DE', 'RU'].map((lang) => (
+              <button
+                key={lang}
+                onClick={() => setLanguage(lang)}
+                style={{
+                  background:
+                    language === lang
+                      ? 'linear-gradient(90deg,#7b2ff7,#f107a3)'
+                      : '#111',
+                  color: 'white',
+                  border: '1px solid #333',
+                  borderRadius: '10px',
+                  padding: '10px 18px',
+                  cursor: 'pointer',
+                  fontWeight: '600',
+                }}
+              >
+                {lang}
+              </button>
+            ))}
+          </div>
+        </div>
 
-        <div style={styles.grid}>
-          <div style={styles.card}>
-            <h2 style={styles.cardTitle}>Analyze Formula</h2>
+        <div
+          style={{
+            maxWidth: '800px',
+            marginBottom: '60px',
+          }}
+        >
+          <h2
+            style={{
+              fontSize: '82px',
+              lineHeight: '0.95',
+              marginBottom: '30px',
+              fontWeight: '800',
+            }}
+          >
+            Understand your cosmetic formula.
+          </h2>
+
+          <p
+            style={{
+              fontSize: '28px',
+              lineHeight: '1.5',
+              color: '#cfcfcf',
+            }}
+          >
+            Paste an INCI list and receive a clear, clinical-style
+            ingredient analysis for safety, benefits and potential concerns.
+          </p>
+        </div>
+
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '30px',
+            alignItems: 'start',
+          }}
+        >
+          <div
+            style={{
+              background: '#0d0d12',
+              border: '1px solid #1f1f2b',
+              borderRadius: '28px',
+              padding: '30px',
+            }}
+          >
+            <h2
+              style={{
+                fontSize: '26px',
+                marginBottom: '25px',
+              }}
+            >
+              Analyze Formula
+            </h2>
 
             <textarea
               value={inci}
               onChange={(e) => setInci(e.target.value)}
-              placeholder="Aqua, Glycerin, Niacinamide, Panthenol, Hyaluronic Acid..."
-              style={styles.textarea}
+              placeholder='Aqua, Glycerin, Niacinamide...'
+              style={{
+                width: '100%',
+                height: '220px',
+                background: '#050505',
+                border: '1px solid #222',
+                borderRadius: '20px',
+                color: 'white',
+                padding: '20px',
+                fontSize: '18px',
+                resize: 'none',
+                outline: 'none',
+              }}
             />
 
-            <div style={styles.counter}>{inci.length}/5000 characters</div>
+            <div
+              style={{
+                marginTop: '10px',
+                color: '#777',
+                fontSize: '14px',
+              }}
+            >
+              {inci.length}/5000 characters
+            </div>
 
-            <button onClick={analyzeFormula} style={styles.button}>
-              {loading ? 'Analyzing formula...' : 'Analyze Formula'}
+            <button
+              onClick={analyzeFormula}
+              disabled={loading}
+              style={{
+                width: '100%',
+                marginTop: '25px',
+                padding: '22px',
+                border: 'none',
+                borderRadius: '18px',
+                background:
+                  'linear-gradient(90deg,#7b2ff7,#f107a3)',
+                color: 'white',
+                fontSize: '20px',
+                fontWeight: '700',
+                cursor: 'pointer',
+              }}
+            >
+              {loading ? 'Analyzing...' : 'Analyze Formula'}
             </button>
           </div>
 
-          <div style={styles.card}>
-            <h2 style={styles.cardTitle}>Analysis Result</h2>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '24px',
+            }}
+          >
+            {analysisText && (
+              <>
+                <div
+                  style={{
+                    background: '#0d0d12',
+                    border: '1px solid #1f1f2b',
+                    borderRadius: '28px',
+                    padding: '30px',
+                    display: 'flex',
+                    gap: '24px',
+                    alignItems: 'center',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '90px',
+                      height: '90px',
+                      borderRadius: '50%',
+                      background:
+                        'linear-gradient(135deg,#7b2ff7,#33d2ff)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '42px',
+                      fontWeight: '700',
+                    }}
+                  >
+                    {getScore(analysisText)}
+                  </div>
 
-            {loading && (
-              <div style={styles.loadingBox}>
-                <div style={styles.pulse}></div>
-                <p>Analyzing molecular profile...</p>
-              </div>
-            )}
-
-            {!loading && result && (
-              <div style={styles.resultGrid}>
-                <div style={styles.scoreCard}>
-                  <div style={styles.score}>{score}</div>
                   <div>
-                    <div style={styles.scoreLabel}>Formula Score</div>
-                    <p style={styles.smallText}>
-                      {extractSection(text, 'FORMULA SCORE')}
-                    </p>
+                    <div
+                      style={{
+                        fontSize: '26px',
+                        fontWeight: '700',
+                        marginBottom: '10px',
+                      }}
+                    >
+                      Formula Score
+                    </div>
+
+                    <div
+                      style={{
+                        color: '#cfcfcf',
+                        lineHeight: '1.7',
+                      }}
+                    >
+                      {extractSection(
+                        analysisText,
+                        'FORMULA SCORE'
+                      )}
+                    </div>
                   </div>
                 </div>
 
-                {sections.slice(1).map((section) => (
-                  <div key={section} style={styles.resultSection}>
-                    <h3 style={styles.sectionTitle}>{section}</h3>
-                    <p style={styles.resultText}>{extractSection(text, section)}</p>
-                  </div>
-                ))}
-              </div>
-            )}
+                {sections
+                  .filter((section) => section !== 'FORMULA SCORE')
+                  .map((section) => {
+                    const content = extractSection(
+                      analysisText,
+                      section
+                    )
 
-            {!loading && !result && (
-              <div style={styles.empty}>
-                Your AI analysis will appear here after submitting a formula.
-              </div>
+                    if (!content) return null
+
+                    return (
+                      <div
+                        key={section}
+                        style={{
+                          background: '#0d0d12',
+                          border: '1px solid #1f1f2b',
+                          borderRadius: '28px',
+                          padding: '30px',
+                        }}
+                      >
+                        <div
+                          style={{
+                            color: '#d19cff',
+                            fontSize: '16px',
+                            letterSpacing: '2px',
+                            marginBottom: '20px',
+                            fontWeight: '700',
+                          }}
+                        >
+                          {section}
+                        </div>
+
+                        <div
+                          style={{
+                            color: '#f5f5f5',
+                            lineHeight: '1.9',
+                            fontSize: '17px',
+                            whiteSpace: 'pre-wrap',
+                          }}
+                        >
+                          {content}
+                        </div>
+                      </div>
+                    )
+                  })}
+              </>
             )}
           </div>
         </div>
-
-        <div style={styles.features}>
-          <div style={styles.feature}>Ingredient safety</div>
-          <div style={styles.feature}>Skin benefit profile</div>
-          <div style={styles.feature}>Irritation risk</div>
-          <div style={styles.feature}>Professional report</div>
-        </div>
-      </section>
+      </div>
     </main>
   )
-}
-
-const styles = {
-  page: {
-    minHeight: '100vh',
-    background:
-      'radial-gradient(circle at top left, rgba(130,70,255,0.25), transparent 35%), #050506',
-    color: '#fff',
-    fontFamily: 'Arial, sans-serif',
-    padding: '32px',
-  },
-  hero: {
-    maxWidth: '1180px',
-    margin: '0 auto',
-    paddingTop: '70px',
-  },
-  badge: {
-    display: 'inline-block',
-    padding: '10px 16px',
-    borderRadius: '999px',
-    background: 'rgba(140,90,255,0.12)',
-    border: '1px solid rgba(180,140,255,0.25)',
-    color: '#c9b6ff',
-    fontSize: '14px',
-    marginBottom: '28px',
-  },
-  title: {
-    fontSize: 'clamp(44px, 7vw, 86px)',
-    lineHeight: '0.95',
-    letterSpacing: '-0.05em',
-    margin: 0,
-    maxWidth: '780px',
-  },
-  subtitle: {
-    color: '#b8b8c2',
-    fontSize: '20px',
-    lineHeight: '1.6',
-    maxWidth: '680px',
-    marginTop: '28px',
-    marginBottom: '48px',
-  },
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
-    gap: '28px',
-  },
-  card: {
-    background: 'rgba(18,18,22,0.88)',
-    border: '1px solid rgba(255,255,255,0.08)',
-    borderRadius: '28px',
-    padding: '30px',
-    boxShadow: '0 30px 80px rgba(0,0,0,0.45)',
-  },
-  cardTitle: {
-    fontSize: '28px',
-    marginTop: 0,
-    marginBottom: '20px',
-  },
-  textarea: {
-    width: '100%',
-    minHeight: '260px',
-    background: '#070708',
-    border: '1px solid rgba(255,255,255,0.1)',
-    borderRadius: '20px',
-    color: '#fff',
-    padding: '20px',
-    fontSize: '16px',
-    lineHeight: '1.6',
-    resize: 'vertical',
-    outline: 'none',
-    boxSizing: 'border-box',
-  },
-  counter: {
-    color: '#777',
-    fontSize: '13px',
-    marginTop: '12px',
-  },
-  button: {
-    marginTop: '20px',
-    width: '100%',
-    padding: '18px 22px',
-    borderRadius: '18px',
-    border: 'none',
-    background: 'linear-gradient(135deg, #7b2ff7, #f107a3)',
-    color: '#fff',
-    fontSize: '17px',
-    fontWeight: '700',
-    cursor: 'pointer',
-  },
-  resultGrid: {
-    display: 'grid',
-    gap: '16px',
-  },
-  scoreCard: {
-    display: 'flex',
-    gap: '18px',
-    alignItems: 'center',
-    background: '#080809',
-    borderRadius: '22px',
-    padding: '20px',
-    border: '1px solid rgba(255,255,255,0.08)',
-  },
-  score: {
-    minWidth: '88px',
-    height: '88px',
-    borderRadius: '50%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    background: 'linear-gradient(135deg, #7b2ff7, #00e5ff)',
-    fontSize: '34px',
-    fontWeight: '800',
-  },
-  scoreLabel: {
-    color: '#c9b6ff',
-    fontWeight: '700',
-    marginBottom: '6px',
-  },
-  smallText: {
-    color: '#aaa',
-    lineHeight: '1.6',
-    margin: 0,
-    fontSize: '14px',
-  },
-  resultSection: {
-    background: '#080809',
-    borderRadius: '20px',
-    padding: '18px',
-    border: '1px solid rgba(255,255,255,0.08)',
-  },
-  sectionTitle: {
-    color: '#c9b6ff',
-    fontSize: '13px',
-    letterSpacing: '0.08em',
-    marginTop: 0,
-    marginBottom: '10px',
-  },
-  resultText: {
-    color: '#d5d5dd',
-    lineHeight: '1.7',
-    fontSize: '15px',
-    margin: 0,
-    whiteSpace: 'pre-line',
-  },
-  loadingBox: {
-    minHeight: '260px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    color: '#aaa',
-  },
-  pulse: {
-    width: '56px',
-    height: '56px',
-    borderRadius: '50%',
-    background: 'linear-gradient(135deg, #7b2ff7, #00e5ff)',
-    marginBottom: '18px',
-  },
-  empty: {
-    color: '#777',
-    lineHeight: '1.8',
-    minHeight: '260px',
-  },
-  features: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-    gap: '16px',
-    marginTop: '28px',
-  },
-  feature: {
-    background: 'rgba(255,255,255,0.05)',
-    border: '1px solid rgba(255,255,255,0.08)',
-    borderRadius: '18px',
-    padding: '18px',
-    color: '#d8d8df',
-  },
 }
