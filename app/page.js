@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import jsPDF from 'jspdf'
 
 const translations = {
   EN: {
@@ -12,6 +13,7 @@ const translations = {
     placeholder: 'Aqua, Glycerin, Niacinamide...',
     button: 'Analyze Formula',
     loading: 'Analyzing...',
+    pdf: 'Download PDF Report',
     empty: 'Your AI analysis will appear here after submitting a formula.',
     formulaScore: 'Formula Score',
     hydration: 'Hydration',
@@ -34,6 +36,7 @@ const translations = {
     placeholder: 'Aqua, Glycerin, Niacinamide...',
     button: 'Formel analysieren',
     loading: 'Analyse läuft...',
+    pdf: 'PDF-Bericht herunterladen',
     empty: 'Ihre KI-Analyse erscheint hier nach dem Absenden der Formel.',
     formulaScore: 'Formelbewertung',
     hydration: 'Feuchtigkeit',
@@ -56,6 +59,7 @@ const translations = {
     placeholder: 'Aqua, Glycerin, Niacinamide...',
     button: 'Анализировать формулу',
     loading: 'Анализируем...',
+    pdf: 'Скачать PDF-отчёт',
     empty: 'Результат ИИ-анализа появится здесь после отправки формулы.',
     formulaScore: 'Оценка формулы',
     hydration: 'Увлажнение',
@@ -101,6 +105,104 @@ export default function Home() {
     }
 
     setLoading(false)
+  }
+
+  function downloadPDF() {
+    if (!result) return
+
+    const doc = new jsPDF()
+    let y = 20
+
+    doc.setFillColor(8, 8, 14)
+    doc.rect(0, 0, 210, 297, 'F')
+
+    doc.setTextColor(255, 255, 255)
+    doc.setFontSize(24)
+    doc.text('FORMULENS LAB', 18, y)
+
+    y += 10
+    doc.setFontSize(11)
+    doc.setTextColor(180, 120, 255)
+    doc.text(t.badge, 18, y)
+
+    y += 20
+    doc.setFontSize(18)
+    doc.setTextColor(255, 255, 255)
+    doc.text(t.formulaScore, 18, y)
+
+    y += 14
+    doc.setFontSize(34)
+    doc.setTextColor(80, 190, 255)
+    doc.text(`${result.formulaScore}/100`, 18, y)
+
+    y += 22
+    doc.setFontSize(12)
+    doc.setTextColor(255, 255, 255)
+
+    const metrics = [
+      `${t.hydration}: ${result.hydration}`,
+      `${t.barrier}: ${result.barrierSupport}`,
+      `${t.antiAging}: ${result.antiAging}`,
+      `${t.acne}: ${result.acneSafety}`,
+      `${t.irritation}: ${result.irritationRisk}`,
+    ]
+
+    metrics.forEach((item) => {
+      doc.text(item, 18, y)
+      y += 8
+    })
+
+    function section(title, items) {
+      y += 10
+      doc.setFontSize(14)
+      doc.setTextColor(220, 130, 255)
+      doc.text(title, 18, y)
+
+      y += 9
+      doc.setFontSize(11)
+      doc.setTextColor(255, 255, 255)
+
+      items?.forEach((item) => {
+        const lines = doc.splitTextToSize(`• ${item}`, 170)
+        doc.text(lines, 22, y)
+        y += lines.length * 6 + 3
+      })
+    }
+
+    section(t.benefits, result.keyBenefits)
+
+    y += 10
+    doc.setFontSize(14)
+    doc.setTextColor(220, 130, 255)
+    doc.text(t.ingredients, 18, y)
+
+    y += 9
+    doc.setFontSize(11)
+    doc.setTextColor(255, 255, 255)
+
+    result.keyIngredients?.forEach((item) => {
+      const text = `• ${item.name}: ${item.description}`
+      const lines = doc.splitTextToSize(text, 170)
+      doc.text(lines, 22, y)
+      y += lines.length * 6 + 3
+    })
+
+    section(t.concerns, result.potentialConcerns)
+    section(t.bestFor, result.bestFor)
+
+    y += 10
+    doc.setFontSize(14)
+    doc.setTextColor(220, 130, 255)
+    doc.text(t.conclusion, 18, y)
+
+    y += 9
+    doc.setFontSize(11)
+    doc.setTextColor(255, 255, 255)
+
+    const conclusion = doc.splitTextToSize(result.professionalConclusion || '', 170)
+    doc.text(conclusion, 18, y)
+
+    doc.save('formulens-lab-report.pdf')
   }
 
   const metrics = result
@@ -151,6 +253,12 @@ export default function Home() {
             <button onClick={analyzeFormula} className="button">
               {loading ? t.loading : t.button}
             </button>
+
+            {result && (
+              <button onClick={downloadPDF} className="pdfButton">
+                {t.pdf}
+              </button>
+            )}
           </div>
 
           <div className="card resultCardMain">
@@ -328,6 +436,19 @@ export default function Home() {
           cursor: pointer;
         }
 
+        .pdfButton {
+          width: 100%;
+          margin-top: 14px;
+          padding: 18px;
+          border-radius: 18px;
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          background: rgba(255, 255, 255, 0.04);
+          color: #fff;
+          font-weight: 800;
+          font-size: 16px;
+          cursor: pointer;
+        }
+
         .empty {
           opacity: 0.65;
           line-height: 1.8;
@@ -491,10 +612,6 @@ export default function Home() {
             grid-template-columns: 1fr;
           }
 
-          .scoreCard {
-            align-items: flex-start;
-          }
-
           .scoreCircle {
             width: 78px;
             height: 78px;
@@ -517,10 +634,6 @@ export default function Home() {
 
           .sectionTitle {
             font-size: 22px;
-          }
-
-          .scoreCard {
-            flex-direction: row;
           }
 
           .metricTop {
