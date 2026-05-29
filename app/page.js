@@ -8,33 +8,26 @@ const translations = {
     title: 'Understand your cosmetic formula.',
     subtitle:
       'Paste an INCI list and receive a clear, professional cosmetic analysis with benefits, risks and suitability insights.',
-
     inputTitle: 'Formula Analysis',
     placeholder: 'Aqua, Glycerin, Niacinamide, Panthenol...',
     button: 'Analyze Formula',
     pdf: 'Download PDF Report',
-
     result: 'Analysis Result',
     excellent: 'Excellent Formula',
-
     hydration: 'Hydration',
     barrier: 'Barrier Support',
     antiaging: 'Anti-Aging Effect',
     acne: 'Acne Safety',
     irritation: 'Irritation Risk',
-
     benefits: 'Key Benefits',
     conclusion: 'Professional Conclusion',
 
     skinTitle: 'AI Skin Analysis',
     skinSubtitle:
       'Upload a face photo and receive a professional cosmetic skin intelligence report.',
-
     uploadSkinPhoto: 'Upload Skin Photo',
     analyzeSkin: 'Analyze Skin',
-
     skinResult: 'Skin Analysis Result',
-
     professionalInterpretation: 'Professional Interpretation',
     skinStrategy: 'Recommended Skin Strategy',
     ingredientPriorities: 'Ingredient Priorities',
@@ -52,6 +45,7 @@ const translations = {
     moderate: 'Moderate',
     balanced: 'Balanced',
     earlySigns: 'Early Signs',
+    expressed: 'Expressed',
   },
 
   DE: {
@@ -59,33 +53,26 @@ const translations = {
     title: 'Verstehen Sie Ihre kosmetische Formel.',
     subtitle:
       'Fügen Sie eine INCI-Liste ein und erhalten Sie eine professionelle Analyse mit Vorteilen, Risiken und Hauttyp-Empfehlungen.',
-
     inputTitle: 'Formelanalyse',
     placeholder: 'Aqua, Glycerin, Niacinamide, Panthenol...',
     button: 'Formel analysieren',
     pdf: 'PDF-Bericht herunterladen',
-
     result: 'Analyseergebnis',
     excellent: 'Ausgezeichnete Formel',
-
     hydration: 'Feuchtigkeit',
     barrier: 'Barriere-Schutz',
     antiaging: 'Anti-Aging-Effekt',
     acne: 'Akne-Sicherheit',
     irritation: 'Reizungsrisiko',
-
     benefits: 'Wichtige Vorteile',
     conclusion: 'Professionelle Einschätzung',
 
     skinTitle: 'KI-Hautanalyse',
     skinSubtitle:
       'Laden Sie ein Gesichtsfoto hoch und erhalten Sie einen professionellen kosmetischen Hautanalyse-Bericht.',
-
     uploadSkinPhoto: 'Hautfoto hochladen',
     analyzeSkin: 'Haut analysieren',
-
     skinResult: 'Ergebnis der Hautanalyse',
-
     professionalInterpretation: 'Professionelle Interpretation',
     skinStrategy: 'Empfohlene Hautstrategie',
     ingredientPriorities: 'Wirkstoff-Prioritäten',
@@ -103,6 +90,7 @@ const translations = {
     moderate: 'Moderat',
     balanced: 'Ausgeglichen',
     earlySigns: 'Frühe Anzeichen',
+    expressed: 'Ausgeprägt',
   },
 
   RU: {
@@ -110,33 +98,26 @@ const translations = {
     title: 'Поймите свою косметическую формулу.',
     subtitle:
       'Вставьте INCI-состав и получите профессиональный анализ эффективности, безопасности и совместимости с кожей.',
-
     inputTitle: 'Анализ формулы',
     placeholder: 'Aqua, Glycerin, Niacinamide, Panthenol...',
     button: 'Анализировать формулу',
     pdf: 'Скачать PDF-отчёт',
-
     result: 'Результат анализа',
     excellent: 'Отличная формула',
-
     hydration: 'Увлажнение',
     barrier: 'Поддержка барьера',
     antiaging: 'Антивозрастной эффект',
     acne: 'Безопасность при акне',
     irritation: 'Риск раздражения',
-
     benefits: 'Ключевые преимущества',
     conclusion: 'Профессиональный вывод',
 
     skinTitle: 'ИИ-анализ кожи',
     skinSubtitle:
       'Загрузите фото лица и получите профессиональный косметологический анализ кожи.',
-
     uploadSkinPhoto: 'Загрузить фото кожи',
     analyzeSkin: 'Анализировать кожу',
-
     skinResult: 'Результат анализа кожи',
-
     professionalInterpretation: 'Профессиональная интерпретация',
     skinStrategy: 'Рекомендованная стратегия ухода',
     ingredientPriorities: 'Приоритетные активы',
@@ -154,6 +135,7 @@ const translations = {
     moderate: 'Умеренно',
     balanced: 'Сбалансировано',
     earlySigns: 'Ранние признаки',
+    expressed: 'Выражено',
   },
 }
 
@@ -161,7 +143,6 @@ export default function Home() {
   const [language, setLanguage] = useState('RU')
   const [formula, setFormula] = useState('')
   const [analyzed, setAnalyzed] = useState(false)
-
   const [skinImage, setSkinImage] = useState(null)
   const [skinAnalysis, setSkinAnalysis] = useState(false)
 
@@ -174,7 +155,6 @@ export default function Home() {
 
   const handleSkinImageUpload = (event) => {
     const file = event.target.files?.[0]
-
     if (!file) return
 
     setSkinImage(URL.createObjectURL(file))
@@ -183,7 +163,6 @@ export default function Home() {
 
   const analyzeSkin = () => {
     if (!skinImage) return
-
     setSkinAnalysis(true)
   }
 
@@ -197,47 +176,47 @@ Formula:
 ${formula}
 
 Score: 90/100
-
 ${t.excellent}
 
 ${t.benefits}
-
 - ${
       language === 'RU'
-        ? 'Глубокое увлажнение'
+        ? 'Интенсивная поддержка увлажнения'
         : language === 'DE'
-        ? 'Intensive Hydration'
-        : 'Deep hydration'
+        ? 'Intensive Feuchtigkeitsunterstützung'
+        : 'Intensive hydration support'
     }
-
 - ${
       language === 'RU'
-        ? 'Поддержка кожного барьера'
+        ? 'Укрепление защитного барьера кожи'
         : language === 'DE'
         ? 'Stärkung der Hautbarriere'
-        : 'Skin barrier support'
+        : 'Skin barrier reinforcement'
     }
-
 - ${
       language === 'RU'
         ? 'Минимальный риск раздражения'
         : language === 'DE'
-        ? 'Minimales Irritationsrisiko'
-        : 'Minimal irritation risk'
+        ? 'Minimales Irritationspotenzial'
+        : 'Minimal irritation potential'
     }
+
+${t.conclusion}
+${
+  language === 'RU'
+    ? 'Формула демонстрирует высокий профессиональный потенциал ухода за кожей, хорошую совместимость и сбалансированную поддержку барьерной функции.'
+    : language === 'DE'
+    ? 'Die Formel zeigt ein starkes professionelles Hautpflegepotenzial und eine gute Hautverträglichkeit.'
+    : 'The formula demonstrates strong professional skincare potential and balanced skin compatibility.'
+}
 `
 
-    const blob = new Blob([content], {
-      type: 'text/plain',
-    })
-
+    const blob = new Blob([content], { type: 'text/plain' })
     const url = URL.createObjectURL(blob)
-
     const link = document.createElement('a')
 
     link.href = url
     link.download = 'FORMULENS-LAB-REPORT.txt'
-
     link.click()
 
     URL.revokeObjectURL(url)
@@ -254,71 +233,65 @@ ${t.benefits}
           ? 'Sichtbare Anzeichen deuten auf reduzierte Feuchtigkeitsspeicherung hin.'
           : 'Visible signs indicate reduced hydration retention.',
     },
-
     {
       title: t.barrierSkin,
-      level: t.moderate,
+      level: t.expressed,
       summary:
         language === 'RU'
-          ? 'Кожа выглядит слегка реактивной.'
+          ? 'Наблюдается выраженная реактивность кожи, признаки воспаления и ослабленной барьерной функции.'
           : language === 'DE'
-          ? 'Die Haut wirkt leicht reaktiv.'
-          : 'The skin appears slightly reactive.',
+          ? 'Es zeigen sich ausgeprägte Hautreaktivität, entzündliche Zeichen und eine geschwächte Barrierefunktion.'
+          : 'Visible signs suggest pronounced reactivity, inflammation tendency and weakened barrier function.',
     },
-
     {
       title: t.textureSkin,
       level: t.moderate,
       summary:
         language === 'RU'
-          ? 'Наблюдаются легкие неровности текстуры и активность пор.'
+          ? 'Наблюдаются неровности текстуры, покраснение и активность пор в центральной зоне лица.'
           : language === 'DE'
-          ? 'Leichte Texturunregelmäßigkeiten sind sichtbar.'
-          : 'Mild texture irregularities are visible.',
+          ? 'Texturunregelmäßigkeiten, Rötungen und Porenaktivität sind sichtbar.'
+          : 'Texture irregularities, redness and pore activity are visible.',
     },
-
     {
       title: t.pigmentationSkin,
-      level: t.balanced,
+      level: t.moderate,
       summary:
         language === 'RU'
-          ? 'Пигментация выглядит относительно контролируемой.'
+          ? 'Тон кожи выглядит неравномерным из-за выраженной сосудистой и воспалительной реактивности.'
           : language === 'DE'
-          ? 'Die Pigmentierung wirkt relativ kontrolliert.'
-          : 'Pigmentation appears relatively controlled.',
+          ? 'Der Hautton wirkt durch vaskuläre und entzündliche Reaktivität ungleichmäßig.'
+          : 'Skin tone appears uneven due to visible vascular and inflammatory reactivity.',
     },
-
     {
       title: t.sebumSkin,
       level: t.moderate,
       summary:
         language === 'RU'
-          ? 'Себум-активность слегка повышена в T-зоне.'
+          ? 'Себум-активность выглядит умеренной, с возможной склонностью к воспалительным элементам.'
           : language === 'DE'
-          ? 'Die Sebumaktivität ist leicht erhöht.'
-          : 'Sebum activity appears slightly increased.',
+          ? 'Die Sebumaktivität wirkt moderat, mit möglicher Neigung zu Unreinheiten.'
+          : 'Sebum activity appears moderate, with possible tendency to congestion.',
     },
-
     {
       title: t.agingSkin,
       level: t.earlySigns,
       summary:
         language === 'RU'
-          ? 'Наблюдаются ранние признаки возрастных изменений.'
+          ? 'Наблюдаются ранние признаки возрастных изменений и снижения сияния кожи.'
           : language === 'DE'
-          ? 'Frühe Alterungsanzeichen sind sichtbar.'
-          : 'Early visible aging signs are present.',
+          ? 'Frühe Alterungsanzeichen und reduzierte Ausstrahlung sind sichtbar.'
+          : 'Early visible aging signs and reduced luminosity are present.',
     },
-
     {
       title: t.firmnessSkin,
       level: t.moderate,
       summary:
         language === 'RU'
-          ? 'Наблюдается легкое снижение упругости.'
+          ? 'Наблюдается умеренное снижение визуальной упругости и структурной поддержки кожи.'
           : language === 'DE'
-          ? 'Leichter Verlust an Elastizität sichtbar.'
-          : 'Mild loss of elasticity is visible.',
+          ? 'Eine moderate Reduktion der sichtbaren Festigkeit ist erkennbar.'
+          : 'Moderate reduction in visible firmness is present.',
     },
   ]
 
@@ -392,12 +365,10 @@ ${t.benefits}
               borderRadius: '14px',
               border:
                 language === lang ? '1px solid #ff00aa' : '1px solid #333',
-
               background:
                 language === lang
                   ? 'linear-gradient(135deg,#7b2cff,#ff00aa)'
                   : 'transparent',
-
               color: 'white',
               fontWeight: '700',
               cursor: 'pointer',
@@ -449,11 +420,9 @@ ${t.benefits}
             style={{
               width: '100%',
               marginTop: '24px',
-
               background: formula.trim()
                 ? 'linear-gradient(90deg,#7b2cff 0%,#ff00aa 100%)'
                 : '#222',
-
               border: 'none',
               color: 'white',
               fontSize: '22px',
@@ -519,20 +488,13 @@ ${t.benefits}
                 padding: '34px',
               }}
             >
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '28px',
-                }}
-              >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '28px' }}>
                 <div
                   style={{
                     width: '150px',
                     height: '150px',
                     borderRadius: '50%',
-                    background:
-                      'linear-gradient(135deg,#7b2cff,#ff00aa)',
+                    background: 'linear-gradient(135deg,#7b2cff,#ff00aa)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -568,17 +530,83 @@ ${t.benefits}
                   </div>
                 </div>
               </div>
+
+              <div
+                style={{
+                  marginTop: '34px',
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1fr',
+                  gap: '18px',
+                }}
+              >
+                {[
+                  { label: t.hydration, value: '95/100' },
+                  { label: t.barrier, value: '88/100' },
+                  { label: t.antiaging, value: '84/100' },
+                  { label: t.acne, value: '92/100' },
+                  {
+                    label: t.irritation,
+                    value:
+                      language === 'RU'
+                        ? 'Низкий'
+                        : language === 'DE'
+                        ? 'Niedrig'
+                        : 'Low',
+                  },
+                ].map((item) => (
+                  <div
+                    key={item.label}
+                    style={{
+                      background: '#0d0d18',
+                      border: '1px solid #252525',
+                      borderRadius: '18px',
+                      padding: '18px',
+                    }}
+                  >
+                    <div
+                      style={{
+                        color: '#9d9d9d',
+                        marginBottom: '10px',
+                        fontSize: '15px',
+                      }}
+                    >
+                      {item.label}
+                    </div>
+
+                    <div
+                      style={{
+                        fontSize: '26px',
+                        fontWeight: '800',
+                        color: '#ff4fd8',
+                      }}
+                    >
+                      {item.value}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <InfoBlock title={t.benefits}>
+                {language === 'RU'
+                  ? 'Интенсивная поддержка увлажнения, укрепление защитного барьера кожи, минимальный риск раздражения и высокая совместимость с чувствительной кожей.'
+                  : language === 'DE'
+                  ? 'Intensive Feuchtigkeitsunterstützung, Stärkung der Hautbarriere, minimales Irritationspotenzial und gute Verträglichkeit.'
+                  : 'Intensive hydration support, skin barrier reinforcement, minimal irritation potential and strong skin compatibility.'}
+              </InfoBlock>
+
+              <InfoBlock title={t.conclusion}>
+                {language === 'RU'
+                  ? 'Формула демонстрирует высокий профессиональный потенциал ухода за кожей, хорошую совместимость с чувствительной кожей и сбалансированную поддержку барьерной функции.'
+                  : language === 'DE'
+                  ? 'Die Formel zeigt ein starkes professionelles Hautpflegepotenzial und eine gute Hautverträglichkeit.'
+                  : 'The formula demonstrates strong professional skincare potential and balanced skin compatibility.'}
+              </InfoBlock>
             </div>
           )}
         </div>
       </section>
 
-      <section
-        style={{
-          maxWidth: '1500px',
-          margin: '90px auto 0',
-        }}
-      >
+      <section style={{ maxWidth: '1500px', margin: '90px auto 0' }}>
         <h2
           style={{
             fontSize: '48px',
@@ -618,12 +646,7 @@ ${t.benefits}
               padding: '30px',
             }}
           >
-            <label
-              style={{
-                display: 'block',
-                cursor: 'pointer',
-              }}
-            >
+            <label style={{ display: 'block', cursor: 'pointer' }}>
               <div
                 style={{
                   height: '360px',
@@ -667,11 +690,9 @@ ${t.benefits}
               style={{
                 width: '100%',
                 marginTop: '24px',
-
                 background: skinImage
                   ? 'linear-gradient(90deg,#7b2cff 0%,#ff00aa 100%)'
                   : '#222',
-
                 border: 'none',
                 color: 'white',
                 fontSize: '22px',
@@ -715,12 +736,7 @@ ${t.benefits}
               </div>
             ) : (
               <>
-                <h3
-                  style={{
-                    fontSize: '32px',
-                    marginBottom: '20px',
-                  }}
-                >
+                <h3 style={{ fontSize: '32px', marginBottom: '20px' }}>
                   {t.skinResult}
                 </h3>
 
@@ -732,10 +748,10 @@ ${t.benefits}
                   }}
                 >
                   {language === 'RU'
-                    ? 'Видимые признаки указывают на чувствительность кожи, активность воспалительных элементов и нарушение барьерной устойчивости.'
+                    ? 'Визуально наблюдаются выраженная чувствительность кожи, воспалительные элементы, сосудистая реактивность и признаки нарушенной барьерной функции.'
                     : language === 'DE'
-                    ? 'Sichtbare Anzeichen deuten auf Sensibilität und Barrierestörungen hin.'
-                    : 'Visible signs suggest sensitivity and barrier imbalance.'}
+                    ? 'Sichtbar sind ausgeprägte Hautsensibilität, entzündliche Elemente, vaskuläre Reaktivität und Hinweise auf eine gestörte Barrierefunktion.'
+                    : 'Visible signs suggest pronounced skin sensitivity, inflammatory elements, vascular reactivity and impaired barrier function.'}
                 </p>
               </>
             )}
@@ -797,5 +813,40 @@ ${t.benefits}
         )}
       </section>
     </main>
+  )
+}
+
+function InfoBlock({ title, children }) {
+  return (
+    <div
+      style={{
+        marginTop: '26px',
+        background: '#0d0d18',
+        border: '1px solid #252525',
+        borderRadius: '22px',
+        padding: '26px',
+      }}
+    >
+      <h3
+        style={{
+          fontSize: '22px',
+          fontWeight: '800',
+          marginBottom: '16px',
+          color: '#ffffff',
+        }}
+      >
+        {title}
+      </h3>
+
+      <p
+        style={{
+          color: '#e2e2e2',
+          lineHeight: '1.8',
+          fontSize: '18px',
+        }}
+      >
+        {children}
+      </p>
+    </div>
   )
 }
