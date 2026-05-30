@@ -122,6 +122,33 @@ export default function PhotoProtocolPage() {
     setDone(false)
   }
 
+  const downloadPdf = () => {
+    const content = `
+FORMULENS LAB
+
+${t.title}
+
+${t.diagnosis}
+${t.diagnosisText}
+
+${t.protocol}
+${t.protocolSteps.map((step) => `- ${step}`).join('\n')}
+
+${t.homecare}
+${t.homecareText}
+`
+
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+
+    const link = document.createElement('a')
+    link.href = url
+    link.download = 'FORMULENS-LAB-PHOTO-PROTOCOL.txt'
+    link.click()
+
+    URL.revokeObjectURL(url)
+  }
+
   return (
     <main style={styles.main}>
       <div style={styles.wrap}>
@@ -154,7 +181,7 @@ export default function PhotoProtocolPage() {
             <label style={{ cursor: 'pointer' }}>
               <div style={styles.uploadBox}>
                 {image ? (
-                  <img src={image} alt="" style={styles.image} />
+                  <img src={image} alt="Client preview" style={styles.image} />
                 ) : (
                   t.upload
                 )}
@@ -174,6 +201,7 @@ export default function PhotoProtocolPage() {
               style={{
                 ...styles.primaryBtn,
                 opacity: image ? 1 : 0.45,
+                cursor: image ? 'pointer' : 'not-allowed',
               }}
             >
               {t.analyze}
@@ -211,9 +239,7 @@ export default function PhotoProtocolPage() {
         {done && (
           <>
             <section style={styles.resultGrid}>
-              <Info title={t.diagnosis}>
-                {t.diagnosisText}
-              </Info>
+              <Info title={t.diagnosis}>{t.diagnosisText}</Info>
 
               <Info title={t.protocol}>
                 {t.protocolSteps.map((step) => (
@@ -221,12 +247,10 @@ export default function PhotoProtocolPage() {
                 ))}
               </Info>
 
-              <Info title={t.homecare}>
-                {t.homecareText}
-              </Info>
+              <Info title={t.homecare}>{t.homecareText}</Info>
             </section>
 
-            <button style={styles.pdfBtn}>
+            <button onClick={downloadPdf} style={styles.pdfBtn}>
               📄 {t.pdf}
             </button>
           </>
@@ -407,5 +431,6 @@ const styles = {
     color: 'white',
     fontWeight: 900,
     fontSize: '18px',
+    cursor: 'pointer',
   },
 }
