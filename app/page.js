@@ -1,6 +1,149 @@
+'use client'
+
 import Link from 'next/link'
+import { useState } from 'react'
+
+const translations = {
+  DE: {
+    badge: 'AI COSMETIC INTELLIGENCE',
+    title: 'FORMULENS LAB',
+    subtitle:
+      'Professionelle AI-Plattform für Hautanalyse, Formelanalyse und intelligente Behandlungsprotokolle.',
+
+    homeTitle: 'HOME CARE',
+    homeSubtitle: 'Für den privaten Gebrauch',
+    homePrice: '9€',
+    homeTrial: '3 Tage kostenlos',
+    homeButton: 'Kostenlos testen',
+
+    proTitle: 'PROFESSIONAL',
+    proSubtitle: 'Für Kosmetikerinnen & Institute',
+    proPrice: '29€',
+    proTrial: '7 Tage kostenlos',
+    founder: 'FOUNDER PRICE',
+    until: 'Nur bis 01.07.2026',
+    regular: 'Regulärer Preis: 39 €/Monat',
+    early: 'Exklusiver Preis für Early Adopters',
+    proButton: '7 Tage kostenlos testen',
+
+    homeFeatures: [
+      'Formula Analyzer',
+      'Skin Analysis Basic',
+      'Hydration',
+      'Pigmentation',
+      'Wrinkles',
+      'Acne',
+      'Homecare Routine',
+      'Summecosmetics Empfehlungen',
+    ],
+
+    proFeatures: [
+      'Formula Analyzer PRO',
+      'Skin Analysis PRO',
+      '7 Hautparameter',
+      'Protocol Builder',
+      'Photo → Protocol',
+      'PDF Reports',
+      'Client History',
+      'Summecosmetics Protocols',
+    ],
+  },
+
+  RU: {
+    badge: 'ИИ-КОСМЕТОЛОГИЧЕСКИЙ ИНТЕЛЛЕКТ',
+    title: 'FORMULENS LAB',
+    subtitle:
+      'Профессиональная AI-платформа для анализа кожи, анализа формул и создания интеллектуальных протоколов ухода.',
+
+    homeTitle: 'ДОМАШНИЙ УХОД',
+    homeSubtitle: 'Для частного использования',
+    homePrice: '9€',
+    homeTrial: '3 дня бесплатно',
+    homeButton: 'Попробовать бесплатно',
+
+    proTitle: 'PROFESSIONAL',
+    proSubtitle: 'Для косметологов и институтов',
+    proPrice: '29€',
+    proTrial: '7 дней бесплатно',
+    founder: 'FOUNDER PRICE',
+    until: 'Только до 01.07.2026',
+    regular: 'Обычная цена: 39 €/месяц',
+    early: 'Эксклюзивная цена для первых пользователей',
+    proButton: '7 дней бесплатно',
+
+    homeFeatures: [
+      'Анализ формулы',
+      'Базовый анализ кожи',
+      'Увлажнение',
+      'Пигментация',
+      'Морщины',
+      'Акне',
+      'Домашняя рутина',
+      'Рекомендации Summecosmetics',
+    ],
+
+    proFeatures: [
+      'Formula Analyzer PRO',
+      'Skin Analysis PRO',
+      '7 параметров кожи',
+      'Protocol Builder',
+      'Photo → Protocol',
+      'PDF Reports',
+      'История клиентов',
+      'Протоколы Summecosmetics',
+    ],
+  },
+
+  EN: {
+    badge: 'AI COSMETIC INTELLIGENCE',
+    title: 'FORMULENS LAB',
+    subtitle:
+      'Professional AI platform for skin analysis, formula analysis and intelligent treatment protocols.',
+
+    homeTitle: 'HOME CARE',
+    homeSubtitle: 'For personal skincare use',
+    homePrice: '9€',
+    homeTrial: '3 days free',
+    homeButton: 'Start free trial',
+
+    proTitle: 'PROFESSIONAL',
+    proSubtitle: 'For beauty professionals & institutes',
+    proPrice: '29€',
+    proTrial: '7 days free',
+    founder: 'FOUNDER PRICE',
+    until: 'Only until 01.07.2026',
+    regular: 'Regular price: 39 €/month',
+    early: 'Exclusive price for early adopters',
+    proButton: 'Start 7-day free trial',
+
+    homeFeatures: [
+      'Formula Analyzer',
+      'Skin Analysis Basic',
+      'Hydration',
+      'Pigmentation',
+      'Wrinkles',
+      'Acne',
+      'Homecare Routine',
+      'Summecosmetics Recommendations',
+    ],
+
+    proFeatures: [
+      'Formula Analyzer PRO',
+      'Skin Analysis PRO',
+      '7 Skin Parameters',
+      'Protocol Builder',
+      'Photo → Protocol',
+      'PDF Reports',
+      'Client History',
+      'Summecosmetics Protocols',
+    ],
+  },
+}
 
 export default function HomePage() {
+  const [lang, setLang] = useState('DE')
+  const t = translations[lang]
+
   return (
     <main
       style={{
@@ -8,7 +151,7 @@ export default function HomePage() {
         background:
           'radial-gradient(circle at top left,#24003a 0%,#07000d 38%,#000 100%)',
         color: 'white',
-        padding: '60px 6%',
+        padding: '40px 6% 70px',
         fontFamily: 'Arial, sans-serif',
       }}
     >
@@ -21,6 +164,40 @@ export default function HomePage() {
       >
         <div
           style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '10px',
+            marginBottom: '36px',
+          }}
+        >
+          {['DE', 'RU', 'EN'].map((item) => (
+            <button
+              key={item}
+              onClick={() => setLang(item)}
+              style={{
+                width: '54px',
+                height: '40px',
+                borderRadius: '14px',
+                border:
+                  lang === item
+                    ? '1px solid #ff00aa'
+                    : '1px solid rgba(255,255,255,0.2)',
+                background:
+                  lang === item
+                    ? 'linear-gradient(90deg,#7b2cff,#ff00aa)'
+                    : 'transparent',
+                color: 'white',
+                fontWeight: 800,
+                cursor: 'pointer',
+              }}
+            >
+              {item}
+            </button>
+          ))}
+        </div>
+
+        <div
+          style={{
             display: 'inline-block',
             padding: '10px 18px',
             border: '1px solid rgba(255,255,255,0.22)',
@@ -31,7 +208,7 @@ export default function HomePage() {
             marginBottom: '34px',
           }}
         >
-          AI COSMETIC INTELLIGENCE
+          {t.badge}
         </div>
 
         <h1
@@ -43,7 +220,7 @@ export default function HomePage() {
             letterSpacing: '-2px',
           }}
         >
-          FORMULENS LAB
+          {t.title}
         </h1>
 
         <p
@@ -55,8 +232,7 @@ export default function HomePage() {
             margin: '0 auto 70px',
           }}
         >
-          Professionelle AI-Plattform für Hautanalyse, Formelanalyse und
-          intelligente Behandlungsprotokolle.
+          {t.subtitle}
         </p>
 
         <div
@@ -68,42 +244,28 @@ export default function HomePage() {
           }}
         >
           <PlanCard
-            title="HOME CARE"
-            subtitle="Für den privaten Gebrauch"
-            price="9€"
-            trial="3 Tage kostenlos"
+            title={t.homeTitle}
+            subtitle={t.homeSubtitle}
+            price={t.homePrice}
+            trial={t.homeTrial}
             href="/client"
-            button="Kostenlos testen"
-            features={[
-              'Formula Analyzer',
-              'Skin Analysis Basic',
-              'Hydration',
-              'Pigmentation',
-              'Wrinkles',
-              'Acne',
-              'Homecare Routine',
-              'Summecosmetics Empfehlungen',
-            ]}
+            button={t.homeButton}
+            features={t.homeFeatures}
           />
 
           <PlanCard
             professional
-            title="PROFESSIONAL"
-            subtitle="Für Kosmetikerinnen & Institute"
-            price="29€"
-            trial="7 Tage kostenlos"
+            title={t.proTitle}
+            subtitle={t.proSubtitle}
+            price={t.proPrice}
+            trial={t.proTrial}
             href="/pro"
-            button="7 Tage kostenlos testen"
-            features={[
-              'Formula Analyzer PRO',
-              'Skin Analysis PRO',
-              '7 Hautparameter',
-              'Protocol Builder',
-              'Photo → Protocol',
-              'PDF Reports',
-              'Client History',
-              'Summecosmetics Protocols',
-            ]}
+            button={t.proButton}
+            features={t.proFeatures}
+            founder={t.founder}
+            until={t.until}
+            regular={t.regular}
+            early={t.early}
           />
         </div>
       </section>
@@ -120,6 +282,10 @@ function PlanCard({
   href,
   button,
   professional,
+  founder,
+  until,
+  regular,
+  early,
 }) {
   return (
     <div
@@ -151,7 +317,7 @@ function PlanCard({
             fontWeight: 800,
           }}
         >
-          FOUNDER PRICE
+          {founder}
         </div>
       )}
 
@@ -205,7 +371,7 @@ function PlanCard({
               marginBottom: '14px',
             }}
           >
-            Nur bis 01.07.2026
+            {until}
           </div>
 
           <div
@@ -216,7 +382,7 @@ function PlanCard({
               marginBottom: '8px',
             }}
           >
-            Regulärer Preis: 39 €/Monat
+            {regular}
           </div>
 
           <div
@@ -226,7 +392,7 @@ function PlanCard({
               marginBottom: '30px',
             }}
           >
-            Exklusiver Preis für Early Adopters
+            {early}
           </div>
         </>
       )}
