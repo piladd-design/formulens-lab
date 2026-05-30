@@ -13,8 +13,19 @@ const translations = {
     analyze: '✨ Formel analysieren',
     analyzing: 'AI analysiert die Formel...',
     empty: 'Geben Sie die INCI-Liste ein und starten Sie die Analyse.',
-    result: 'AI-Analyse',
     error: 'Analyse fehlgeschlagen. Bitte versuchen Sie es erneut.',
+    score: 'Formel-Score',
+    hydration: 'Feuchtigkeit',
+    barrier: 'Barriere',
+    antiAging: 'Anti-Aging',
+    acne: 'Akne-Kompatibilität',
+    irritation: 'Irritationsrisiko',
+    summary: 'Zusammenfassung',
+    ingredients: 'Aktive Inhaltsstoffe',
+    skinTypes: 'Geeignete Hauttypen',
+    warnings: 'Hinweise',
+    recommendation: 'Empfehlung',
+    summecosmetics: 'Summecosmetics Empfehlung',
   },
 
   RU: {
@@ -26,8 +37,19 @@ const translations = {
     analyze: '✨ Анализировать формулу',
     analyzing: 'AI анализирует формулу...',
     empty: 'Введите состав и нажмите анализ.',
-    result: 'AI-анализ',
     error: 'Ошибка анализа. Попробуйте ещё раз.',
+    score: 'Оценка формулы',
+    hydration: 'Увлажнение',
+    barrier: 'Барьер',
+    antiAging: 'Anti-Aging',
+    acne: 'Совместимость при акне',
+    irritation: 'Риск раздражения',
+    summary: 'Краткий вывод',
+    ingredients: 'Активные ингредиенты',
+    skinTypes: 'Подходящие типы кожи',
+    warnings: 'Предупреждения',
+    recommendation: 'Рекомендация',
+    summecosmetics: 'Рекомендация Summecosmetics',
   },
 
   EN: {
@@ -39,15 +61,26 @@ const translations = {
     analyze: '✨ Analyze Formula',
     analyzing: 'AI is analyzing the formula...',
     empty: 'Enter the INCI list and start the analysis.',
-    result: 'AI Analysis',
     error: 'Analysis failed. Please try again.',
+    score: 'Formula Score',
+    hydration: 'Hydration',
+    barrier: 'Barrier',
+    antiAging: 'Anti-Aging',
+    acne: 'Acne Compatibility',
+    irritation: 'Irritation Risk',
+    summary: 'Summary',
+    ingredients: 'Active Ingredients',
+    skinTypes: 'Suitable Skin Types',
+    warnings: 'Warnings',
+    recommendation: 'Recommendation',
+    summecosmetics: 'Summecosmetics Recommendation',
   },
 }
 
 export default function ClientFormulaPage() {
   const [lang, setLang] = useState('DE')
   const [formula, setFormula] = useState('')
-  const [result, setResult] = useState('')
+  const [analysis, setAnalysis] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -58,7 +91,7 @@ export default function ClientFormulaPage() {
 
     setLoading(true)
     setError('')
-    setResult('')
+    setAnalysis(null)
 
     try {
       const response = await fetch('/api/formula-analysis', {
@@ -74,11 +107,11 @@ export default function ClientFormulaPage() {
 
       const data = await response.json()
 
-      if (!response.ok) {
+      if (!response.ok || data.error) {
         throw new Error(data.error || 'Analysis failed')
       }
 
-      setResult(data.result)
+      setAnalysis(data)
     } catch (err) {
       console.error(err)
       setError(t.error)
@@ -86,6 +119,16 @@ export default function ClientFormulaPage() {
       setLoading(false)
     }
   }
+
+  const metrics = analysis
+    ? [
+        { label: t.hydration, value: analysis.hydration },
+        { label: t.barrier, value: analysis.barrier },
+        { label: t.antiAging, value: analysis.antiAging },
+        { label: t.acne, value: analysis.acne },
+        { label: t.irritation, value: analysis.irritation, green: true },
+      ]
+    : []
 
   return (
     <main style={styles.main}>
@@ -101,7 +144,7 @@ export default function ClientFormulaPage() {
                 key={item}
                 onClick={() => {
                   setLang(item)
-                  setResult('')
+                  setAnalysis(null)
                   setError('')
                 }}
                 style={lang === item ? styles.langActive : styles.langBtn}
@@ -124,7 +167,7 @@ export default function ClientFormulaPage() {
               value={formula}
               onChange={(e) => {
                 setFormula(e.target.value)
-                setResult('')
+                setAnalysis(null)
                 setError('')
               }}
               placeholder="Aqua, Glycerin, Niacinamide, Panthenol..."
@@ -150,7 +193,7 @@ export default function ClientFormulaPage() {
           </div>
 
           <div style={styles.panel}>
-            {!result && !error && !loading && (
+            {!analysis && !error && !loading && (
               <div style={styles.empty}>{t.empty}</div>
             )}
 
@@ -158,16 +201,81 @@ export default function ClientFormulaPage() {
 
             {error && <div style={styles.error}>{error}</div>}
 
-            {result && (
+            {analysis && (
               <>
-                <h2 style={styles.h2}>{t.result}</h2>
-                <div style={styles.aiResult}>{result}</div>
+                <div style={styles.scoreRow}>
+                  <div style={styles.scoreCircle}>
+                    {analysis.overallScore}
+                  </div>
+
+                  <div>
+                    <div style={styles.scoreText}>
+                      {analysis.overallScore}/100
+                    </div>
+                    <div style={styles.scoreLabel}>{t.score}</div>
+                  </div>
+                </div>
+
+                <div style={styles.metricsGrid}>
+                  {metrics.map((metric) => (
+                    <Metric key={metric.label} {...metric} />
+                  ))}
+                </div>
               </>
             )}
           </div>
         </section>
+
+        {analysis && (
+          <section style={styles.resultGrid}>
+            <Info title={t.summary}>{analysis.summary}</Info>
+            <Info title={t.ingredients}>{analysis.ingredients}</Info>
+            <Info title={t.skinTypes}>{analysis.skinTypes}</Info>
+            <Info title={t.warnings}>{analysis.warnings}</Info>
+            <Info title={t.recommendation}>
+              {analysis.recommendation}
+            </Info>
+            <Info title={t.summecosmetics}>
+              {analysis.summecosmetics}
+            </Info>
+          </section>
+        )}
       </div>
     </main>
+  )
+}
+
+function Metric({ label, value = 0, green }) {
+  const safeValue = Math.max(0, Math.min(100, Number(value) || 0))
+
+  return (
+    <div style={styles.metric}>
+      <div style={styles.metricTop}>
+        <span>{label}</span>
+        <strong>{safeValue}/100</strong>
+      </div>
+
+      <div style={styles.barBg}>
+        <div
+          style={{
+            width: `${safeValue}%`,
+            height: '100%',
+            background: green
+              ? '#44ff88'
+              : 'linear-gradient(90deg,#7b2cff,#ff00aa)',
+          }}
+        />
+      </div>
+    </div>
+  )
+}
+
+function Info({ title, children }) {
+  return (
+    <div style={styles.info}>
+      <h3 style={styles.infoTitle}>{title}</h3>
+      <p style={styles.infoText}>{children}</p>
+    </div>
   )
 }
 
@@ -287,14 +395,76 @@ const styles = {
     fontSize: '18px',
     lineHeight: 1.6,
   },
-  aiResult: {
+  scoreRow: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '26px',
+    marginBottom: '30px',
+  },
+  scoreCircle: {
+    width: '130px',
+    height: '130px',
+    borderRadius: '50%',
+    background: 'linear-gradient(135deg,#7b2cff,#ff00aa)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '46px',
+    fontWeight: 900,
+  },
+  scoreText: {
+    fontSize: '44px',
+    fontWeight: 900,
+  },
+  scoreLabel: {
+    color: '#aaa',
+    marginTop: '8px',
+    fontSize: '16px',
+  },
+  metricsGrid: {
+    display: 'grid',
+    gap: '16px',
+  },
+  metric: {
     background: '#0d0d18',
     border: '1px solid #252525',
-    borderRadius: '22px',
-    padding: '26px',
+    borderRadius: '18px',
+    padding: '18px',
+  },
+  metricTop: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    gap: '16px',
+    marginBottom: '12px',
+    color: '#e8e8e8',
+    fontWeight: 700,
+  },
+  barBg: {
+    height: '10px',
+    background: '#1c1c1c',
+    borderRadius: '999px',
+    overflow: 'hidden',
+  },
+  resultGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))',
+    gap: '24px',
+    marginTop: '34px',
+  },
+  info: {
+    background: 'rgba(12,12,24,0.92)',
+    border: '1px solid #242424',
+    borderRadius: '26px',
+    padding: '28px',
+  },
+  infoTitle: {
+    fontSize: '24px',
+    marginBottom: '16px',
+  },
+  infoText: {
     color: '#d4d4d4',
     lineHeight: 1.8,
-    fontSize: '18px',
+    fontSize: '17px',
     whiteSpace: 'pre-line',
   },
 }
