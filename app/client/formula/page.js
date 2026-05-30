@@ -8,79 +8,83 @@ const translations = {
     back: '← Home Care Dashboard',
     title: 'Formelanalyse',
     subtitle:
-      'Fügen Sie die INCI-Liste eines kosmetischen Produkts ein und erhalten Sie eine verständliche Analyse zu Nutzen, Risiken und Hautverträglichkeit.',
+      'Fügen Sie die INCI-Liste eines kosmetischen Produkts ein und erhalten Sie eine verständliche AI-Analyse zu Nutzen, Risiken und Hautverträglichkeit.',
     inci: 'INCI-Liste',
     analyze: '✨ Formel analysieren',
+    analyzing: 'AI analysiert die Formel...',
     empty: 'Geben Sie die INCI-Liste ein und starten Sie die Analyse.',
-    goodFormula: '✔ Gute Formel',
-    hydration: 'Feuchtigkeit',
-    barrier: 'Barriereunterstützung',
-    antiAge: 'Anti-Aging-Potenzial',
-    acne: 'Akne-Kompatibilität',
-    irritation: 'Irritationsrisiko',
-    benefits: 'Hauptvorteile',
-    benefitsText:
-      'Die Formel zeigt ein gutes Potenzial für Feuchtigkeit, Unterstützung der Hautbarriere und ein niedriges Irritationsrisiko bei korrekter Anwendung.',
-    recommendation: 'Empfehlung',
-    recommendationText:
-      'Für die Homecare-Strategie lässt sich diese Formel sinnvoll mit feuchtigkeitsspendender und barrierestärkender Pflege kombinieren. Innerhalb von Summecosmetics passt dies besonders zu GLACIAR und NICELY.',
+    result: 'AI-Analyse',
+    error: 'Analyse fehlgeschlagen. Bitte versuchen Sie es erneut.',
   },
 
   RU: {
     back: '← Домашний уход',
     title: 'Анализ формулы',
     subtitle:
-      'Вставьте INCI-состав косметического продукта и получите понятный анализ пользы, рисков и совместимости с кожей.',
+      'Вставьте INCI-состав косметического продукта и получите понятный AI-анализ пользы, рисков и совместимости с кожей.',
     inci: 'INCI-состав',
     analyze: '✨ Анализировать формулу',
+    analyzing: 'AI анализирует формулу...',
     empty: 'Введите состав и нажмите анализ.',
-    goodFormula: '✔ Хорошая формула',
-    hydration: 'Увлажнение',
-    barrier: 'Поддержка барьера',
-    antiAge: 'Антивозрастной потенциал',
-    acne: 'Совместимость при акне',
-    irritation: 'Риск раздражения',
-    benefits: 'Ключевые преимущества',
-    benefitsText:
-      'Формула демонстрирует хороший потенциал увлажнения, поддержку кожного барьера и низкий риск раздражения при корректном применении.',
-    recommendation: 'Рекомендация',
-    recommendationText:
-      'Для домашнего ухода логично сочетать такую формулу с увлажняющей и барьерной стратегией. В экосистеме Summecosmetics это направление может соответствовать линиям GLACIAR и NICELY.',
+    result: 'AI-анализ',
+    error: 'Ошибка анализа. Попробуйте ещё раз.',
   },
 
   EN: {
     back: '← Home Care Dashboard',
     title: 'Formula Analysis',
     subtitle:
-      'Paste the INCI list of a cosmetic product and receive a clear analysis of benefits, risks and skin compatibility.',
+      'Paste the INCI list of a cosmetic product and receive a clear AI analysis of benefits, risks and skin compatibility.',
     inci: 'INCI Ingredients',
     analyze: '✨ Analyze Formula',
+    analyzing: 'AI is analyzing the formula...',
     empty: 'Enter the INCI list and start the analysis.',
-    goodFormula: '✔ Good Formula',
-    hydration: 'Hydration',
-    barrier: 'Barrier Support',
-    antiAge: 'Anti-Aging Potential',
-    acne: 'Acne Compatibility',
-    irritation: 'Irritation Risk',
-    benefits: 'Key Benefits',
-    benefitsText:
-      'The formula shows good potential for hydration, barrier support and low irritation risk when used correctly.',
-    recommendation: 'Recommendation',
-    recommendationText:
-      'For a homecare strategy, this formula can be combined well with hydrating and barrier-supporting skincare. Within Summecosmetics, this direction corresponds especially to GLACIAR and NICELY.',
+    result: 'AI Analysis',
+    error: 'Analysis failed. Please try again.',
   },
 }
 
 export default function ClientFormulaPage() {
   const [lang, setLang] = useState('DE')
   const [formula, setFormula] = useState('')
-  const [done, setDone] = useState(false)
+  const [result, setResult] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const t = translations[lang]
 
-  const analyzeFormula = () => {
+  const analyzeFormula = async () => {
     if (!formula.trim()) return
-    setDone(true)
+
+    setLoading(true)
+    setError('')
+    setResult('')
+
+    try {
+      const response = await fetch('/api/formula-analysis', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          formula,
+          lang,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Analysis failed')
+      }
+
+      setResult(data.result)
+    } catch (err) {
+      console.error(err)
+      setError(t.error)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -95,7 +99,11 @@ export default function ClientFormulaPage() {
             {['DE', 'RU', 'EN'].map((item) => (
               <button
                 key={item}
-                onClick={() => setLang(item)}
+                onClick={() => {
+                  setLang(item)
+                  setResult('')
+                  setError('')
+                }}
                 style={lang === item ? styles.langActive : styles.langBtn}
               >
                 {item}
@@ -116,7 +124,8 @@ export default function ClientFormulaPage() {
               value={formula}
               onChange={(e) => {
                 setFormula(e.target.value)
-                setDone(false)
+                setResult('')
+                setError('')
               }}
               placeholder="Aqua, Glycerin, Niacinamide, Panthenol..."
               style={styles.textarea}
@@ -124,82 +133,41 @@ export default function ClientFormulaPage() {
 
             <button
               onClick={analyzeFormula}
-              disabled={!formula.trim()}
+              disabled={!formula.trim() || loading}
               style={{
                 ...styles.primaryBtn,
-                background: formula.trim()
-                  ? 'linear-gradient(90deg,#7b2cff,#ff00aa)'
-                  : '#222',
-                cursor: formula.trim() ? 'pointer' : 'not-allowed',
-                opacity: formula.trim() ? 1 : 0.45,
+                background:
+                  formula.trim() && !loading
+                    ? 'linear-gradient(90deg,#7b2cff,#ff00aa)'
+                    : '#222',
+                cursor:
+                  formula.trim() && !loading ? 'pointer' : 'not-allowed',
+                opacity: formula.trim() && !loading ? 1 : 0.45,
               }}
             >
-              {t.analyze}
+              {loading ? t.analyzing : t.analyze}
             </button>
           </div>
 
           <div style={styles.panel}>
-            {!done ? (
+            {!result && !error && !loading && (
               <div style={styles.empty}>{t.empty}</div>
-            ) : (
+            )}
+
+            {loading && <div style={styles.empty}>{t.analyzing}</div>}
+
+            {error && <div style={styles.error}>{error}</div>}
+
+            {result && (
               <>
-                <div style={styles.scoreRow}>
-                  <div style={styles.scoreCircle}>90</div>
-
-                  <div>
-                    <div style={styles.scoreText}>90/100</div>
-
-                    <div style={styles.badge}>{t.goodFormula}</div>
-                  </div>
-                </div>
-
-                <Metric label={t.hydration} value={92} />
-                <Metric label={t.barrier} value={84} />
-                <Metric label={t.antiAge} value={76} />
-                <Metric label={t.acne} value={88} />
-                <Metric label={t.irritation} value={14} green />
-
-                <Info title={t.benefits}>{t.benefitsText}</Info>
-
-                <Info title={t.recommendation}>{t.recommendationText}</Info>
+                <h2 style={styles.h2}>{t.result}</h2>
+                <div style={styles.aiResult}>{result}</div>
               </>
             )}
           </div>
         </section>
       </div>
     </main>
-  )
-}
-
-function Metric({ label, value, green }) {
-  return (
-    <div style={styles.metric}>
-      <div style={styles.metricHeader}>
-        <span>{label}</span>
-        <span>{value}/100</span>
-      </div>
-
-      <div style={styles.barBg}>
-        <div
-          style={{
-            width: `${value}%`,
-            height: '100%',
-            background: green
-              ? '#44ff88'
-              : 'linear-gradient(90deg,#7b2cff,#ff00aa)',
-          }}
-        />
-      </div>
-    </div>
-  )
-}
-
-function Info({ title, children }) {
-  return (
-    <div style={styles.info}>
-      <h3 style={styles.infoTitle}>{title}</h3>
-      <p style={styles.infoText}>{children}</p>
-    </div>
   )
 }
 
@@ -256,10 +224,14 @@ const styles = {
     margin: '40px 0 16px',
     fontWeight: 900,
   },
+  h2: {
+    fontSize: '30px',
+    marginBottom: '22px',
+  },
   sub: {
     color: '#bdbdbd',
     fontSize: '22px',
-    maxWidth: '820px',
+    maxWidth: '860px',
     lineHeight: 1.6,
     marginBottom: '44px',
   },
@@ -274,13 +246,9 @@ const styles = {
     borderRadius: '30px',
     padding: '34px',
   },
-  h2: {
-    fontSize: '30px',
-    marginBottom: '22px',
-  },
   textarea: {
     width: '100%',
-    minHeight: '280px',
+    minHeight: '300px',
     background: '#050505',
     border: '1px solid #262626',
     borderRadius: '22px',
@@ -308,71 +276,25 @@ const styles = {
     color: '#888',
     fontSize: '22px',
     textAlign: 'center',
+    lineHeight: 1.6,
   },
-  scoreRow: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '26px',
-    marginBottom: '30px',
+  error: {
+    background: '#3b1111',
+    border: '1px solid #7f1d1d',
+    color: '#ffb4b4',
+    borderRadius: '20px',
+    padding: '22px',
+    fontSize: '18px',
+    lineHeight: 1.6,
   },
-  scoreCircle: {
-    width: '130px',
-    height: '130px',
-    borderRadius: '50%',
-    background: 'linear-gradient(135deg,#7b2cff,#ff00aa)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: '48px',
-    fontWeight: 900,
-  },
-  scoreText: {
-    fontSize: '44px',
-    fontWeight: 900,
-  },
-  badge: {
-    display: 'inline-block',
-    marginTop: '10px',
-    padding: '9px 16px',
-    borderRadius: '999px',
-    background: '#123d1f',
-    color: '#66ff99',
-    fontWeight: 800,
-  },
-  metric: {
-    background: '#0d0d18',
-    border: '1px solid #252525',
-    borderRadius: '18px',
-    padding: '18px',
-    marginBottom: '16px',
-  },
-  metricHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginBottom: '12px',
-    color: '#e8e8e8',
-    fontWeight: 700,
-  },
-  barBg: {
-    height: '10px',
-    background: '#1c1c1c',
-    borderRadius: '999px',
-    overflow: 'hidden',
-  },
-  info: {
-    marginTop: '22px',
+  aiResult: {
     background: '#0d0d18',
     border: '1px solid #252525',
     borderRadius: '22px',
-    padding: '24px',
-  },
-  infoTitle: {
-    fontSize: '22px',
-    marginBottom: '14px',
-  },
-  infoText: {
+    padding: '26px',
     color: '#d4d4d4',
-    lineHeight: 1.7,
-    fontSize: '17px',
+    lineHeight: 1.8,
+    fontSize: '18px',
+    whiteSpace: 'pre-line',
   },
 }
