@@ -3,9 +3,116 @@
 import Link from 'next/link'
 import { useState } from 'react'
 
+const translations = {
+  DE: {
+    back: '← Home Care Dashboard',
+    title: 'Hautanalyse',
+    subtitle:
+      'Basis-AI-Diagnostik für Homecare: Feuchtigkeit, Pigmentierung, Falten und Akne / entzündliche Elemente.',
+    photo: 'Hautfoto',
+    upload: 'Hautfoto hochladen',
+    analyze: '✨ Haut analysieren',
+    empty: 'Laden Sie ein Foto hoch, um die Hautanalyse zu starten.',
+    result: 'Analyseergebnis',
+    resultText:
+      'Sichtbar sind Hinweise auf reduzierte Feuchtigkeit, ungleichmäßige Pigmentierung, frühe Faltenbildung und entzündliche Aktivität. Für die Homecare wird eine beruhigende, feuchtigkeitsspendende und barrierestärkende Strategie empfohlen.',
+    hydration: 'Feuchtigkeit',
+    pigmentation: 'Pigmentierung',
+    wrinkles: 'Falten',
+    acne: 'Akne / Entzündungen',
+    reduced: 'Reduziert',
+    moderate: 'Mittel',
+    early: 'Frühe Anzeichen',
+    expressed: 'Ausgeprägt',
+    morning: 'Homecare Routine — Morgen',
+    evening: 'Homecare Routine — Abend',
+    products: 'Summecosmetics Empfehlung',
+    professional: 'Professional Recommendation',
+    morningText:
+      '1. Sanfte Reinigung — ESSENTIAL. \n2. Feuchtigkeit — GLACIAR. \n3. Barriereunterstützung — NICELY. \n4. Bei Pigmentierung — BECLARITY oder CELL C. \n5. Täglich SPF — SUMMESUN.',
+    eveningText:
+      '1. Reinigung ohne Austrocknung. \n2. Beruhigende Pflege — NICELY. \n3. Bei Entzündungen — BALANCE. \n4. Regeneration und Feuchtigkeit — GLACIAR / NICELY. \n5. Sanfte Erneuerung 1–2 Mal pro Woche.',
+    productsText:
+      'GLACIAR — Feuchtigkeit. \nNICELY — Barriere und Sensibilität. \nBALANCE — Akne und Sebum. \nBECLARITY — Pigmentierung. \nCELL C — Glow und antioxidative Unterstützung. \nSUMMESUN — täglicher UV-Schutz.',
+    professionalText:
+      'Bei ausgeprägten Hautveränderungen empfehlen wir eine professionelle Hautanalyse und individuelle Behandlung durch eine Kosmetikerin.',
+  },
+
+  RU: {
+    back: '← Домашний уход',
+    title: 'Анализ кожи',
+    subtitle:
+      'Базовая AI-диагностика для домашнего ухода: увлажнение, пигментация, морщины и акне / воспалительные элементы.',
+    photo: 'Фото кожи',
+    upload: 'Загрузить фото кожи',
+    analyze: '✨ Анализировать кожу',
+    empty: 'Загрузите фото для анализа кожи.',
+    result: 'Результат анализа',
+    resultText:
+      'Визуально наблюдаются признаки сниженного увлажнения, неравномерной пигментации, ранних возрастных изменений и воспалительной активности. Для домашнего ухода рекомендуется успокаивающая, увлажняющая и барьерно-восстанавливающая стратегия.',
+    hydration: 'Увлажнение',
+    pigmentation: 'Пигментация',
+    wrinkles: 'Морщины',
+    acne: 'Акне / воспаления',
+    reduced: 'Снижено',
+    moderate: 'Умеренно',
+    early: 'Ранние признаки',
+    expressed: 'Выражено',
+    morning: 'Домашняя рутина — утро',
+    evening: 'Домашняя рутина — вечер',
+    products: 'Рекомендации Summecosmetics',
+    professional: 'Профессиональная рекомендация',
+    morningText:
+      '1. Мягкое очищение — ESSENTIAL. \n2. Увлажнение — GLACIAR. \n3. Поддержка барьера — NICELY. \n4. При пигментации — BECLARITY или CELL C. \n5. Ежедневно SPF — SUMMESUN.',
+    eveningText:
+      '1. Очищение без пересушивания. \n2. Успокаивающий уход — NICELY. \n3. При воспалениях — BALANCE. \n4. Восстановление и увлажнение — GLACIAR / NICELY. \n5. Мягкое обновление 1–2 раза в неделю.',
+    productsText:
+      'GLACIAR — увлажнение. \nNICELY — барьер и чувствительность. \nBALANCE — акне и себум. \nBECLARITY — пигментация. \nCELL C — сияние и антиоксидантная поддержка. \nSUMMESUN — ежедневная SPF-защита.',
+    professionalText:
+      'При выраженных изменениях кожи рекомендуется профессиональная диагностика и индивидуальный подбор процедур у косметолога.',
+  },
+
+  EN: {
+    back: '← Home Care Dashboard',
+    title: 'Skin Analysis',
+    subtitle:
+      'Basic AI diagnostics for homecare: hydration, pigmentation, wrinkles and acne / inflammatory elements.',
+    photo: 'Skin Photo',
+    upload: 'Upload Skin Photo',
+    analyze: '✨ Analyze Skin',
+    empty: 'Upload a photo to start skin analysis.',
+    result: 'Analysis Result',
+    resultText:
+      'Visible signs suggest reduced hydration, uneven pigmentation, early wrinkle formation and inflammatory activity. For homecare, a calming, hydrating and barrier-supporting strategy is recommended.',
+    hydration: 'Hydration',
+    pigmentation: 'Pigmentation',
+    wrinkles: 'Wrinkles',
+    acne: 'Acne / Inflammation',
+    reduced: 'Reduced',
+    moderate: 'Moderate',
+    early: 'Early Signs',
+    expressed: 'Expressed',
+    morning: 'Homecare Routine — Morning',
+    evening: 'Homecare Routine — Evening',
+    products: 'Summecosmetics Recommendation',
+    professional: 'Professional Recommendation',
+    morningText:
+      '1. Gentle cleansing — ESSENTIAL. \n2. Hydration — GLACIAR. \n3. Barrier support — NICELY. \n4. For pigmentation — BECLARITY or CELL C. \n5. Daily SPF — SUMMESUN.',
+    eveningText:
+      '1. Cleansing without drying. \n2. Calming care — NICELY. \n3. For inflammation — BALANCE. \n4. Recovery and hydration — GLACIAR / NICELY. \n5. Gentle renewal 1–2 times per week.',
+    productsText:
+      'GLACIAR — hydration. \nNICELY — barrier and sensitivity. \nBALANCE — acne and sebum. \nBECLARITY — pigmentation. \nCELL C — glow and antioxidant support. \nSUMMESUN — daily SPF protection.',
+    professionalText:
+      'For significant skin concerns, a professional skin consultation and individual treatment plan are recommended.',
+  },
+}
+
 export default function ClientSkinPage() {
+  const [lang, setLang] = useState('DE')
   const [image, setImage] = useState(null)
   const [done, setDone] = useState(false)
+
+  const t = translations[lang]
 
   const uploadImage = (event) => {
     const file = event.target.files?.[0]
@@ -16,36 +123,47 @@ export default function ClientSkinPage() {
   }
 
   const metrics = [
-    { label: 'Увлажнение', value: 58, status: 'Снижено' },
-    { label: 'Пигментация', value: 46, status: 'Умеренно' },
-    { label: 'Морщины', value: 52, status: 'Ранние признаки' },
-    { label: 'Акне / воспаления', value: 68, status: 'Выражено' },
+    { label: t.hydration, value: 58, status: t.reduced },
+    { label: t.pigmentation, value: 46, status: t.moderate },
+    { label: t.wrinkles, value: 52, status: t.early },
+    { label: t.acne, value: 68, status: t.expressed },
   ]
 
   return (
     <main style={styles.main}>
       <div style={styles.wrap}>
-        <Link href="/client" style={styles.back}>
-          ← Client Dashboard
-        </Link>
+        <div style={styles.topBar}>
+          <Link href="/client" style={styles.back}>
+            {t.back}
+          </Link>
 
-        <h1 style={styles.h1}>Анализ кожи</h1>
+          <div style={styles.langSwitch}>
+            {['DE', 'RU', 'EN'].map((item) => (
+              <button
+                key={item}
+                onClick={() => setLang(item)}
+                style={lang === item ? styles.langActive : styles.langBtn}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+        </div>
 
-        <p style={styles.sub}>
-          Базовая AI-диагностика для домашнего ухода: увлажнение, пигментация,
-          морщины и акне / воспалительные элементы.
-        </p>
+        <h1 style={styles.h1}>{t.title}</h1>
+
+        <p style={styles.sub}>{t.subtitle}</p>
 
         <section style={styles.grid}>
           <div style={styles.panel}>
-            <h2 style={styles.h2}>Фото кожи</h2>
+            <h2 style={styles.h2}>{t.photo}</h2>
 
             <label style={{ cursor: 'pointer' }}>
               <div style={styles.uploadBox}>
                 {image ? (
                   <img src={image} alt="Skin preview" style={styles.image} />
                 ) : (
-                  'Загрузить фото кожи'
+                  t.upload
                 )}
               </div>
 
@@ -66,23 +184,18 @@ export default function ClientSkinPage() {
                 cursor: image ? 'pointer' : 'not-allowed',
               }}
             >
-              ✨ Анализировать кожу
+              {t.analyze}
             </button>
           </div>
 
           <div style={styles.panel}>
             {!done ? (
-              <div style={styles.empty}>Загрузите фото для анализа кожи.</div>
+              <div style={styles.empty}>{t.empty}</div>
             ) : (
               <>
-                <h2 style={styles.h2}>Результат анализа</h2>
+                <h2 style={styles.h2}>{t.result}</h2>
 
-                <p style={styles.text}>
-                  Визуально наблюдаются признаки сниженного влагоудержания,
-                  воспалительной активности, неравномерности тона и ранних
-                  возрастных изменений. Для домашнего ухода рекомендуется
-                  барьерно-восстанавливающая и противовоспалительная стратегия.
-                </p>
+                <p style={styles.text}>{t.resultText}</p>
 
                 <div style={{ marginTop: 28 }}>
                   {metrics.map((metric) => (
@@ -96,27 +209,10 @@ export default function ClientSkinPage() {
 
         {done && (
           <section style={styles.resultGrid}>
-            <Info title="Домашняя рутина — утро">
-              1. Мягкое очищение — ESSENTIAL или BALANCE. <br />
-              2. Увлажняющий этап — GLACIAR. <br />
-              3. Барьерная поддержка — NICELY. <br />
-              4. При пигментации — BECLARITY или CELL C. <br />
-              5. Обязательно SPF — SUMMESUN.
-            </Info>
-
-            <Info title="Домашняя рутина — вечер">
-              1. Очищение без агрессивного пересушивания. <br />
-              2. Успокаивающий актив — NICELY. <br />
-              3. При воспалениях — BALANCE. <br />
-              4. Увлажнение и восстановление — GLACIAR / NICELY. <br />
-              5. Мягкое обновление 1–2 раза в неделю.
-            </Info>
-
-            <Info title="Рекомендации Summecosmetics">
-              Основные направления: BALANCE для воспалений и себума, NICELY для
-              чувствительности и барьера, GLACIAR для увлажнения, BECLARITY для
-              пигментации, CELL C для сияния и антиоксидантной поддержки.
-            </Info>
+            <Info title={t.morning}>{t.morningText}</Info>
+            <Info title={t.evening}>{t.eveningText}</Info>
+            <Info title={t.products}>{t.productsText}</Info>
+            <Info title={t.professional}>{t.professionalText}</Info>
           </section>
         )}
       </div>
@@ -162,16 +258,47 @@ const styles = {
     background:
       'radial-gradient(circle at top left,#1a1028 0%,#050505 35%,#000 100%)',
     color: 'white',
-    padding: '50px 6%',
+    padding: '40px 6% 70px',
     fontFamily: 'Arial, sans-serif',
   },
   wrap: {
     maxWidth: '1300px',
     margin: '0 auto',
   },
+  topBar: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    gap: '20px',
+    alignItems: 'center',
+    marginBottom: '36px',
+  },
   back: {
     color: '#aaa',
     textDecoration: 'none',
+  },
+  langSwitch: {
+    display: 'flex',
+    gap: '10px',
+  },
+  langBtn: {
+    width: '54px',
+    height: '40px',
+    borderRadius: '14px',
+    border: '1px solid rgba(255,255,255,0.2)',
+    background: 'transparent',
+    color: 'white',
+    cursor: 'pointer',
+    fontWeight: 800,
+  },
+  langActive: {
+    width: '54px',
+    height: '40px',
+    borderRadius: '14px',
+    border: '1px solid #ff00aa',
+    background: 'linear-gradient(90deg,#7b2cff,#ff00aa)',
+    color: 'white',
+    cursor: 'pointer',
+    fontWeight: 800,
   },
   h1: {
     fontSize: 'clamp(42px,6vw,72px)',
@@ -185,7 +312,7 @@ const styles = {
   sub: {
     color: '#bdbdbd',
     fontSize: '22px',
-    maxWidth: '820px',
+    maxWidth: '850px',
     lineHeight: 1.6,
     marginBottom: '44px',
   },
@@ -237,6 +364,7 @@ const styles = {
     color: '#888',
     fontSize: '22px',
     textAlign: 'center',
+    lineHeight: 1.6,
   },
   text: {
     color: '#d4d4d4',
@@ -289,5 +417,6 @@ const styles = {
     color: '#d4d4d4',
     lineHeight: 1.8,
     fontSize: '17px',
+    whiteSpace: 'pre-line',
   },
 }
