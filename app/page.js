@@ -1,33 +1,34 @@
-'use client'
-
 import Link from 'next/link'
 
-export default function Home() {
+export default function HomePage() {
   return (
     <main
       style={{
         minHeight: '100vh',
         background:
-          'radial-gradient(circle at top left,#2a0845,#000000)',
+          'radial-gradient(circle at top left,#24003a 0%,#07000d 38%,#000 100%)',
         color: 'white',
-        padding: '40px 20px',
-        fontFamily: 'Arial, sans-serif'
+        padding: '60px 6%',
+        fontFamily: 'Arial, sans-serif',
       }}
     >
-      <div
+      <section
         style={{
-          maxWidth: '1200px',
+          maxWidth: '1300px',
           margin: '0 auto',
-          textAlign: 'center'
+          textAlign: 'center',
         }}
       >
         <div
           style={{
             display: 'inline-block',
             padding: '10px 18px',
-            border: '1px solid #444',
+            border: '1px solid rgba(255,255,255,0.22)',
             borderRadius: '999px',
-            marginBottom: '20px'
+            color: '#d8d8d8',
+            fontSize: '14px',
+            letterSpacing: '1px',
+            marginBottom: '34px',
           }}
         >
           AI COSMETIC INTELLIGENCE
@@ -35,9 +36,11 @@ export default function Home() {
 
         <h1
           style={{
-            fontSize: '64px',
-            fontWeight: '800',
-            marginBottom: '20px'
+            fontSize: 'clamp(48px, 8vw, 92px)',
+            lineHeight: 1,
+            margin: '0 0 26px',
+            fontWeight: 900,
+            letterSpacing: '-2px',
           }}
         >
           FORMULENS LAB
@@ -45,206 +48,220 @@ export default function Home() {
 
         <p
           style={{
-            fontSize: '22px',
-            color: '#cccccc',
-            maxWidth: '900px',
-            margin: '0 auto 60px'
+            color: '#d0d0d8',
+            fontSize: 'clamp(19px, 2vw, 24px)',
+            lineHeight: 1.5,
+            maxWidth: '860px',
+            margin: '0 auto 70px',
           }}
         >
-          AI-платформа для анализа кожи, анализа косметических формул,
-          создания домашних рутин и профессиональных протоколов.
+          Professionelle AI-Plattform für Hautanalyse, Formelanalyse und
+          intelligente Behandlungsprotokolle.
         </p>
 
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit,minmax(350px,1fr))',
-            gap: '30px'
+            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+            gap: '34px',
+            alignItems: 'stretch',
           }}
         >
+          <PlanCard
+            title="HOME CARE"
+            subtitle="Für den privaten Gebrauch"
+            price="9€"
+            trial="3 Tage kostenlos"
+            href="/client"
+            button="Kostenlos testen"
+            features={[
+              'Formula Analyzer',
+              'Skin Analysis Basic',
+              'Hydration',
+              'Pigmentation',
+              'Wrinkles',
+              'Acne',
+              'Homecare Routine',
+              'Summecosmetics Empfehlungen',
+            ]}
+          />
 
-          {/* CLIENT */}
-
-          <div
-            style={{
-              background: '#07071b',
-              border: '1px solid #222',
-              borderRadius: '30px',
-              padding: '40px'
-            }}
-          >
-            <h2
-              style={{
-                fontSize: '38px',
-                marginBottom: '10px'
-              }}
-            >
-              CLIENT
-            </h2>
-
-            <p
-              style={{
-                color: '#9ca3af',
-                marginBottom: '20px'
-              }}
-            >
-              Для домашнего ухода
-            </p>
-
-            <div
-              style={{
-                fontSize: '52px',
-                fontWeight: '800',
-                marginBottom: '10px'
-              }}
-            >
-              9€
-            </div>
-
-            <div
-              style={{
-                color: '#00ff88',
-                marginBottom: '30px'
-              }}
-            >
-              3 дня бесплатно
-            </div>
-
-            <ul
-              style={{
-                textAlign: 'left',
-                lineHeight: '2'
-              }}
-            >
-              <li>✔ Анализ формулы</li>
-              <li>✔ Анализ кожи</li>
-              <li>✔ Увлажнение</li>
-              <li>✔ Пигментация</li>
-              <li>✔ Морщины</li>
-              <li>✔ Акне</li>
-              <li>✔ Домашняя рутина</li>
-              <li>✔ Рекомендации Summecosmetics</li>
-            </ul>
-
-            <Link href="/client">
-              <button
-                style={{
-                  width: '100%',
-                  marginTop: '30px',
-                  padding: '18px',
-                  border: 'none',
-                  borderRadius: '16px',
-                  background:
-                    'linear-gradient(90deg,#7c3aed,#ff00aa)',
-                  color: 'white',
-                  fontWeight: '700',
-                  cursor: 'pointer'
-                }}
-              >
-                Попробовать бесплатно
-              </button>
-            </Link>
-          </div>
-
-          {/* PRO */}
-
-          <div
-            style={{
-              background: '#07071b',
-              border: '2px solid #ff00aa',
-              borderRadius: '30px',
-              padding: '40px',
-              position: 'relative'
-            }}
-          >
-            <div
-              style={{
-                position: 'absolute',
-                top: '20px',
-                right: '20px',
-                background: '#ff00aa',
-                padding: '8px 14px',
-                borderRadius: '999px',
-                fontSize: '12px'
-              }}
-            >
-              FOUNDER PRICE
-            </div>
-
-            <h2
-              style={{
-                fontSize: '38px',
-                marginBottom: '10px'
-              }}
-            >
-              PROFESSIONAL
-            </h2>
-
-            <p
-              style={{
-                color: '#9ca3af',
-                marginBottom: '20px'
-              }}
-            >
-              Для косметологов
-            </p>
-
-            <div
-              style={{
-                fontSize: '52px',
-                fontWeight: '800',
-                marginBottom: '10px'
-              }}
-            >
-              29€
-            </div>
-
-            <div
-              style={{
-                color: '#00ff88',
-                marginBottom: '30px'
-              }}
-            >
-              7 дней бесплатно
-            </div>
-
-            <ul
-              style={{
-                textAlign: 'left',
-                lineHeight: '2'
-              }}
-            >
-              <li>✔ Formula Analyzer PRO</li>
-              <li>✔ Skin Analysis PRO</li>
-              <li>✔ 7 параметров кожи</li>
-              <li>✔ Protocol Builder</li>
-              <li>✔ Photo → Protocol</li>
-              <li>✔ PDF Reports</li>
-              <li>✔ Client History</li>
-              <li>✔ Summecosmetics Protocols</li>
-            </ul>
-
-            <Link href="/pro">
-              <button
-                style={{
-                  width: '100%',
-                  marginTop: '30px',
-                  padding: '18px',
-                  border: 'none',
-                  borderRadius: '16px',
-                  background:
-                    'linear-gradient(90deg,#7c3aed,#ff00aa)',
-                  color: 'white',
-                  fontWeight: '700',
-                  cursor: 'pointer'
-                }}
-              >
-                Попробовать бесплатно
-              </button>
-            </Link>
-          </div>
+          <PlanCard
+            professional
+            title="PROFESSIONAL"
+            subtitle="Für Kosmetikerinnen & Institute"
+            price="29€"
+            trial="7 Tage kostenlos"
+            href="/pro"
+            button="7 Tage kostenlos testen"
+            features={[
+              'Formula Analyzer PRO',
+              'Skin Analysis PRO',
+              '7 Hautparameter',
+              'Protocol Builder',
+              'Photo → Protocol',
+              'PDF Reports',
+              'Client History',
+              'Summecosmetics Protocols',
+            ]}
+          />
         </div>
-      </div>
+      </section>
     </main>
+  )
+}
+
+function PlanCard({
+  title,
+  subtitle,
+  price,
+  trial,
+  features,
+  href,
+  button,
+  professional,
+}) {
+  return (
+    <div
+      style={{
+        position: 'relative',
+        background: 'rgba(10,10,28,0.88)',
+        border: professional
+          ? '2px solid #ff00aa'
+          : '1px solid rgba(255,255,255,0.12)',
+        borderRadius: '34px',
+        padding: '46px',
+        textAlign: 'center',
+        boxShadow: professional
+          ? '0 0 45px rgba(255,0,170,0.16)'
+          : '0 0 35px rgba(0,0,0,0.28)',
+      }}
+    >
+      {professional && (
+        <div
+          style={{
+            position: 'absolute',
+            top: '22px',
+            right: '22px',
+            padding: '8px 15px',
+            borderRadius: '999px',
+            background: '#ff00aa',
+            color: 'white',
+            fontSize: '12px',
+            fontWeight: 800,
+          }}
+        >
+          FOUNDER PRICE
+        </div>
+      )}
+
+      <h2
+        style={{
+          fontSize: '34px',
+          margin: '30px 0 10px',
+          fontWeight: 900,
+        }}
+      >
+        {title}
+      </h2>
+
+      <p style={{ color: '#aeb0c0', fontSize: '16px', marginBottom: '28px' }}>
+        {subtitle}
+      </p>
+
+      <div
+        style={{
+          fontSize: '56px',
+          fontWeight: 900,
+          marginBottom: '8px',
+        }}
+      >
+        {price}
+      </div>
+
+      <div
+        style={{
+          color: '#00ff99',
+          fontSize: '17px',
+          fontWeight: 700,
+          marginBottom: professional ? '18px' : '38px',
+        }}
+      >
+        {trial}
+      </div>
+
+      {professional && (
+        <>
+          <div
+            style={{
+              display: 'inline-block',
+              padding: '8px 16px',
+              borderRadius: '999px',
+              background: 'rgba(255,0,170,0.15)',
+              border: '1px solid rgba(255,0,170,0.4)',
+              color: '#ff4dc4',
+              fontSize: '14px',
+              fontWeight: 800,
+              marginBottom: '14px',
+            }}
+          >
+            Nur bis 01.07.2026
+          </div>
+
+          <div
+            style={{
+              color: '#999',
+              fontSize: '15px',
+              textDecoration: 'line-through',
+              marginBottom: '8px',
+            }}
+          >
+            Regulärer Preis: 39 €/Monat
+          </div>
+
+          <div
+            style={{
+              color: '#bbb',
+              fontSize: '14px',
+              marginBottom: '30px',
+            }}
+          >
+            Exklusiver Preis für Early Adopters
+          </div>
+        </>
+      )}
+
+      <ul
+        style={{
+          textAlign: 'left',
+          lineHeight: 2,
+          color: '#f2f2f2',
+          fontSize: '16px',
+          marginBottom: '38px',
+        }}
+      >
+        {features.map((item) => (
+          <li key={item}>✓ {item}</li>
+        ))}
+      </ul>
+
+      <Link href={href}>
+        <button
+          style={{
+            width: '100%',
+            border: 'none',
+            borderRadius: '18px',
+            padding: '20px',
+            background: 'linear-gradient(90deg,#7b2cff,#ff00aa)',
+            color: 'white',
+            fontSize: '17px',
+            fontWeight: 900,
+            cursor: 'pointer',
+          }}
+        >
+          {button}
+        </button>
+      </Link>
+    </div>
   )
 }
