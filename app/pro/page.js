@@ -11,59 +11,59 @@ const translations = {
       'Professionelle AI-Systeme für Kosmetikerinnen: Hautanalyse, Formelanalyse, Behandlungsprotokolle, PDF-Berichte und Kundenhistorie.',
     badge: 'FOUNDER PRICE · 29 €/Monat · 7 Tage kostenlos · bis 01.07.2026',
 
-    formula: 'Formula Analyzer PRO',
+    formula: 'Formelanalyse PRO',
     formulaText:
       'Erweiterte INCI-Analyse: Wirksamkeit, Risiken, Wirkstoffe und professionelle Bewertung.',
 
-    skin: 'Skin Analysis PRO',
+    skin: 'Hautanalyse PRO',
     skinText:
       '7 Hautparameter: Feuchtigkeit, Barriere, Textur, Pigmentierung, Sebum, Alterungszeichen und Festigkeit.',
 
-    protocol: 'Protocol Builder',
+    protocol: 'Protokoll Builder',
     protocolText:
       'Erstellung professioneller Behandlungsprotokolle nach Hautbeschreibung und Kundenzielen.',
 
-    photoProtocol: 'AI Protocol from Photo',
+    photoProtocol: 'KI-Protokoll aus Foto',
     photoProtocolText:
       'Kundenfoto → Analyse → Kabinenprotokoll → Homecare-Empfehlung.',
 
-    reports: 'PDF Reports',
+    reports: 'PDF-Berichte',
     reportsText:
       'Premium-Berichte für Kundinnen: Analyse, Strategie, Protokoll und Homecare.',
 
-    clients: 'Client History',
+    clients: 'Kundenhistorie',
     clientsText:
       'Kundenhistorie, Analysen, Behandlungen und Empfehlungen für Folgeconsultations.',
   },
 
   RU: {
     back: '← FORMULENS LAB',
-    title: 'PROFESSIONAL DASHBOARD',
+    title: 'ПРОФЕССИОНАЛЬНАЯ ПАНЕЛЬ',
     subtitle:
       'Профессиональная AI-система для косметологов: анализ кожи, анализ формул, протоколы процедур, PDF-отчёты и история клиентов.',
     badge: 'FOUNDER PRICE · 29 €/месяц · 7 дней бесплатно · до 01.07.2026',
 
-    formula: 'Formula Analyzer PRO',
+    formula: 'Анализ формулы PRO',
     formulaText:
-      'Расширенный анализ INCI-формул: эффективность, риски, активы и профессиональная оценка.',
+      'Расширенный анализ INCI-формул: эффективность, риски, активные компоненты и профессиональная оценка.',
 
-    skin: 'Skin Analysis PRO',
+    skin: 'Анализ кожи PRO',
     skinText:
       '7 параметров кожи: увлажнение, барьер, текстура, пигментация, себум, возрастные признаки и упругость.',
 
-    protocol: 'Protocol Builder',
+    protocol: 'Конструктор протоколов',
     protocolText:
       'Создание профессионального протокола процедуры по описанию кожи и задач клиента.',
 
-    photoProtocol: 'AI Protocol from Photo',
+    photoProtocol: 'AI-протокол по фото',
     photoProtocolText:
       'Фото клиента → диагностика → кабинетный протокол → домашний уход.',
 
-    reports: 'PDF Reports',
+    reports: 'PDF-отчёты',
     reportsText:
       'Премиальные отчёты для клиента: диагностика, стратегия, протокол и домашний уход.',
 
-    clients: 'Client History',
+    clients: 'История клиентов',
     clientsText:
       'История клиентов, анализов, процедур и рекомендаций для повторных консультаций.',
   },
