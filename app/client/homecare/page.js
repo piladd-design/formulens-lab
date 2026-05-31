@@ -9,7 +9,7 @@ const ui = {
     subtitle:
       'Erstellen Sie eine personalisierte Homecare-Strategie nach Geschlecht, Alter, Hauttyp, Sensibilität, Hauptproblemen und Pflegeziel.',
     formTitle: 'Hautbeschreibung',
-    resultTitle: 'Strategie ухода',
+    resultTitle: 'Pflegestrategie',
     gender: 'Geschlecht',
     age: 'Alter',
     skinType: 'Hauttyp',
@@ -28,6 +28,8 @@ const ui = {
     summary: 'Zusammenfassung',
     advice: 'Professionelle Empfehlung',
     lines: 'Empfohlene Linien',
+    mainLine: 'Hauptlinie',
+    supportLines: 'Unterstützende Linien',
     priorities: 'Prioritäten',
     morning: 'Morgenroutine',
     evening: 'Abendroutine',
@@ -60,6 +62,8 @@ const ui = {
     summary: 'Резюме',
     advice: 'Профессиональная рекомендация',
     lines: 'Рекомендуемые линии',
+    mainLine: 'Основная линия',
+    supportLines: 'Поддерживающие линии',
     priorities: 'Приоритеты',
     morning: 'Утренний уход',
     evening: 'Вечерний уход',
@@ -92,6 +96,8 @@ const ui = {
     summary: 'Summary',
     advice: 'Professional advice',
     lines: 'Recommended lines',
+    mainLine: 'Main line',
+    supportLines: 'Support lines',
     priorities: 'Priorities',
     morning: 'Morning routine',
     evening: 'Evening routine',
@@ -261,25 +267,38 @@ export default function HomecarePage() {
                 <h2 className="mb-8 text-3xl font-bold">{t.resultTitle}</h2>
 
                 <Section title={t.summary}>
-                  <p className="leading-8 text-white/75">{result.summary}</p>
+                  <p className="leading-8 text-white/75">
+                    {result.summary || ''}
+                  </p>
                 </Section>
 
                 <Section title={t.advice}>
                   <p className="leading-8 text-white/75">
-                    {result.professionalAdvice}
+                    {result.professionalAdvice || ''}
                   </p>
                 </Section>
+
+                {recommendation?.primaryLine && (
+                  <Section title={t.mainLine}>
+                    <LineBadge line={recommendation.primaryLine} />
+                  </Section>
+                )}
+
+                {recommendation?.secondaryLines?.length > 0 && (
+                  <Section title={t.supportLines}>
+                    <div className="flex flex-wrap gap-3">
+                      {recommendation.secondaryLines.map((line) => (
+                        <LineBadge key={line} line={line} />
+                      ))}
+                    </div>
+                  </Section>
+                )}
 
                 {recommendation?.lines?.length > 0 && (
                   <Section title={t.lines}>
                     <div className="flex flex-wrap gap-3">
                       {recommendation.lines.map((line) => (
-                        <span
-                          key={line}
-                          className="rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-600 px-5 py-3 text-sm font-bold"
-                        >
-                          {line}
-                        </span>
+                        <LineBadge key={line} line={line} />
                       ))}
                     </div>
                   </Section>
@@ -306,10 +325,13 @@ export default function HomecarePage() {
             </h2>
 
             <div className="mt-9 grid gap-6 lg:grid-cols-4">
-              <RoutineCard title={t.morning} items={recommendation.morning} />
-              <RoutineCard title={t.evening} items={recommendation.evening} />
-              <RoutineCard title={t.weekly} items={recommendation.weeklySupport} />
-              <RoutineCard title={t.avoid} items={recommendation.avoid} />
+              <RoutineCard title={t.morning} items={recommendation.morning || []} />
+              <RoutineCard title={t.evening} items={recommendation.evening || []} />
+              <RoutineCard
+                title={t.weekly}
+                items={recommendation.weeklySupport || []}
+              />
+              <RoutineCard title={t.avoid} items={recommendation.avoid || []} />
             </div>
           </section>
         )}
@@ -345,6 +367,14 @@ function Section({ title, children }) {
   )
 }
 
+function LineBadge({ line }) {
+  return (
+    <span className="inline-flex rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-600 px-5 py-3 text-sm font-bold">
+      {line}
+    </span>
+  )
+}
+
 function List({ items = [] }) {
   return (
     <ul className="space-y-3 text-white/75">
@@ -364,17 +394,46 @@ function RoutineCard({ title, items = [] }) {
       <h3 className="mb-6 text-2xl font-bold">{title}</h3>
 
       <div className="space-y-4">
-        {items?.map((item, index) => (
-          <div
-            key={index}
-            className="rounded-2xl bg-white/10 px-5 py-4 text-sm leading-6 text-white/75"
-          >
-            <span className="mr-2 font-black text-fuchsia-300">
-              {index + 1}.
-            </span>
-            {item}
-          </div>
-        ))}
+        {items.map((item, index) => {
+          const isProduct = typeof item === 'object' && item !== null
+
+          return (
+            <div
+              key={index}
+              className="rounded-2xl bg-white/10 p-5 text-sm leading-6 text-white/75"
+            >
+              <div className="flex items-start gap-3">
+                <span className="font-black text-fuchsia-300">
+                  {index + 1}.
+                </span>
+
+                <div>
+                  <div className="font-black text-white">
+                    {isProduct ? item.name : item}
+                  </div>
+
+                  {isProduct && item.line && (
+                    <div className="mt-1 text-xs uppercase tracking-[0.25em] text-fuchsia-300">
+                      {item.line}
+                    </div>
+                  )}
+
+                  {isProduct && item.step && (
+                    <div className="mt-2 text-sm text-white/50">
+                      {item.step}
+                    </div>
+                  )}
+
+                  {isProduct && item.purpose && (
+                    <p className="mt-3 text-sm leading-6 text-white/65">
+                      {item.purpose}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          )
+        })}
       </div>
     </div>
   )
