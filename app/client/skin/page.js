@@ -10,6 +10,7 @@ const ui = {
       'AI-Analyse für Homecare: Feuchtigkeit, Pigmentierung, Falten und Akne / Entzündungen.',
     photo: 'Foto der Haut',
     uploadHint: 'Laden Sie ein klares Gesichtsfoto hoch.',
+    uploadClick: 'Klicken zum Hochladen',
     analyze: '✨ Haut analysieren',
     analyzing: 'Analyse läuft...',
     uploadFirst: 'Bitte zuerst ein Foto hochladen.',
@@ -37,6 +38,7 @@ const ui = {
       'AI-диагностика для домашнего ухода: увлажнение, пигментация, морщины и акне / воспалительные элементы.',
     photo: 'Фото кожи',
     uploadHint: 'Загрузите чёткое фото лица.',
+    uploadClick: 'Нажмите для загрузки фото',
     analyze: '✨ Анализировать кожу',
     analyzing: 'Анализ...',
     uploadFirst: 'Сначала загрузите фото.',
@@ -64,6 +66,7 @@ const ui = {
       'AI homecare analysis: hydration, pigmentation, wrinkles and acne / inflammatory elements.',
     photo: 'Skin photo',
     uploadHint: 'Upload a clear face photo.',
+    uploadClick: 'Click to upload photo',
     analyze: '✨ Analyze skin',
     analyzing: 'Analyzing...',
     uploadFirst: 'Please upload a photo first.',
@@ -89,6 +92,7 @@ const ui = {
 export default function SkinAnalysisPage() {
   const [image, setImage] = useState(null)
   const [preview, setPreview] = useState(null)
+  const [fileName, setFileName] = useState('')
   const [lang, setLang] = useState('DE')
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState(null)
@@ -99,6 +103,8 @@ export default function SkinAnalysisPage() {
   function handleImageUpload(e) {
     const file = e.target.files?.[0]
     if (!file) return
+
+    setFileName(file.name)
 
     const reader = new FileReader()
 
@@ -197,12 +203,25 @@ export default function SkinAnalysisPage() {
               )}
             </div>
 
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className="mb-6 w-full rounded-2xl border border-white/10 bg-black p-4 text-sm text-white"
-            />
+            <label className="mb-4 flex h-28 cursor-pointer flex-col items-center justify-center rounded-3xl border border-dashed border-fuchsia-500/40 bg-black/30 transition hover:border-fuchsia-500 hover:bg-black/50">
+              <span className="text-3xl">📷</span>
+              <span className="mt-2 text-sm text-white/80">
+                {t.uploadClick}
+              </span>
+
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="hidden"
+              />
+            </label>
+
+            {fileName && (
+              <div className="mb-6 rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white/70">
+                {fileName}
+              </div>
+            )}
 
             <button
               onClick={analyzeSkin}
@@ -268,6 +287,7 @@ export default function SkinAnalysisPage() {
                 </div>
 
                 <InfoBlock title={t.skinType} text={analysis.skinType} />
+
                 <InfoBlock
                   title={t.professionalNote}
                   text={analysis.professionalNote}
@@ -287,12 +307,28 @@ export default function SkinAnalysisPage() {
               {t.mainLine}: {protocol.mainLine}
             </h2>
 
-            <p className="mt-4 text-white/65">{protocol.mainProtocol.concern}</p>
+            <p className="mt-4 text-white/65">
+              {protocol.mainProtocol.concern}
+            </p>
 
             <div className="mt-9 grid gap-6 lg:grid-cols-3">
-              <RoutineBlock title={t.morning} products={protocol.mainProtocol.morning} empty={t.noExtra} />
-              <RoutineBlock title={t.evening} products={protocol.mainProtocol.evening} empty={t.noExtra} />
-              <RoutineBlock title={t.extra} products={protocol.mainProtocol.extra} empty={t.noExtra} />
+              <RoutineBlock
+                title={t.morning}
+                products={protocol.mainProtocol.morning}
+                empty={t.noExtra}
+              />
+
+              <RoutineBlock
+                title={t.evening}
+                products={protocol.mainProtocol.evening}
+                empty={t.noExtra}
+              />
+
+              <RoutineBlock
+                title={t.extra}
+                products={protocol.mainProtocol.extra}
+                empty={t.noExtra}
+              />
             </div>
           </section>
         )}
@@ -310,8 +346,17 @@ export default function SkinAnalysisPage() {
             </p>
 
             <div className="mt-9 grid gap-6 lg:grid-cols-2">
-              <RoutineBlock title={t.morning} products={protocol.secondaryProtocol.morning} empty={t.noExtra} />
-              <RoutineBlock title={t.evening} products={protocol.secondaryProtocol.evening} empty={t.noExtra} />
+              <RoutineBlock
+                title={t.morning}
+                products={protocol.secondaryProtocol.morning}
+                empty={t.noExtra}
+              />
+
+              <RoutineBlock
+                title={t.evening}
+                products={protocol.secondaryProtocol.evening}
+                empty={t.noExtra}
+              />
             </div>
           </section>
         )}
