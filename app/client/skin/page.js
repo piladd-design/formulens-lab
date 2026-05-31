@@ -137,13 +137,27 @@ export default function ClientSkinPage() {
   }
 
   const metrics = analysis
-    ? [
-        { label: t.hydration, value: analysis.hydration },
-        { label: t.pigmentation, value: analysis.pigmentation },
-        { label: t.wrinkles, value: analysis.wrinkles },
-        { label: t.acne, value: analysis.acne },
-      ]
-    : []
+  ? [
+      { label: t.hydration, value: analysis.hydration },
+      { label: t.pigmentation, value: analysis.pigmentation },
+      {
+        label: t.wrinkles,
+        value:
+          analysis.wrinkles ??
+          analysis.ageing ??
+          analysis.ageingSigns ??
+          50,
+      },
+      {
+        label: t.acne,
+        value:
+          analysis.acne ??
+          analysis.inflammation ??
+          analysis.blemishes ??
+          50,
+      },
+    ]
+  : []
 
   return (
     <main style={styles.main}>
