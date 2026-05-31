@@ -8,78 +8,69 @@ const translations = {
     back: '← Home Care Dashboard',
     title: 'Hautanalyse',
     subtitle:
-      'AI-Diagnostik für Homecare: Feuchtigkeit, Hautbarriere, Sensibilität, Entzündungsstatus, Pigmentierung und Hautalterung.',
+      'AI-Diagnostik für Homecare: Feuchtigkeit, Pigmentierung, Falten und Akne / entzündliche Elemente.',
     photo: 'Hautfoto',
     upload: 'Hautfoto hochladen',
     analyze: '✨ Haut analysieren',
     analyzing: 'AI analysiert das Hautfoto...',
     empty: 'Laden Sie ein Foto hoch, um die Hautanalyse zu starten.',
     error: 'Hautanalyse fehlgeschlagen. Bitte versuchen Sie es erneut.',
-    score: 'Haut-Score',
-    skinAge: 'Hautalter',
+    score: 'Homecare Skin Score',
     hydration: 'Feuchtigkeit',
-    barrier: 'Hautbarriere',
-    sensitivity: 'Sensibilität',
-    inflammation: 'Entzündungsstatus',
     pigmentation: 'Pigmentierung',
-    ageing: 'Hautalterung',
+    wrinkles: 'Falten',
+    acne: 'Akne / Entzündungen',
     summary: 'Analyseergebnis',
     morning: 'Homecare Routine — Morgen',
     evening: 'Homecare Routine — Abend',
     products: 'Summecosmetics Empfehlung',
-    professional: 'Professional Note',
+    professional: 'Hinweis',
   },
 
   RU: {
     back: '← Домашний уход',
     title: 'Анализ кожи',
     subtitle:
-      'AI-диагностика для домашнего ухода: увлажнение, барьер, чувствительность, воспаление, пигментация и возрастные признаки.',
+      'AI-диагностика для домашнего ухода: увлажнение, пигментация, морщины и акне / воспалительные элементы.',
     photo: 'Фото кожи',
     upload: 'Загрузить фото кожи',
     analyze: '✨ Анализировать кожу',
     analyzing: 'AI анализирует фото кожи...',
     empty: 'Загрузите фото для анализа кожи.',
     error: 'Ошибка анализа кожи. Попробуйте ещё раз.',
-    score: 'Индекс кожи',
-    skinAge: 'Возраст кожи',
+    score: 'Индекс кожи Homecare',
     hydration: 'Увлажнение',
-    barrier: 'Барьер',
-    sensitivity: 'Чувствительность',
-    inflammation: 'Воспаление',
     pigmentation: 'Пигментация',
-    ageing: 'Возрастные признаки',
+    wrinkles: 'Морщины',
+    acne: 'Акне / воспаления',
     summary: 'Результат анализа',
     morning: 'Домашняя рутина — утро',
     evening: 'Домашняя рутина — вечер',
     products: 'Рекомендации Summecosmetics',
-    professional: 'Профессиональное примечание',
+    professional: 'Примечание',
   },
 
   EN: {
     back: '← Home Care Dashboard',
     title: 'Skin Analysis',
     subtitle:
-      'AI diagnostics for homecare: hydration, barrier, sensitivity, inflammation, pigmentation and ageing signs.',
+      'AI diagnostics for homecare: hydration, pigmentation, wrinkles and acne / inflammatory elements.',
     photo: 'Skin Photo',
     upload: 'Upload Skin Photo',
     analyze: '✨ Analyze Skin',
     analyzing: 'AI is analyzing the skin photo...',
     empty: 'Upload a photo to start skin analysis.',
     error: 'Skin analysis failed. Please try again.',
-    score: 'Skin Score',
-    skinAge: 'Skin Age',
+    score: 'Homecare Skin Score',
     hydration: 'Hydration',
-    barrier: 'Barrier',
-    sensitivity: 'Sensitivity',
-    inflammation: 'Inflammation Status',
     pigmentation: 'Pigmentation',
-    ageing: 'Ageing Signs',
+    wrinkles: 'Wrinkles',
+    acne: 'Acne / Inflammation',
     summary: 'Analysis Result',
     morning: 'Homecare Routine — Morning',
     evening: 'Homecare Routine — Evening',
     products: 'Summecosmetics Recommendation',
-    professional: 'Professional Note',
+    professional: 'Note',
   },
 }
 
@@ -148,11 +139,9 @@ export default function ClientSkinPage() {
   const metrics = analysis
     ? [
         { label: t.hydration, value: analysis.hydration },
-        { label: t.barrier, value: analysis.barrier },
-        { label: t.sensitivity, value: analysis.sensitivity },
-        { label: t.inflammation, value: analysis.inflammation },
         { label: t.pigmentation, value: analysis.pigmentation },
-        { label: t.ageing, value: analysis.ageing },
+        { label: t.wrinkles, value: analysis.wrinkles },
+        { label: t.acne, value: analysis.acne },
       ]
     : []
 
@@ -236,25 +225,16 @@ export default function ClientSkinPage() {
               <>
                 <div style={styles.scoreRow}>
                   <div style={styles.scoreCircle}>
-                    {safeNumber(analysis.overallScore)}
+                    {safeScore(analysis.overallScore)}
                   </div>
 
                   <div>
                     <div style={styles.scoreText}>
-                      {safeNumber(analysis.overallScore)}/100
+                      {safeScore(analysis.overallScore)}/100
                     </div>
                     <div style={styles.scoreLabel}>{t.score}</div>
                   </div>
                 </div>
-
-                {analysis.skinAge && (
-                  <div style={styles.skinAgeBox}>
-                    <div style={styles.skinAgeLabel}>{t.skinAge}</div>
-                    <div style={styles.skinAgeValue}>
-                      {safeNumber(analysis.skinAge)}
-                    </div>
-                  </div>
-                )}
 
                 <div style={styles.metricsGrid}>
                   {metrics.map((metric) => (
@@ -285,7 +265,7 @@ export default function ClientSkinPage() {
 }
 
 function Metric({ label, value = 0 }) {
-  const safeValue = Math.max(0, Math.min(100, Number(value) || 0))
+  const safeValue = safeScore(value)
 
   return (
     <div style={styles.metric}>
@@ -316,7 +296,7 @@ function Info({ title, children }) {
   )
 }
 
-function safeNumber(value) {
+function safeScore(value) {
   return Math.max(0, Math.min(100, Number(value) || 0))
 }
 
@@ -380,7 +360,7 @@ const styles = {
   sub: {
     color: '#bdbdbd',
     fontSize: '22px',
-    maxWidth: '900px',
+    maxWidth: '880px',
     lineHeight: 1.6,
     marginBottom: '44px',
   },
@@ -447,7 +427,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     gap: '26px',
-    marginBottom: '22px',
+    marginBottom: '30px',
   },
   scoreCircle: {
     width: '130px',
@@ -468,26 +448,6 @@ const styles = {
     color: '#aaa',
     marginTop: '8px',
     fontSize: '16px',
-  },
-  skinAgeBox: {
-    marginBottom: '24px',
-    padding: '18px',
-    borderRadius: '18px',
-    background: '#0d0d18',
-    border: '1px solid #252525',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  skinAgeLabel: {
-    color: '#aaa',
-    fontSize: '16px',
-    fontWeight: 700,
-  },
-  skinAgeValue: {
-    fontSize: '32px',
-    fontWeight: 900,
-    color: '#fff',
   },
   metricsGrid: {
     display: 'grid',
