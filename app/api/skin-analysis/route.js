@@ -30,8 +30,8 @@ Analyze the visible skin condition from the photo for a homecare user.
 
 Language: ${language}
 
-This is NOT a professional dermatological diagnosis.
-This is a simple cosmetic homecare analysis.
+This is NOT a medical diagnosis.
+This is a cosmetic homecare analysis only.
 
 Return ONLY valid JSON.
 
@@ -43,6 +43,13 @@ Use this exact structure:
   "pigmentation": 46,
   "wrinkles": 52,
   "acne": 68,
+  "skinType": "text",
+  "recommendedLines": {
+    "main": "BALANCE",
+    "secondary": "GLACIAR",
+    "spf": "SUMMESUN SPF50+"
+  },
+  "priorities": ["text", "text", "text"],
   "summary": "text",
   "morningRoutine": "text",
   "eveningRoutine": "text",
@@ -50,93 +57,89 @@ Use this exact structure:
   "professionalNote": "text"
 }
 
-Score interpretation:
+Score logic:
 
 overallScore:
-Higher score means healthier overall skin condition.
-Lower score means the skin needs more cosmetic homecare support.
+Higher score means better overall cosmetic skin condition.
 
 hydration:
-Higher score means better visible hydration.
-Lower score means visible dehydration, dryness, tight-looking skin or dullness.
+Higher score means better hydration.
+Lower score means more visible dehydration or dryness.
 
 pigmentation:
-Higher score means more visible pigmentation problems, uneven tone, dark spots or post-inflammatory marks.
-Lower score means more even-looking tone.
+Higher score means more visible pigmentation, uneven tone, dark spots or post-inflammatory marks.
 
 wrinkles:
 Higher score means more visible wrinkles, lines, texture changes or ageing signs.
-Lower score means smoother-looking skin with fewer visible ageing signs.
 
 acne:
 Higher score means more visible acne, redness, irritation, inflammatory elements, blemishes or reactive-looking skin.
-Lower score means calmer-looking skin with fewer visible inflammatory elements.
 
-Important cosmetic logic:
+Important:
 
-If visible redness, irritation or inflammatory elements are present:
-increase acne score significantly.
+If visible redness, irritation or inflammatory elements are present, increase acne score significantly.
 
-If strong redness dominates the image:
-acne score should normally be above 70.
+If strong redness dominates the image, acne score should normally be above 70.
 
-If severe visible irritation dominates:
-acne score should normally be above 80.
+If severe visible irritation dominates the image, acne score should normally be above 80.
 
-If visible blemishes, acne-like elements or sebum imbalance are present:
-increase acne score.
+If uneven tone, dark spots or post-inflammatory marks are visible, increase pigmentation score.
 
-If uneven tone, pigmentation, dark spots or post-inflammatory marks are visible:
-increase pigmentation score.
+If visible lines, wrinkles or ageing signs are present, increase wrinkles score.
 
-If visible lines, wrinkles, texture changes or ageing signs are present:
-increase wrinkles score.
+If dryness, tight-looking skin or dullness is visible, reduce hydration score.
 
-If dryness, tight-looking skin, dullness or dehydration is visible:
-reduce hydration score.
+Recommended line logic:
 
-If redness, irritation or sensitivity dominates:
-recommend calming, barrier-supporting and hydrating homecare.
+BALANCE:
+Use as main line when acne, blemishes, excess sebum, enlarged pores or inflammatory elements are the main issue.
 
-For visible redness or sensitivity:
-recommend NICELY and GLACIAR first.
+NICELY:
+Use as main line when sensitivity, redness, reactive skin, irritation, couperose-like redness or weakened barrier is the main issue.
 
-For visible blemishes, acne-like elements or sebum imbalance:
-recommend BALANCE.
+GLACIAR:
+Use as main or secondary line when dehydration, dryness, tightness, dullness or lack of comfort is visible.
 
-For pigmentation or uneven tone:
-recommend BECLARITY and CELL C only if pigmentation is a clear concern.
+BECLARITY:
+Use as main or secondary line when pigmentation, dark spots, post-inflammatory marks or uneven tone are visible.
 
-For daily protection:
-recommend SUMMESUN when appropriate.
+CELL:
+Use when visible ageing, wrinkles, loss of density or mature skin signs are present.
+
+CELL C:
+Use when glow, antioxidant support, early ageing, uneven tone and mild pigmentation are important.
+
+SUMMESUN SPF50+:
+Always recommend as daily protection, especially with pigmentation, redness, anti-ageing, acids, retinol-like care or vitamin C.
+
+Priorities:
+Return the top 3 cosmetic priorities based on the visible skin condition.
+Examples:
+- Hydration
+- Pigmentation
+- Wrinkles
+- Acne / inflammation
+- Sensitivity
+- Barrier support
+- Sebum control
+- Daily UV protection
 
 Summecosmetics recommendation:
-Choose only 2-4 most relevant directions from:
-GLACIAR
-NICELY
-BALANCE
-BECLARITY
-CELL C
-SUMMESUN
-MYCODE
-
-Do not list too many directions.
-Make the recommendation simple and understandable for a homecare user.
-
-Professional note:
-The professionalNote should be positive and motivating.
-It should explain that the analysis is based on visual assessment of a photo and is intended for cosmetic recommendations only.
-It should encourage regular homecare and, if needed, professional cosmetic support.
-Do not recommend visiting a dermatologist unless there are obvious severe medical concerns visible in the image.
-
-Safety and tone:
+Mention concrete Summecosmetics lines and, when possible, product direction:
+BALANCE for acne and oily skin.
+NICELY for sensitivity and redness.
+GLACIAR for dehydration.
+BECLARITY for pigmentation.
+CELL or CELL C for anti-ageing and glow.
+SUMMESUN SPF50+ for daily protection.
 
 Do not diagnose diseases.
-Do not use medical diagnosis terms.
-Do not make medical claims.
-Do not promise guaranteed results.
-Use cosmetic language only.
-Tone should be premium, clear, reassuring and motivating.
+Do not use scary medical language.
+Do not recommend dermatologist unless there are obvious severe medical concerns.
+Focus on improving skin condition through regular cosmetic homecare and professional cosmetic support if needed.
+
+Tone:
+Premium, clear, reassuring, motivating.
 
 Return ONLY valid JSON.
 No markdown.
@@ -155,7 +158,6 @@ No additional text outside JSON.
     })
 
     const content = response.output_text
-
     return Response.json(JSON.parse(content))
   } catch (error) {
     console.error(error)
