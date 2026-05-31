@@ -2,6 +2,90 @@
 
 import { useState } from 'react'
 
+const ui = {
+  DE: {
+    back: '← Home Care Dashboard',
+    title: 'Hautanalyse',
+    subtitle:
+      'AI-Analyse für Homecare: Feuchtigkeit, Pigmentierung, Falten und Akne / Entzündungen.',
+    photo: 'Foto der Haut',
+    uploadHint: 'Laden Sie ein klares Gesichtsfoto hoch.',
+    analyze: '✨ Haut analysieren',
+    analyzing: 'Analyse läuft...',
+    uploadFirst: 'Bitte zuerst ein Foto hochladen.',
+    score: 'Hautindex Homecare',
+    hydration: 'Feuchtigkeit',
+    pigmentation: 'Pigmentierung',
+    wrinkles: 'Falten',
+    acne: 'Akne / Entzündungen',
+    priorities: 'Prioritäten',
+    skinType: 'Hauttyp',
+    professionalNote: 'Professionelle Empfehlung',
+    protocol: 'Summecosmetics Homecare-Protokoll',
+    mainLine: 'Hauptlinie',
+    secondaryLine: 'Unterstützende Linie',
+    morning: 'Morgenroutine',
+    evening: 'Abendroutine',
+    extra: 'Extra-Produkte',
+    noResult: 'Laden Sie ein Foto hoch und starten Sie die Analyse.',
+    noExtra: 'Keine zusätzlichen Produkte erforderlich.',
+  },
+  RU: {
+    back: '← Домашний уход',
+    title: 'Анализ кожи',
+    subtitle:
+      'AI-диагностика для домашнего ухода: увлажнение, пигментация, морщины и акне / воспалительные элементы.',
+    photo: 'Фото кожи',
+    uploadHint: 'Загрузите чёткое фото лица.',
+    analyze: '✨ Анализировать кожу',
+    analyzing: 'Анализ...',
+    uploadFirst: 'Сначала загрузите фото.',
+    score: 'Индекс кожи Homecare',
+    hydration: 'Увлажнение',
+    pigmentation: 'Пигментация',
+    wrinkles: 'Морщины',
+    acne: 'Акне / воспаления',
+    priorities: 'Приоритеты',
+    skinType: 'Тип кожи',
+    professionalNote: 'Профессиональная рекомендация',
+    protocol: 'Протокол Summecosmetics Homecare',
+    mainLine: 'Основная линия',
+    secondaryLine: 'Поддерживающая линия',
+    morning: 'Утренний уход',
+    evening: 'Вечерний уход',
+    extra: 'Дополнительно',
+    noResult: 'Загрузите фото и запустите анализ.',
+    noExtra: 'Дополнительные продукты не требуются.',
+  },
+  EN: {
+    back: '← Home Care Dashboard',
+    title: 'Skin Analysis',
+    subtitle:
+      'AI homecare analysis: hydration, pigmentation, wrinkles and acne / inflammatory elements.',
+    photo: 'Skin photo',
+    uploadHint: 'Upload a clear face photo.',
+    analyze: '✨ Analyze skin',
+    analyzing: 'Analyzing...',
+    uploadFirst: 'Please upload a photo first.',
+    score: 'Homecare Skin Index',
+    hydration: 'Hydration',
+    pigmentation: 'Pigmentation',
+    wrinkles: 'Wrinkles',
+    acne: 'Acne / inflammation',
+    priorities: 'Priorities',
+    skinType: 'Skin type',
+    professionalNote: 'Professional recommendation',
+    protocol: 'Summecosmetics Homecare Protocol',
+    mainLine: 'Main line',
+    secondaryLine: 'Secondary line',
+    morning: 'Morning routine',
+    evening: 'Evening routine',
+    extra: 'Extra products',
+    noResult: 'Upload a photo and start the analysis.',
+    noExtra: 'No additional products required.',
+  },
+}
+
 export default function SkinAnalysisPage() {
   const [image, setImage] = useState(null)
   const [preview, setPreview] = useState(null)
@@ -9,6 +93,8 @@ export default function SkinAnalysisPage() {
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState(null)
   const [error, setError] = useState(null)
+
+  const t = ui[lang]
 
   function handleImageUpload(e) {
     const file = e.target.files?.[0]
@@ -28,7 +114,7 @@ export default function SkinAnalysisPage() {
 
   async function analyzeSkin() {
     if (!image) {
-      setError('Please upload an image first.')
+      setError(t.uploadFirst)
       return
     }
 
@@ -61,30 +147,43 @@ export default function SkinAnalysisPage() {
   const protocol = result?.protocol
 
   return (
-    <main className="min-h-screen bg-[#f7f4ef] px-6 py-10 text-[#1f1f1f]">
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-10 text-center">
-          <p className="mb-3 text-xs uppercase tracking-[0.35em] text-[#9a856c]">
-            FORMULENS LAB
-          </p>
+    <main className="min-h-screen bg-[radial-gradient(circle_at_top_left,#221033_0%,#060606_42%,#000_100%)] px-6 py-12 text-white">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-16 flex items-center justify-between">
+          <div className="text-sm text-white/70">{t.back}</div>
 
-          <h1 className="text-4xl font-light tracking-tight md:text-6xl">
-            AI Skin Analysis
-          </h1>
-
-          <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-[#6f6a63]">
-            Cosmetic homecare analysis with personalized Summecosmetics protocol.
-            This is not a medical diagnosis.
-          </p>
+          <div className="flex gap-3">
+            {['DE', 'RU', 'EN'].map((item) => (
+              <button
+                key={item}
+                onClick={() => setLang(item)}
+                className={`rounded-xl border px-5 py-3 text-sm font-bold ${
+                  lang === item
+                    ? 'border-transparent bg-gradient-to-r from-violet-600 to-fuchsia-600'
+                    : 'border-white/20 bg-black/30'
+                }`}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
         </div>
 
-        <section className="grid gap-8 md:grid-cols-[0.9fr_1.1fr]">
-          <div className="rounded-[2rem] bg-white p-6 shadow-sm">
-            <label className="mb-4 block text-sm font-medium uppercase tracking-[0.2em] text-[#9a856c]">
-              Upload skin photo
-            </label>
+        <section className="mb-12">
+          <h1 className="max-w-4xl text-6xl font-black tracking-tight md:text-7xl">
+            {t.title}
+          </h1>
 
-            <div className="mb-5 overflow-hidden rounded-[1.5rem] border border-[#e7ded2] bg-[#fbfaf8]">
+          <p className="mt-8 max-w-3xl text-xl leading-9 text-white/75">
+            {t.subtitle}
+          </p>
+        </section>
+
+        <section className="grid gap-8 lg:grid-cols-2">
+          <div className="rounded-[2rem] border border-white/10 bg-[#0b0b16]/90 p-8">
+            <h2 className="mb-7 text-2xl font-bold">{t.photo}</h2>
+
+            <div className="mb-7 overflow-hidden rounded-3xl bg-black">
               {preview ? (
                 <img
                   src={preview}
@@ -92,8 +191,8 @@ export default function SkinAnalysisPage() {
                   className="h-[420px] w-full object-cover"
                 />
               ) : (
-                <div className="flex h-[420px] items-center justify-center px-6 text-center text-sm text-[#8a8176]">
-                  Upload a clear face photo to start the cosmetic analysis.
+                <div className="flex h-[420px] items-center justify-center text-center text-white/45">
+                  {t.uploadHint}
                 </div>
               )}
             </div>
@@ -102,82 +201,65 @@ export default function SkinAnalysisPage() {
               type="file"
               accept="image/*"
               onChange={handleImageUpload}
-              className="mb-5 w-full rounded-xl border border-[#ddd2c4] bg-white p-3 text-sm"
+              className="mb-6 w-full rounded-2xl border border-white/10 bg-black p-4 text-sm text-white"
             />
-
-            <div className="mb-5">
-              <label className="mb-2 block text-xs uppercase tracking-[0.2em] text-[#9a856c]">
-                Language
-              </label>
-
-              <select
-                value={lang}
-                onChange={(e) => setLang(e.target.value)}
-                className="w-full rounded-xl border border-[#ddd2c4] bg-white p-3 text-sm"
-              >
-                <option value="DE">Deutsch</option>
-                <option value="RU">Русский</option>
-                <option value="EN">English</option>
-              </select>
-            </div>
 
             <button
               onClick={analyzeSkin}
               disabled={loading}
-              className="w-full rounded-full bg-[#1f1f1f] px-6 py-4 text-sm uppercase tracking-[0.25em] text-white transition hover:bg-[#3a342d] disabled:cursor-not-allowed disabled:opacity-60"
+              className="w-full rounded-2xl bg-gradient-to-r from-violet-600 to-fuchsia-600 px-8 py-5 text-lg font-black transition hover:opacity-90 disabled:opacity-50"
             >
-              {loading ? 'Analyzing...' : 'Analyze skin'}
+              {loading ? t.analyzing : t.analyze}
             </button>
 
             {error && (
-              <p className="mt-4 rounded-xl bg-red-50 p-4 text-sm text-red-700">
+              <div className="mt-5 rounded-2xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-200">
                 {error}
-              </p>
+              </div>
             )}
           </div>
 
-          <div className="rounded-[2rem] bg-white p-6 shadow-sm">
+          <div className="rounded-[2rem] border border-white/10 bg-[#0b0b16]/90 p-8">
             {!analysis ? (
-              <div className="flex h-full min-h-[520px] items-center justify-center rounded-[1.5rem] border border-dashed border-[#ddd2c4] px-8 text-center text-sm leading-7 text-[#8a8176]">
-                Your analysis result and personalized Summecosmetics protocol
-                will appear here.
+              <div className="flex h-full min-h-[560px] items-center justify-center text-center text-xl text-white/45">
+                {t.noResult}
               </div>
             ) : (
               <div>
-                <div className="mb-8 rounded-[1.5rem] bg-[#f7f4ef] p-6">
-                  <p className="mb-2 text-xs uppercase tracking-[0.25em] text-[#9a856c]">
-                    Overall Skin Score
-                  </p>
-
-                  <div className="flex items-end gap-3">
-                    <span className="text-6xl font-light">
-                      {analysis.overallScore}
-                    </span>
-                    <span className="mb-2 text-sm text-[#8a8176]">/ 100</span>
+                <div className="mb-8 flex items-center gap-7">
+                  <div className="flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-violet-600 to-fuchsia-600 text-5xl font-black">
+                    {analysis.overallScore}
                   </div>
 
-                  <p className="mt-5 text-sm leading-7 text-[#5f5a53]">
-                    {analysis.summary}
-                  </p>
+                  <div>
+                    <div className="text-5xl font-black">
+                      {analysis.overallScore}/100
+                    </div>
+                    <div className="mt-3 text-white/60">{t.score}</div>
+                  </div>
                 </div>
 
-                <div className="mb-8 grid gap-4 sm:grid-cols-2">
-                  <Score label="Hydration" value={analysis.hydration} />
-                  <Score label="Pigmentation" value={analysis.pigmentation} />
-                  <Score label="Wrinkles" value={analysis.wrinkles} />
-                  <Score label="Acne / Redness" value={analysis.acne} />
+                <p className="mb-8 leading-8 text-white/70">
+                  {analysis.summary}
+                </p>
+
+                <div className="space-y-4">
+                  <Score label={t.hydration} value={analysis.hydration} />
+                  <Score label={t.pigmentation} value={analysis.pigmentation} />
+                  <Score label={t.wrinkles} value={analysis.wrinkles} />
+                  <Score label={t.acne} value={analysis.acne} />
                 </div>
 
-                <div className="mb-8">
-                  <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#9a856c]">
-                    Top priorities
-                  </p>
+                <div className="mt-8">
+                  <h3 className="mb-4 text-sm uppercase tracking-[0.25em] text-white/50">
+                    {t.priorities}
+                  </h3>
 
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-3">
                     {analysis.priorities?.map((item, index) => (
                       <span
                         key={index}
-                        className="rounded-full bg-[#f7f4ef] px-4 py-2 text-xs text-[#5f5a53]"
+                        className="rounded-full bg-white/10 px-4 py-2 text-sm"
                       >
                         {item}
                       </span>
@@ -185,85 +267,51 @@ export default function SkinAnalysisPage() {
                   </div>
                 </div>
 
-                <div className="mb-8 rounded-[1.5rem] border border-[#eee5da] p-5">
-                  <p className="mb-2 text-xs uppercase tracking-[0.25em] text-[#9a856c]">
-                    Skin type
-                  </p>
-                  <p className="text-sm leading-7 text-[#5f5a53]">
-                    {analysis.skinType}
-                  </p>
-                </div>
-
-                <div className="mb-8 rounded-[1.5rem] border border-[#eee5da] p-5">
-                  <p className="mb-2 text-xs uppercase tracking-[0.25em] text-[#9a856c]">
-                    Professional note
-                  </p>
-                  <p className="text-sm leading-7 text-[#5f5a53]">
-                    {analysis.professionalNote}
-                  </p>
-                </div>
+                <InfoBlock title={t.skinType} text={analysis.skinType} />
+                <InfoBlock
+                  title={t.professionalNote}
+                  text={analysis.professionalNote}
+                />
               </div>
             )}
           </div>
         </section>
 
         {protocol?.mainProtocol && (
-          <section className="mt-10 rounded-[2rem] bg-white p-6 shadow-sm">
-            <p className="mb-3 text-xs uppercase tracking-[0.3em] text-[#9a856c]">
-              Personalized Summecosmetics Protocol
+          <section className="mt-10 rounded-[2rem] border border-white/10 bg-[#0b0b16]/90 p-8">
+            <p className="mb-4 text-sm uppercase tracking-[0.3em] text-fuchsia-300">
+              {t.protocol}
             </p>
 
-            <h2 className="mb-2 text-3xl font-light">
-              Main line: {protocol.mainLine}
+            <h2 className="text-4xl font-black">
+              {t.mainLine}: {protocol.mainLine}
             </h2>
 
-            <p className="mb-8 text-sm text-[#6f6a63]">
-              {protocol.mainProtocol.concern}
-            </p>
+            <p className="mt-4 text-white/65">{protocol.mainProtocol.concern}</p>
 
-            <div className="grid gap-6 md:grid-cols-3">
-              <RoutineBlock
-                title="Morning Routine"
-                products={protocol.mainProtocol.morning}
-              />
-
-              <RoutineBlock
-                title="Evening Routine"
-                products={protocol.mainProtocol.evening}
-              />
-
-              <RoutineBlock
-                title="Extra Products"
-                products={protocol.mainProtocol.extra}
-              />
+            <div className="mt-9 grid gap-6 lg:grid-cols-3">
+              <RoutineBlock title={t.morning} products={protocol.mainProtocol.morning} empty={t.noExtra} />
+              <RoutineBlock title={t.evening} products={protocol.mainProtocol.evening} empty={t.noExtra} />
+              <RoutineBlock title={t.extra} products={protocol.mainProtocol.extra} empty={t.noExtra} />
             </div>
           </section>
         )}
 
         {protocol?.secondaryProtocol && (
-          <section className="mt-8 rounded-[2rem] bg-[#1f1f1f] p-6 text-white shadow-sm">
-            <p className="mb-3 text-xs uppercase tracking-[0.3em] text-[#c7b59b]">
-              Secondary Support Line
+          <section className="mt-8 rounded-[2rem] border border-white/10 bg-[#111111] p-8">
+            <p className="mb-4 text-sm uppercase tracking-[0.3em] text-fuchsia-300">
+              {t.secondaryLine}
             </p>
 
-            <h2 className="mb-2 text-3xl font-light">
-              {protocol.secondaryLine}
-            </h2>
+            <h2 className="text-4xl font-black">{protocol.secondaryLine}</h2>
 
-            <p className="mb-8 text-sm text-[#d8d0c5]">
+            <p className="mt-4 text-white/65">
               {protocol.secondaryProtocol.concern}
             </p>
 
-            <div className="grid gap-6 md:grid-cols-2">
-              <RoutineBlockDark
-                title="Morning Support"
-                products={protocol.secondaryProtocol.morning}
-              />
-
-              <RoutineBlockDark
-                title="Evening Support"
-                products={protocol.secondaryProtocol.evening}
-              />
+            <div className="mt-9 grid gap-6 lg:grid-cols-2">
+              <RoutineBlock title={t.morning} products={protocol.secondaryProtocol.morning} empty={t.noExtra} />
+              <RoutineBlock title={t.evening} products={protocol.secondaryProtocol.evening} empty={t.noExtra} />
             </div>
           </section>
         )}
@@ -273,60 +321,53 @@ export default function SkinAnalysisPage() {
 }
 
 function Score({ label, value }) {
+  const safeValue = Math.min(Math.max(value || 0, 0), 100)
+
   return (
-    <div className="rounded-[1.25rem] border border-[#eee5da] p-4">
-      <div className="mb-2 flex items-center justify-between">
-        <span className="text-xs uppercase tracking-[0.2em] text-[#9a856c]">
-          {label}
-        </span>
-        <span className="text-sm text-[#5f5a53]">{value}/100</span>
+    <div className="rounded-2xl border border-white/10 bg-black/20 p-5">
+      <div className="mb-3 flex justify-between text-sm font-bold">
+        <span>{label}</span>
+        <span>{safeValue}/100</span>
       </div>
 
-      <div className="h-2 overflow-hidden rounded-full bg-[#eee5da]">
+      <div className="h-3 overflow-hidden rounded-full bg-white/10">
         <div
-          className="h-full rounded-full bg-[#9a856c]"
-          style={{ width: `${Math.min(Math.max(value || 0, 0), 100)}%` }}
+          className="h-full rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-600"
+          style={{ width: `${safeValue}%` }}
         />
       </div>
     </div>
   )
 }
 
-function RoutineBlock({ title, products = [] }) {
-  return (
-    <div className="rounded-[1.5rem] border border-[#eee5da] p-5">
-      <h3 className="mb-5 text-lg font-light">{title}</h3>
+function InfoBlock({ title, text }) {
+  if (!text) return null
 
-      {products?.length ? (
-        <div className="space-y-4">
-          {products.filter(Boolean).map((product, index) => (
-            <ProductCard key={index} product={product} />
-          ))}
-        </div>
-      ) : (
-        <p className="text-sm text-[#8a8176]">
-          No additional products required.
-        </p>
-      )}
+  return (
+    <div className="mt-6 rounded-2xl border border-white/10 bg-black/20 p-5">
+      <h3 className="mb-3 text-sm uppercase tracking-[0.25em] text-white/50">
+        {title}
+      </h3>
+      <p className="leading-7 text-white/75">{text}</p>
     </div>
   )
 }
 
-function RoutineBlockDark({ title, products = [] }) {
-  return (
-    <div className="rounded-[1.5rem] border border-white/10 p-5">
-      <h3 className="mb-5 text-lg font-light">{title}</h3>
+function RoutineBlock({ title, products = [], empty }) {
+  const list = products.filter(Boolean)
 
-      {products?.length ? (
+  return (
+    <div className="rounded-3xl border border-white/10 bg-black/25 p-6">
+      <h3 className="mb-6 text-2xl font-bold">{title}</h3>
+
+      {list.length ? (
         <div className="space-y-4">
-          {products.filter(Boolean).map((product, index) => (
-            <ProductCardDark key={index} product={product} />
+          {list.map((product, index) => (
+            <ProductCard key={index} product={product} />
           ))}
         </div>
       ) : (
-        <p className="text-sm text-white/60">
-          No additional products required.
-        </p>
+        <p className="text-white/50">{empty}</p>
       )}
     </div>
   )
@@ -334,38 +375,22 @@ function RoutineBlockDark({ title, products = [] }) {
 
 function ProductCard({ product }) {
   return (
-    <div className="rounded-[1rem] bg-[#f7f4ef] p-4">
-      <p className="text-sm font-medium">{product.name}</p>
+    <div className="rounded-2xl bg-white/10 p-5">
+      <div className="text-sm font-black">{product.name}</div>
 
       {product.line && (
-        <p className="mt-1 text-xs uppercase tracking-[0.18em] text-[#9a856c]">
+        <div className="mt-2 text-xs uppercase tracking-[0.25em] text-fuchsia-300">
           {product.line}
-        </p>
+        </div>
       )}
 
-      {product.description && (
-        <p className="mt-3 text-sm leading-6 text-[#6f6a63]">
-          {product.description}
-        </p>
-      )}
-    </div>
-  )
-}
-
-function ProductCardDark({ product }) {
-  return (
-    <div className="rounded-[1rem] bg-white/5 p-4">
-      <p className="text-sm font-medium">{product.name}</p>
-
-      {product.line && (
-        <p className="mt-1 text-xs uppercase tracking-[0.18em] text-[#c7b59b]">
-          {product.line}
-        </p>
+      {product.step && (
+        <div className="mt-3 text-sm text-white/55">{product.step}</div>
       )}
 
-      {product.description && (
+      {product.purpose && (
         <p className="mt-3 text-sm leading-6 text-white/70">
-          {product.description}
+          {product.purpose}
         </p>
       )}
     </div>
