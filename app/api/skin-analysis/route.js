@@ -1,5 +1,5 @@
 import OpenAI from 'openai'
-import { getRecommendedProtocol } from '@/lib/recommendations'
+import { getRecommendedProtocol } from '../../../lib/recommendations'
 
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
