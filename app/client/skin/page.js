@@ -8,109 +8,79 @@ const translations = {
     back: '← Home Care Dashboard',
     title: 'Hautanalyse',
     subtitle:
-      'Basis-AI-Diagnostik für Homecare: Feuchtigkeit, Pigmentierung, Falten und Akne / entzündliche Elemente.',
+      'AI-Diagnostik für Homecare: Feuchtigkeit, Pigmentierung, Falten und Akne / entzündliche Elemente.',
     photo: 'Hautfoto',
     upload: 'Hautfoto hochladen',
     analyze: '✨ Haut analysieren',
+    analyzing: 'AI analysiert das Hautfoto...',
     empty: 'Laden Sie ein Foto hoch, um die Hautanalyse zu starten.',
-    result: 'Analyseergebnis',
-    resultText:
-      'Sichtbar sind Hinweise auf reduzierte Feuchtigkeit, ungleichmäßige Pigmentierung, frühe Faltenbildung und entzündliche Aktivität. Für die Homecare wird eine beruhigende, feuchtigkeitsspendende und barrierestärkende Strategie empfohlen.',
+    error: 'Hautanalyse fehlgeschlagen. Bitte versuchen Sie es erneut.',
+    score: 'Haut-Score',
     hydration: 'Feuchtigkeit',
     pigmentation: 'Pigmentierung',
     wrinkles: 'Falten',
     acne: 'Akne / Entzündungen',
-    reduced: 'Reduziert',
-    moderate: 'Mittel',
-    early: 'Frühe Anzeichen',
-    expressed: 'Ausgeprägt',
+    summary: 'Analyseergebnis',
     morning: 'Homecare Routine — Morgen',
     evening: 'Homecare Routine — Abend',
     products: 'Summecosmetics Empfehlung',
-    professional: 'Professional Recommendation',
-    morningText:
-      '1. Sanfte Reinigung — ESSENTIAL. \n2. Feuchtigkeit — GLACIAR. \n3. Barriereunterstützung — NICELY. \n4. Bei Pigmentierung — BECLARITY oder CELL C. \n5. Täglich SPF — SUMMESUN.',
-    eveningText:
-      '1. Reinigung ohne Austrocknung. \n2. Beruhigende Pflege — NICELY. \n3. Bei Entzündungen — BALANCE. \n4. Regeneration und Feuchtigkeit — GLACIAR / NICELY. \n5. Sanfte Erneuerung 1–2 Mal pro Woche.',
-    productsText:
-      'GLACIAR — Feuchtigkeit. \nNICELY — Barriere und Sensibilität. \nBALANCE — Akne und Sebum. \nBECLARITY — Pigmentierung. \nCELL C — Glow und antioxidative Unterstützung. \nSUMMESUN — täglicher UV-Schutz.',
-    professionalText:
-      'Bei ausgeprägten Hautveränderungen empfehlen wir eine professionelle Hautanalyse und individuelle Behandlung durch eine Kosmetikerin.',
+    professional: 'Professional Note',
   },
 
   RU: {
     back: '← Домашний уход',
     title: 'Анализ кожи',
     subtitle:
-      'Базовая AI-диагностика для домашнего ухода: увлажнение, пигментация, морщины и акне / воспалительные элементы.',
+      'AI-диагностика для домашнего ухода: увлажнение, пигментация, морщины и акне / воспалительные элементы.',
     photo: 'Фото кожи',
     upload: 'Загрузить фото кожи',
     analyze: '✨ Анализировать кожу',
+    analyzing: 'AI анализирует фото кожи...',
     empty: 'Загрузите фото для анализа кожи.',
-    result: 'Результат анализа',
-    resultText:
-      'Визуально наблюдаются признаки сниженного увлажнения, неравномерной пигментации, ранних возрастных изменений и воспалительной активности. Для домашнего ухода рекомендуется успокаивающая, увлажняющая и барьерно-восстанавливающая стратегия.',
+    error: 'Ошибка анализа кожи. Попробуйте ещё раз.',
+    score: 'Индекс кожи',
     hydration: 'Увлажнение',
     pigmentation: 'Пигментация',
     wrinkles: 'Морщины',
     acne: 'Акне / воспаления',
-    reduced: 'Снижено',
-    moderate: 'Умеренно',
-    early: 'Ранние признаки',
-    expressed: 'Выражено',
+    summary: 'Результат анализа',
     morning: 'Домашняя рутина — утро',
     evening: 'Домашняя рутина — вечер',
     products: 'Рекомендации Summecosmetics',
-    professional: 'Профессиональная рекомендация',
-    morningText:
-      '1. Мягкое очищение — ESSENTIAL. \n2. Увлажнение — GLACIAR. \n3. Поддержка барьера — NICELY. \n4. При пигментации — BECLARITY или CELL C. \n5. Ежедневно SPF — SUMMESUN.',
-    eveningText:
-      '1. Очищение без пересушивания. \n2. Успокаивающий уход — NICELY. \n3. При воспалениях — BALANCE. \n4. Восстановление и увлажнение — GLACIAR / NICELY. \n5. Мягкое обновление 1–2 раза в неделю.',
-    productsText:
-      'GLACIAR — увлажнение. \nNICELY — барьер и чувствительность. \nBALANCE — акне и себум. \nBECLARITY — пигментация. \nCELL C — сияние и антиоксидантная поддержка. \nSUMMESUN — ежедневная SPF-защита.',
-    professionalText:
-      'При выраженных изменениях кожи рекомендуется профессиональная диагностика и индивидуальный подбор процедур у косметолога.',
+    professional: 'Профессиональное примечание',
   },
 
   EN: {
     back: '← Home Care Dashboard',
     title: 'Skin Analysis',
     subtitle:
-      'Basic AI diagnostics for homecare: hydration, pigmentation, wrinkles and acne / inflammatory elements.',
+      'AI diagnostics for homecare: hydration, pigmentation, wrinkles and acne / inflammatory elements.',
     photo: 'Skin Photo',
     upload: 'Upload Skin Photo',
     analyze: '✨ Analyze Skin',
+    analyzing: 'AI is analyzing the skin photo...',
     empty: 'Upload a photo to start skin analysis.',
-    result: 'Analysis Result',
-    resultText:
-      'Visible signs suggest reduced hydration, uneven pigmentation, early wrinkle formation and inflammatory activity. For homecare, a calming, hydrating and barrier-supporting strategy is recommended.',
+    error: 'Skin analysis failed. Please try again.',
+    score: 'Skin Score',
     hydration: 'Hydration',
     pigmentation: 'Pigmentation',
     wrinkles: 'Wrinkles',
     acne: 'Acne / Inflammation',
-    reduced: 'Reduced',
-    moderate: 'Moderate',
-    early: 'Early Signs',
-    expressed: 'Expressed',
+    summary: 'Analysis Result',
     morning: 'Homecare Routine — Morning',
     evening: 'Homecare Routine — Evening',
     products: 'Summecosmetics Recommendation',
-    professional: 'Professional Recommendation',
-    morningText:
-      '1. Gentle cleansing — ESSENTIAL. \n2. Hydration — GLACIAR. \n3. Barrier support — NICELY. \n4. For pigmentation — BECLARITY or CELL C. \n5. Daily SPF — SUMMESUN.',
-    eveningText:
-      '1. Cleansing without drying. \n2. Calming care — NICELY. \n3. For inflammation — BALANCE. \n4. Recovery and hydration — GLACIAR / NICELY. \n5. Gentle renewal 1–2 times per week.',
-    productsText:
-      'GLACIAR — hydration. \nNICELY — barrier and sensitivity. \nBALANCE — acne and sebum. \nBECLARITY — pigmentation. \nCELL C — glow and antioxidant support. \nSUMMESUN — daily SPF protection.',
-    professionalText:
-      'For significant skin concerns, a professional skin consultation and individual treatment plan are recommended.',
+    professional: 'Professional Note',
   },
 }
 
 export default function ClientSkinPage() {
   const [lang, setLang] = useState('DE')
-  const [image, setImage] = useState(null)
-  const [done, setDone] = useState(false)
+  const [imagePreview, setImagePreview] = useState(null)
+  const [imageBase64, setImageBase64] = useState('')
+  const [analysis, setAnalysis] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const t = translations[lang]
 
@@ -118,16 +88,62 @@ export default function ClientSkinPage() {
     const file = event.target.files?.[0]
     if (!file) return
 
-    setImage(URL.createObjectURL(file))
-    setDone(false)
+    const previewUrl = URL.createObjectURL(file)
+    setImagePreview(previewUrl)
+    setAnalysis(null)
+    setError('')
+
+    const reader = new FileReader()
+
+    reader.onloadend = () => {
+      setImageBase64(reader.result)
+    }
+
+    reader.readAsDataURL(file)
   }
 
-  const metrics = [
-    { label: t.hydration, value: 58, status: t.reduced },
-    { label: t.pigmentation, value: 46, status: t.moderate },
-    { label: t.wrinkles, value: 52, status: t.early },
-    { label: t.acne, value: 68, status: t.expressed },
-  ]
+  const analyzeSkin = async () => {
+    if (!imageBase64) return
+
+    setLoading(true)
+    setError('')
+    setAnalysis(null)
+
+    try {
+      const response = await fetch('/api/skin-analysis', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          image: imageBase64,
+          lang,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok || data.error) {
+        throw new Error(data.error || 'Skin analysis failed')
+      }
+
+      setAnalysis(data)
+    } catch (err) {
+      console.error(err)
+      setError(t.error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const metrics = analysis
+    ? [
+        { label: t.hydration, value: analysis.hydration },
+        { label: t.pigmentation, value: analysis.pigmentation },
+        { label: t.wrinkles, value: analysis.wrinkles },
+        { label: t.acne, value: analysis.acne },
+      ]
+    : []
 
   return (
     <main style={styles.main}>
@@ -141,7 +157,11 @@ export default function ClientSkinPage() {
             {['DE', 'RU', 'EN'].map((item) => (
               <button
                 key={item}
-                onClick={() => setLang(item)}
+                onClick={() => {
+                  setLang(item)
+                  setAnalysis(null)
+                  setError('')
+                }}
                 style={lang === item ? styles.langActive : styles.langBtn}
               >
                 {item}
@@ -160,8 +180,12 @@ export default function ClientSkinPage() {
 
             <label style={{ cursor: 'pointer' }}>
               <div style={styles.uploadBox}>
-                {image ? (
-                  <img src={image} alt="Skin preview" style={styles.image} />
+                {imagePreview ? (
+                  <img
+                    src={imagePreview}
+                    alt="Skin preview"
+                    style={styles.image}
+                  />
                 ) : (
                   t.upload
                 )}
@@ -176,28 +200,43 @@ export default function ClientSkinPage() {
             </label>
 
             <button
-              onClick={() => image && setDone(true)}
-              disabled={!image}
+              onClick={analyzeSkin}
+              disabled={!imageBase64 || loading}
               style={{
                 ...styles.primaryBtn,
-                opacity: image ? 1 : 0.45,
-                cursor: image ? 'pointer' : 'not-allowed',
+                opacity: imageBase64 && !loading ? 1 : 0.45,
+                cursor: imageBase64 && !loading ? 'pointer' : 'not-allowed',
               }}
             >
-              {t.analyze}
+              {loading ? t.analyzing : t.analyze}
             </button>
           </div>
 
           <div style={styles.panel}>
-            {!done ? (
+            {!analysis && !error && !loading && (
               <div style={styles.empty}>{t.empty}</div>
-            ) : (
+            )}
+
+            {loading && <div style={styles.empty}>{t.analyzing}</div>}
+
+            {error && <div style={styles.error}>{error}</div>}
+
+            {analysis && (
               <>
-                <h2 style={styles.h2}>{t.result}</h2>
+                <div style={styles.scoreRow}>
+                  <div style={styles.scoreCircle}>
+                    {analysis.overallScore}
+                  </div>
 
-                <p style={styles.text}>{t.resultText}</p>
+                  <div>
+                    <div style={styles.scoreText}>
+                      {analysis.overallScore}/100
+                    </div>
+                    <div style={styles.scoreLabel}>{t.score}</div>
+                  </div>
+                </div>
 
-                <div style={{ marginTop: 28 }}>
+                <div style={styles.metricsGrid}>
                   {metrics.map((metric) => (
                     <Metric key={metric.label} {...metric} />
                   ))}
@@ -207,12 +246,17 @@ export default function ClientSkinPage() {
           </div>
         </section>
 
-        {done && (
+        {analysis && (
           <section style={styles.resultGrid}>
-            <Info title={t.morning}>{t.morningText}</Info>
-            <Info title={t.evening}>{t.eveningText}</Info>
-            <Info title={t.products}>{t.productsText}</Info>
-            <Info title={t.professional}>{t.professionalText}</Info>
+            <Info title={t.summary}>{analysis.summary}</Info>
+
+            <Info title={t.morning}>{analysis.morningRoutine}</Info>
+
+            <Info title={t.evening}>{analysis.eveningRoutine}</Info>
+
+            <Info title={t.products}>{analysis.summecosmetics}</Info>
+
+            <Info title={t.professional}>{analysis.professionalNote}</Info>
           </section>
         )}
       </div>
@@ -220,25 +264,25 @@ export default function ClientSkinPage() {
   )
 }
 
-function Metric({ label, value, status }) {
+function Metric({ label, value = 0 }) {
+  const safeValue = Math.max(0, Math.min(100, Number(value) || 0))
+
   return (
     <div style={styles.metric}>
       <div style={styles.metricTop}>
         <span>{label}</span>
-        <strong>{status}</strong>
+        <strong>{safeValue}/100</strong>
       </div>
 
       <div style={styles.barBg}>
         <div
           style={{
-            width: `${value}%`,
+            width: `${safeValue}%`,
             height: '100%',
             background: 'linear-gradient(90deg,#7b2cff,#ff00aa)',
           }}
         />
       </div>
-
-      <div style={styles.value}>{value}/100</div>
     </div>
   )
 }
@@ -366,17 +410,50 @@ const styles = {
     textAlign: 'center',
     lineHeight: 1.6,
   },
-  text: {
-    color: '#d4d4d4',
-    lineHeight: 1.7,
+  error: {
+    background: '#3b1111',
+    border: '1px solid #7f1d1d',
+    color: '#ffb4b4',
+    borderRadius: '20px',
+    padding: '22px',
     fontSize: '18px',
+    lineHeight: 1.6,
+  },
+  scoreRow: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '26px',
+    marginBottom: '30px',
+  },
+  scoreCircle: {
+    width: '130px',
+    height: '130px',
+    borderRadius: '50%',
+    background: 'linear-gradient(135deg,#7b2cff,#ff00aa)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '46px',
+    fontWeight: 900,
+  },
+  scoreText: {
+    fontSize: '44px',
+    fontWeight: 900,
+  },
+  scoreLabel: {
+    color: '#aaa',
+    marginTop: '8px',
+    fontSize: '16px',
+  },
+  metricsGrid: {
+    display: 'grid',
+    gap: '16px',
   },
   metric: {
     background: '#0d0d18',
     border: '1px solid #252525',
     borderRadius: '18px',
     padding: '18px',
-    marginBottom: '16px',
   },
   metricTop: {
     display: 'flex',
@@ -391,11 +468,6 @@ const styles = {
     background: '#1c1c1c',
     borderRadius: '999px',
     overflow: 'hidden',
-  },
-  value: {
-    marginTop: '10px',
-    color: '#ff4fd8',
-    fontWeight: 800,
   },
   resultGrid: {
     display: 'grid',
