@@ -2,29 +2,167 @@
 
 import { useState } from 'react'
 
-const skinTypes = [
-  { value: 'dry', label: 'Trocken' },
-  { value: 'normal', label: 'Normal' },
-  { value: 'combination', label: 'Mischhaut' },
-  { value: 'oily', label: 'Fettig' },
-]
+const ui = {
+  DE: {
+    back: '← FORMULENS LAB',
+    title: 'PROTOCOL BUILDER',
+    subtitle: 'Professionelle Behandlungsprotokolle für Kosmetikerinnen & Institute.',
+    formTitle: 'Kundendaten & Hautanalyse',
+    language: 'Sprache',
+    gender: 'Geschlecht',
+    age: 'Alter',
+    skinType: 'Hauttyp',
+    sensitivity: 'Sensibilität',
+    concerns: 'Hauptprobleme',
+    goal: 'Behandlungsziel',
+    button: 'PROTOKOLL ERSTELLEN',
+    loading: 'Protokoll wird erstellt...',
+    report: 'Professional Report',
+    empty: 'Fülle die Analyse aus und erstelle ein personalisiertes Behandlungsprotokoll.',
+    diagnosis: 'PROFESSIONAL DIAGNOSIS',
+    summary: 'AI Summary',
+    mainLine: 'Main line',
+    variant: 'Variant',
+    course: 'Course',
+    equipment: 'Equipment',
+    homecare: 'Homecare Support',
+  },
+  RU: {
+    back: '← FORMULENS LAB',
+    title: 'КОНСТРУКТОР ПРОТОКОЛОВ',
+    subtitle: 'Профессиональные протоколы процедур для косметологов и институтов.',
+    formTitle: 'Данные клиента и анализ кожи',
+    language: 'Язык',
+    gender: 'Пол',
+    age: 'Возраст',
+    skinType: 'Тип кожи',
+    sensitivity: 'Чувствительность',
+    concerns: 'Основные проблемы',
+    goal: 'Цель процедуры',
+    button: 'СОЗДАТЬ ПРОТОКОЛ',
+    loading: 'Протокол создаётся...',
+    report: 'Профессиональный отчёт',
+    empty: 'Заполните анализ и создайте персонализированный протокол процедуры.',
+    diagnosis: 'ПРОФЕССИОНАЛЬНАЯ ДИАГНОСТИКА',
+    summary: 'AI резюме',
+    mainLine: 'Основная линия',
+    variant: 'Вариант',
+    course: 'Курс',
+    equipment: 'Оборудование',
+    homecare: 'Домашняя поддержка',
+  },
+  EN: {
+    back: '← FORMULENS LAB',
+    title: 'PROTOCOL BUILDER',
+    subtitle: 'Professional treatment protocols for cosmetologists & institutes.',
+    formTitle: 'Client data & skin analysis',
+    language: 'Language',
+    gender: 'Gender',
+    age: 'Age',
+    skinType: 'Skin type',
+    sensitivity: 'Sensitivity',
+    concerns: 'Main concerns',
+    goal: 'Treatment goal',
+    button: 'GENERATE PROTOCOL',
+    loading: 'Generating protocol...',
+    report: 'Professional Report',
+    empty: 'Fill in the analysis and generate a personalized treatment protocol.',
+    diagnosis: 'PROFESSIONAL DIAGNOSIS',
+    summary: 'AI Summary',
+    mainLine: 'Main line',
+    variant: 'Variant',
+    course: 'Course',
+    equipment: 'Equipment',
+    homecare: 'Homecare Support',
+  },
+}
 
-const sensitivities = [
-  { value: 'low', label: 'Niedrig' },
-  { value: 'medium', label: 'Mittel' },
-  { value: 'high', label: 'Hoch' },
-]
-
-const concernOptions = [
-  { value: 'wrinkles', label: 'Falten' },
-  { value: 'lifting', label: 'Erschlaffung / Lifting' },
-  { value: 'pigmentation', label: 'Pigmentierung' },
-  { value: 'acne', label: 'Akne / Unreinheiten' },
-  { value: 'redness', label: 'Rötungen / Couperose' },
-  { value: 'dehydration', label: 'Dehydrierung' },
-  { value: 'dullness', label: 'Fahler Teint' },
-  { value: 'regeneration', label: 'Regeneration' },
-]
+const options = {
+  DE: {
+    gender: [
+      ['female', 'Frau'],
+      ['male', 'Mann'],
+      ['diverse', 'Divers'],
+    ],
+    skinTypes: [
+      ['dry', 'Trocken'],
+      ['normal', 'Normal'],
+      ['combination', 'Mischhaut'],
+      ['oily', 'Fettig'],
+    ],
+    sensitivities: [
+      ['low', 'Niedrig'],
+      ['medium', 'Mittel'],
+      ['high', 'Hoch'],
+    ],
+    concerns: [
+      ['wrinkles', 'Falten'],
+      ['lifting', 'Erschlaffung / Lifting'],
+      ['pigmentation', 'Pigmentierung'],
+      ['acne', 'Akne / Unreinheiten'],
+      ['redness', 'Rötungen / Couperose'],
+      ['dehydration', 'Dehydrierung'],
+      ['dullness', 'Fahler Teint'],
+      ['regeneration', 'Regeneration'],
+    ],
+  },
+  RU: {
+    gender: [
+      ['female', 'Женщина'],
+      ['male', 'Мужчина'],
+      ['diverse', 'Другое'],
+    ],
+    skinTypes: [
+      ['dry', 'Сухая'],
+      ['normal', 'Нормальная'],
+      ['combination', 'Комбинированная'],
+      ['oily', 'Жирная'],
+    ],
+    sensitivities: [
+      ['low', 'Низкая'],
+      ['medium', 'Средняя'],
+      ['high', 'Высокая'],
+    ],
+    concerns: [
+      ['wrinkles', 'Морщины'],
+      ['lifting', 'Дряблость / Лифтинг'],
+      ['pigmentation', 'Пигментация'],
+      ['acne', 'Акне / Высыпания'],
+      ['redness', 'Покраснения / Купероз'],
+      ['dehydration', 'Обезвоженность'],
+      ['dullness', 'Тусклый тон'],
+      ['regeneration', 'Регенерация'],
+    ],
+  },
+  EN: {
+    gender: [
+      ['female', 'Female'],
+      ['male', 'Male'],
+      ['diverse', 'Diverse'],
+    ],
+    skinTypes: [
+      ['dry', 'Dry'],
+      ['normal', 'Normal'],
+      ['combination', 'Combination'],
+      ['oily', 'Oily'],
+    ],
+    sensitivities: [
+      ['low', 'Low'],
+      ['medium', 'Medium'],
+      ['high', 'High'],
+    ],
+    concerns: [
+      ['wrinkles', 'Wrinkles'],
+      ['lifting', 'Sagging / Lifting'],
+      ['pigmentation', 'Pigmentation'],
+      ['acne', 'Acne / Impurities'],
+      ['redness', 'Redness / Couperose'],
+      ['dehydration', 'Dehydration'],
+      ['dullness', 'Dull tone'],
+      ['regeneration', 'Regeneration'],
+    ],
+  },
+}
 
 export default function ProtocolBuilderPage() {
   const [form, setForm] = useState({
@@ -40,21 +178,20 @@ export default function ProtocolBuilderPage() {
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState(null)
 
+  const text = ui[form.lang] || ui.DE
+  const opt = options[form.lang] || options.DE
+
   function updateField(name, value) {
     setForm((prev) => ({ ...prev, [name]: value }))
   }
 
   function toggleConcern(value) {
-    setForm((prev) => {
-      const exists = prev.concerns.includes(value)
-
-      return {
-        ...prev,
-        concerns: exists
-          ? prev.concerns.filter((item) => item !== value)
-          : [...prev.concerns, value],
-      }
-    })
+    setForm((prev) => ({
+      ...prev,
+      concerns: prev.concerns.includes(value)
+        ? prev.concerns.filter((item) => item !== value)
+        : [...prev.concerns, value],
+    }))
   }
 
   async function generateProtocol() {
@@ -85,29 +222,27 @@ export default function ProtocolBuilderPage() {
     <main className="min-h-screen bg-black text-white px-6 py-10">
       <div className="max-w-7xl mx-auto">
         <a href="/" className="text-sm text-white/60 hover:text-white">
-          ← FORMULENS LAB
+          {text.back}
         </a>
 
         <div className="mt-10 mb-10">
           <h1 className="text-5xl md:text-7xl font-black tracking-tight">
-            PROTOCOL BUILDER
+            {text.title}
           </h1>
 
           <p className="mt-5 max-w-3xl text-lg text-white/70">
-            Professionelle Behandlungsprotokolle für Kosmetikerinnen & Institute.
+            {text.subtitle}
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
           <section className="rounded-3xl border border-white/10 bg-white/[0.04] p-6">
-            <h2 className="text-2xl font-bold mb-6">
-              Kundendaten & Hautanalyse
-            </h2>
+            <h2 className="text-2xl font-bold mb-6">{text.formTitle}</h2>
 
             <div className="space-y-5">
               <div>
                 <label className="block text-sm text-white/60 mb-2">
-                  Sprache
+                  {text.language}
                 </label>
 
                 <div className="flex gap-2">
@@ -127,27 +262,17 @@ export default function ProtocolBuilderPage() {
                 </div>
               </div>
 
-              <div>
-                <label className="block text-sm text-white/60 mb-2">
-                  Geschlecht
-                </label>
-
-                <select
-                  value={form.gender}
-                  onChange={(e) => updateField('gender', e.target.value)}
-                  className="w-full rounded-xl bg-black border border-white/15 px-4 py-3"
-                >
-                  <option value="female">Frau</option>
-                  <option value="male">Mann</option>
-                  <option value="diverse">Divers</option>
-                </select>
-              </div>
+              <SelectField
+                label={text.gender}
+                value={form.gender}
+                onChange={(value) => updateField('gender', value)}
+                items={opt.gender}
+              />
 
               <div>
                 <label className="block text-sm text-white/60 mb-2">
-                  Alter
+                  {text.age}
                 </label>
-
                 <input
                   type="number"
                   value={form.age}
@@ -156,62 +281,40 @@ export default function ProtocolBuilderPage() {
                 />
               </div>
 
-              <div>
-                <label className="block text-sm text-white/60 mb-2">
-                  Hauttyp
-                </label>
+              <SelectField
+                label={text.skinType}
+                value={form.skinType}
+                onChange={(value) => updateField('skinType', value)}
+                items={opt.skinTypes}
+              />
 
-                <select
-                  value={form.skinType}
-                  onChange={(e) => updateField('skinType', e.target.value)}
-                  className="w-full rounded-xl bg-black border border-white/15 px-4 py-3"
-                >
-                  {skinTypes.map((item) => (
-                    <option key={item.value} value={item.value}>
-                      {item.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm text-white/60 mb-2">
-                  Sensibilität
-                </label>
-
-                <select
-                  value={form.sensitivity}
-                  onChange={(e) => updateField('sensitivity', e.target.value)}
-                  className="w-full rounded-xl bg-black border border-white/15 px-4 py-3"
-                >
-                  {sensitivities.map((item) => (
-                    <option key={item.value} value={item.value}>
-                      {item.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <SelectField
+                label={text.sensitivity}
+                value={form.sensitivity}
+                onChange={(value) => updateField('sensitivity', value)}
+                items={opt.sensitivities}
+              />
 
               <div>
                 <label className="block text-sm text-white/60 mb-3">
-                  Hauptprobleme
+                  {text.concerns}
                 </label>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {concernOptions.map((item) => {
-                    const active = form.concerns.includes(item.value)
+                  {opt.concerns.map(([value, label]) => {
+                    const active = form.concerns.includes(value)
 
                     return (
                       <button
-                        key={item.value}
-                        onClick={() => toggleConcern(item.value)}
+                        key={value}
+                        onClick={() => toggleConcern(value)}
                         className={`text-left rounded-xl border px-4 py-3 ${
                           active
                             ? 'bg-fuchsia-600/30 border-fuchsia-500 text-white'
                             : 'bg-black border-white/15 text-white/70'
                         }`}
                       >
-                        {item.label}
+                        {label}
                       </button>
                     )
                   })}
@@ -220,7 +323,7 @@ export default function ProtocolBuilderPage() {
 
               <div>
                 <label className="block text-sm text-white/60 mb-2">
-                  Behandlungsziel
+                  {text.goal}
                 </label>
 
                 <textarea
@@ -236,7 +339,7 @@ export default function ProtocolBuilderPage() {
                 disabled={loading}
                 className="w-full rounded-2xl bg-white text-black font-bold px-6 py-4 hover:bg-white/90 disabled:opacity-60"
               >
-                {loading ? 'Protokoll wird erstellt...' : 'PROTOKOLL ERSTELLEN'}
+                {loading ? text.loading : text.button}
               </button>
             </div>
           </section>
@@ -245,13 +348,9 @@ export default function ProtocolBuilderPage() {
             {!treatment && (
               <div className="h-full flex flex-col justify-center text-white/50">
                 <h2 className="text-2xl font-bold text-white mb-3">
-                  Professional Report
+                  {text.report}
                 </h2>
-
-                <p>
-                  Fülle die Analyse aus und erstelle ein personalisiertes
-                  Behandlungsprotokoll.
-                </p>
+                <p>{text.empty}</p>
               </div>
             )}
 
@@ -259,7 +358,7 @@ export default function ProtocolBuilderPage() {
               <div className="space-y-6">
                 <div>
                   <div className="text-sm text-fuchsia-300 font-bold mb-2">
-                    PROFESSIONAL DIAGNOSIS
+                    {text.diagnosis}
                   </div>
 
                   <h2 className="text-3xl font-black">
@@ -273,7 +372,7 @@ export default function ProtocolBuilderPage() {
 
                 {result.summary && (
                   <div className="rounded-2xl bg-black border border-white/10 p-5">
-                    <h3 className="font-bold mb-3">AI Summary</h3>
+                    <h3 className="font-bold mb-3">{text.summary}</h3>
                     <p className="text-white/75 leading-relaxed">
                       {result.summary}
                     </p>
@@ -281,9 +380,9 @@ export default function ProtocolBuilderPage() {
                 )}
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <InfoCard label="Main line" value={decision?.mainLine} />
-                  <InfoCard label="Variant" value={variant?.variantName} />
-                  <InfoCard label="Course" value={treatment.course} />
+                  <InfoCard label={text.mainLine} value={decision?.mainLine} />
+                  <InfoCard label={text.variant} value={variant?.variantName} />
+                  <InfoCard label={text.course} value={treatment.course} />
                 </div>
 
                 {treatment.courseNote && (
@@ -293,10 +392,11 @@ export default function ProtocolBuilderPage() {
                 )}
 
                 {treatment.phases?.map((phase, index) => (
-                  <div key={index} className="rounded-2xl bg-black border border-white/10 p-5">
-                    <h3 className="text-xl font-bold mb-4">
-                      {phase.title}
-                    </h3>
+                  <div
+                    key={index}
+                    className="rounded-2xl bg-black border border-white/10 p-5"
+                  >
+                    <h3 className="text-xl font-bold mb-4">{phase.title}</h3>
 
                     <div className="space-y-3">
                       {phase.steps?.map((step, stepIndex) => (
@@ -324,7 +424,7 @@ export default function ProtocolBuilderPage() {
 
                 {treatment.equipment?.length > 0 && (
                   <div className="rounded-2xl bg-black border border-white/10 p-5">
-                    <h3 className="text-xl font-bold mb-3">Equipment</h3>
+                    <h3 className="text-xl font-bold mb-3">{text.equipment}</h3>
                     {treatment.equipment.map((item, index) => (
                       <div key={index}>
                         <div className="font-bold">{item.name}</div>
@@ -338,10 +438,7 @@ export default function ProtocolBuilderPage() {
 
                 {treatment.homecareSupport?.length > 0 && (
                   <div className="rounded-2xl bg-black border border-white/10 p-5">
-                    <h3 className="text-xl font-bold mb-3">
-                      Homecare Support
-                    </h3>
-
+                    <h3 className="text-xl font-bold mb-3">{text.homecare}</h3>
                     <ul className="list-disc pl-5 text-white/75">
                       {treatment.homecareSupport.map((item, index) => (
                         <li key={index}>{item}</li>
@@ -355,6 +452,25 @@ export default function ProtocolBuilderPage() {
         </div>
       </div>
     </main>
+  )
+}
+
+function SelectField({ label, value, onChange, items }) {
+  return (
+    <div>
+      <label className="block text-sm text-white/60 mb-2">{label}</label>
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full rounded-xl bg-black border border-white/15 px-4 py-3"
+      >
+        {items.map(([itemValue, itemLabel]) => (
+          <option key={itemValue} value={itemValue}>
+            {itemLabel}
+          </option>
+        ))}
+      </select>
+    </div>
   )
 }
 
