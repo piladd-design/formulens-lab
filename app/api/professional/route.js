@@ -1,9 +1,16 @@
 import OpenAI from 'openai'
-import { buildProfessionalTreatment } from '../../../lib/professional-treatment-builder'
+import { buildProfessionalTreatment } from '../../../lib/professional-treatment-builder.js'
+import { buildStrategy } from '../../../lib/strategy-engine.js'
 
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 })
+
+function languageName(lang) {
+  if (lang === 'RU') return 'Russian'
+  if (lang === 'EN') return 'English'
+  return 'German'
+}
 
 export async function POST(req) {
   try {
@@ -19,60 +26,66 @@ export async function POST(req) {
       lang = 'DE',
     } = body
 
+    const strategy = buildStrategy(body)
     const protocol = buildProfessionalTreatment(body)
-
-    const language =
-      lang === 'RU'
-        ? 'Russian'
-        : lang === 'EN'
-        ? 'English'
-        : 'German'
 
     const response = await client.responses.create({
       model: 'gpt-4.1-mini',
       input: `
-You are a senior aesthetic skin therapist.
+You are FORMULENS LAB, a professional Summecosmetics treatment assistant.
 
-Create a SHORT professional explanation for a cosmetologist.
+Write a short professional diagnosis for a cosmetologist.
 
-Language: ${language}
+Language: ${languageName(lang)}
 
+CLIENT DATA:
 Gender: ${gender}
 Age: ${age}
-Skin Type: ${skinType}
+Skin type: ${skinType}
 Sensitivity: ${sensitivity}
-Concerns: ${concerns}
+Concerns: ${Array.isArray(concerns) ? concerns.join(', ') : concerns}
 Goal: ${goal}
 
-Rules:
+FORMULENS STRATEGY:
+Primary strategy: ${strategy.primaryStrategy?.name}
+Primary reason: ${strategy.primaryStrategy?.reason}
+Secondary strategies: ${strategy.secondaryStrategies?.map((s) => s.name).join(', ')}
+Recommended lines: ${strategy.recommendedLines?.join(', ')}
+Active ingredients / focus: ${strategy.activeIngredients?.join(', ')}
 
+SELECTED PROFESSIONAL PROTOCOL:
+Main line: ${protocol.decision?.mainLine}
+Variant: ${protocol.variant?.variantName}
+Protocol type: ${protocol.treatment?.protocolType}
+Course: ${protocol.treatment?.course}
+
+RULES:
 - Maximum 120 words.
-- Professional tone.
-- Explain WHY this protocol was selected.
-- Mention expected treatment goals.
-- Do NOT recommend products not included in the protocol.
-- Do NOT invent ingredients.
+- Do not invent products.
+- Do not mention dermatologist.
+- Say cosmetologist / Kosmetikerin / косметолог if professional control is needed.
+- Explain the professional logic: primary concern, secondary support, strategy.
 - Return valid JSON only.
 
+Return exactly:
 {
-  "summary":""
+  "summary": ""
 }
 `,
     })
 
-    let ai = {
-      summary: '',
-    }
+    let ai = { summary: '' }
 
     try {
       ai = JSON.parse(response.output_text)
-    } catch (e) {
-      console.error('Professional JSON parse error', e)
+    } catch (error) {
+      console.error('Professional JSON parse error:', error)
     }
 
     return Response.json({
       success: true,
       summary: ai.summary || '',
+      strategy,
       protocol,
     })
   } catch (error) {
