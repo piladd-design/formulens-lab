@@ -31,6 +31,10 @@ const ui = {
     secondaryStrategies: 'Secondary Strategies',
     recommendedLines: 'Recommended Lines',
     activeFocus: 'Active Focus',
+    amount: 'Menge',
+    exposure: 'Einwirkzeit',
+    removal: 'Entfernung',
+    note: 'Hinweis',
   },
   RU: {
     back: '← FORMULENS LAB',
@@ -60,6 +64,10 @@ const ui = {
     secondaryStrategies: 'Поддерживающие стратегии',
     recommendedLines: 'Рекомендуемые линии',
     activeFocus: 'Активный фокус',
+    amount: 'Количество',
+    exposure: 'Экспозиция',
+    removal: 'Удаление',
+    note: 'Примечание',
   },
   EN: {
     back: '← FORMULENS LAB',
@@ -89,6 +97,10 @@ const ui = {
     secondaryStrategies: 'Secondary Strategies',
     recommendedLines: 'Recommended Lines',
     activeFocus: 'Active Focus',
+    amount: 'Amount',
+    exposure: 'Exposure',
+    removal: 'Removal',
+    note: 'Note',
   },
 }
 
@@ -186,18 +198,21 @@ export default function ProtocolBuilderPage() {
     skinType: 'dry',
     sensitivity: 'medium',
     concerns: ['wrinkles', 'lifting'],
-    goal: 'Anti-Aging, Lifting und Hautfestigung',
-    lang: 'DE',
+    goal: 'увлажнение',
+    lang: 'RU',
   })
 
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState(null)
+  const [error, setError] = useState('')
 
   const text = ui[form.lang] || ui.DE
   const opt = options[form.lang] || options.DE
 
   function updateField(name, value) {
     setForm((prev) => ({ ...prev, [name]: value }))
+    setResult(null)
+    setError('')
   }
 
   function toggleConcern(value) {
@@ -207,11 +222,14 @@ export default function ProtocolBuilderPage() {
         ? prev.concerns.filter((item) => item !== value)
         : [...prev.concerns, value],
     }))
+    setResult(null)
+    setError('')
   }
 
   async function generateProtocol() {
     setLoading(true)
     setResult(null)
+    setError('')
 
     try {
       const response = await fetch('/api/professional', {
@@ -221,15 +239,21 @@ export default function ProtocolBuilderPage() {
       })
 
       const data = await response.json()
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || 'Protocol generation failed')
+      }
+
       setResult(data)
     } catch (error) {
       console.error(error)
+      setError(error.message || 'Protocol generation failed')
+    } finally {
+      setLoading(false)
     }
-
-    setLoading(false)
   }
 
-  const treatment = result?.protocol?.treatment
+  const treatment = result?.protocol?.treatment || result?.protocol?.protocol
   const decision = result?.protocol?.decision
   const variant = result?.protocol?.variant
   const strategy = result?.strategy
@@ -361,12 +385,18 @@ export default function ProtocolBuilderPage() {
           </section>
 
           <section className="rounded-3xl border border-white/10 bg-white/[0.04] p-6 min-h-[500px]">
-            {!treatment && (
+            {!treatment && !error && (
               <div className="h-full flex flex-col justify-center text-white/50">
                 <h2 className="text-2xl font-bold text-white mb-3">
                   {text.report}
                 </h2>
                 <p>{text.empty}</p>
+              </div>
+            )}
+
+            {error && (
+              <div className="rounded-2xl bg-red-600/10 border border-red-500/30 p-5 text-red-200">
+                {error}
               </div>
             )}
 
@@ -479,8 +509,8 @@ export default function ProtocolBuilderPage() {
                 )}
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <InfoCard label={text.mainLine} value={decision?.mainLine} />
-                  <InfoCard label={text.variant} value={variant?.variantName} />
+                  <InfoCard label={text.mainLine} value={decision?.mainLine || treatment.mainLine} />
+                  <InfoCard label={text.variant} value={variant?.variantName || treatment.variantName} />
                   <InfoCard label={text.course} value={treatment.course} />
                 </div>
 
@@ -504,15 +534,41 @@ export default function ProtocolBuilderPage() {
                           className="rounded-xl border border-white/10 bg-white/[0.03] p-4"
                         >
                           <div className="font-bold">{step.name}</div>
+
                           <div className="text-xs text-white/45 mt-1">
                             {step.line}
                           </div>
+
                           <div className="text-sm text-fuchsia-200 mt-2">
                             {step.category}
                           </div>
+
                           {step.instruction && (
                             <p className="text-sm text-white/70 mt-2">
                               {step.instruction}
+                            </p>
+                          )}
+
+                          {(step.amount || step.exposure || step.removal) && (
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-3">
+                              {step.amount && (
+                                <MiniCard label={text.amount} value={step.amount} />
+                              )}
+
+                              {step.exposure && (
+                                <MiniCard label={text.exposure} value={step.exposure} />
+                              )}
+
+                              {step.removal && (
+                                <MiniCard label={text.removal} value={step.removal} />
+                              )}
+                            </div>
+                          )}
+
+                          {step.note && (
+                            <p className="text-xs text-white/50 mt-3">
+                              <strong>{text.note}: </strong>
+                              {step.note}
                             </p>
                           )}
                         </div>
@@ -578,6 +634,15 @@ function InfoCard({ label, value }) {
     <div className="rounded-2xl bg-black border border-white/10 p-4">
       <div className="text-xs text-white/40 mb-1">{label}</div>
       <div className="font-bold">{value || '—'}</div>
+    </div>
+  )
+}
+
+function MiniCard({ label, value }) {
+  return (
+    <div className="rounded-lg bg-black border border-white/10 p-3">
+      <div className="text-xs text-white/40">{label}</div>
+      <div className="font-bold text-sm">{value}</div>
     </div>
   )
 }
