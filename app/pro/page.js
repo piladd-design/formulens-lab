@@ -219,7 +219,7 @@ export default function ProDashboard() {
           />
 
           <ServiceCard
-            href="/pro/protocol"
+            href="/protocol-builder"
             icon="🧾"
             title={t.protocol}
             text={t.protocolText}
