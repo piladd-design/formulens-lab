@@ -26,6 +26,11 @@ const ui = {
     course: 'Course',
     equipment: 'Equipment',
     homecare: 'Homecare Support',
+    strategy: 'FORMULENS STRATEGY',
+    primaryStrategy: 'Primary Strategy',
+    secondaryStrategies: 'Secondary Strategies',
+    recommendedLines: 'Recommended Lines',
+    activeFocus: 'Active Focus',
   },
   RU: {
     back: '← FORMULENS LAB',
@@ -50,6 +55,11 @@ const ui = {
     course: 'Курс',
     equipment: 'Оборудование',
     homecare: 'Домашняя поддержка',
+    strategy: 'СТРАТЕГИЯ FORMULENS',
+    primaryStrategy: 'Основная стратегия',
+    secondaryStrategies: 'Поддерживающие стратегии',
+    recommendedLines: 'Рекомендуемые линии',
+    activeFocus: 'Активный фокус',
   },
   EN: {
     back: '← FORMULENS LAB',
@@ -74,6 +84,11 @@ const ui = {
     course: 'Course',
     equipment: 'Equipment',
     homecare: 'Homecare Support',
+    strategy: 'FORMULENS STRATEGY',
+    primaryStrategy: 'Primary Strategy',
+    secondaryStrategies: 'Secondary Strategies',
+    recommendedLines: 'Recommended Lines',
+    activeFocus: 'Active Focus',
   },
 }
 
@@ -217,6 +232,7 @@ export default function ProtocolBuilderPage() {
   const treatment = result?.protocol?.treatment
   const decision = result?.protocol?.decision
   const variant = result?.protocol?.variant
+  const strategy = result?.strategy
 
   return (
     <main className="min-h-screen bg-black text-white px-6 py-10">
@@ -376,6 +392,89 @@ export default function ProtocolBuilderPage() {
                     <p className="text-white/75 leading-relaxed">
                       {result.summary}
                     </p>
+                  </div>
+                )}
+
+                {strategy && (
+                  <div className="rounded-2xl bg-black border border-fuchsia-500/30 p-5">
+                    <h3 className="font-bold mb-4 text-fuchsia-300">
+                      {text.strategy}
+                    </h3>
+
+                    <div className="space-y-5">
+                      <div>
+                        <div className="text-xs text-white/40 mb-1">
+                          {text.primaryStrategy}
+                        </div>
+
+                        <div className="font-bold text-xl">
+                          {strategy.primaryStrategy?.name || '—'}
+                        </div>
+
+                        {strategy.primaryStrategy?.reason && (
+                          <p className="text-white/65 mt-2">
+                            {strategy.primaryStrategy.reason}
+                          </p>
+                        )}
+                      </div>
+
+                      {strategy.secondaryStrategies?.length > 0 && (
+                        <div>
+                          <div className="text-xs text-white/40 mb-2">
+                            {text.secondaryStrategies}
+                          </div>
+
+                          <div className="flex flex-wrap gap-2">
+                            {strategy.secondaryStrategies.map((item, index) => (
+                              <span
+                                key={index}
+                                className="rounded-full bg-white/5 border border-white/10 px-3 py-1 text-sm"
+                              >
+                                {item.name}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {strategy.recommendedLines?.length > 0 && (
+                        <div>
+                          <div className="text-xs text-white/40 mb-2">
+                            {text.recommendedLines}
+                          </div>
+
+                          <div className="flex flex-wrap gap-2">
+                            {strategy.recommendedLines.map((line) => (
+                              <span
+                                key={line}
+                                className="rounded-full bg-fuchsia-600/20 border border-fuchsia-500/30 px-3 py-1 text-sm"
+                              >
+                                {line}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {strategy.activeIngredients?.length > 0 && (
+                        <div>
+                          <div className="text-xs text-white/40 mb-2">
+                            {text.activeFocus}
+                          </div>
+
+                          <div className="flex flex-wrap gap-2">
+                            {strategy.activeIngredients.map((item) => (
+                              <span
+                                key={item}
+                                className="rounded-full bg-emerald-600/20 border border-emerald-500/30 px-3 py-1 text-sm"
+                              >
+                                {item}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 )}
 
