@@ -1,10 +1,17 @@
 import OpenAI from 'openai'
-import { buildProfessionalTreatment } from '../../../lib/professional-treatment-builder.js'
+import { buildProfessionalProtocol } from '../../../lib/professional-protocols.js'
 import { buildStrategy } from '../../../lib/strategy-engine.js'
 
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 })
+
+function normalizeLang(lang = 'DE') {
+  const value = String(lang).toUpperCase()
+  if (value === 'RU') return 'RU'
+  if (value === 'EN') return 'EN'
+  return 'DE'
+}
 
 function languageName(lang) {
   if (lang === 'RU') return 'Russian'
@@ -15,6 +22,7 @@ function languageName(lang) {
 export async function POST(req) {
   try {
     const body = await req.json()
+    const lang = normalizeLang(body.lang)
 
     const {
       gender,
@@ -23,11 +31,16 @@ export async function POST(req) {
       sensitivity,
       concerns,
       goal,
-      lang = 'DE',
     } = body
 
-    const strategy = buildStrategy(body)
-    const protocol = buildProfessionalTreatment(body)
+    const input = {
+      ...body,
+      lang,
+    }
+
+    const strategy = buildStrategy(input)
+    const protocolResult = buildProfessionalProtocol(input)
+    const treatment = protocolResult.protocol
 
     const response = await client.responses.create({
       model: 'gpt-4.1-mini',
@@ -39,32 +52,34 @@ Write a short professional diagnosis for a cosmetologist.
 Language: ${languageName(lang)}
 
 CLIENT DATA:
-Gender: ${gender}
-Age: ${age}
-Skin type: ${skinType}
-Sensitivity: ${sensitivity}
-Concerns: ${Array.isArray(concerns) ? concerns.join(', ') : concerns}
-Goal: ${goal}
+Gender: ${gender || ''}
+Age: ${age || ''}
+Skin type: ${skinType || ''}
+Sensitivity: ${sensitivity || ''}
+Concerns: ${Array.isArray(concerns) ? concerns.join(', ') : concerns || ''}
+Goal: ${goal || ''}
 
 FORMULENS STRATEGY:
-Primary strategy: ${strategy.primaryStrategy?.name}
-Primary reason: ${strategy.primaryStrategy?.reason}
-Secondary strategies: ${strategy.secondaryStrategies?.map((s) => s.name).join(', ')}
-Recommended lines: ${strategy.recommendedLines?.join(', ')}
-Active ingredients / focus: ${strategy.activeIngredients?.join(', ')}
+Primary strategy: ${strategy.primaryStrategy?.name || ''}
+Primary reason: ${strategy.primaryStrategy?.reason || ''}
+Secondary strategies: ${strategy.secondaryStrategies?.map((s) => s.name).join(', ') || ''}
+Recommended lines: ${strategy.recommendedLines?.join(', ') || ''}
+Active ingredients / focus: ${strategy.activeIngredients?.join(', ') || ''}
 
 SELECTED PROFESSIONAL PROTOCOL:
-Main line: ${protocol.decision?.mainLine}
-Variant: ${protocol.variant?.variantName}
-Protocol type: ${protocol.treatment?.protocolType}
-Course: ${protocol.treatment?.course}
+Main line: ${treatment?.mainLine || protocolResult.decision?.mainLine || ''}
+Variant: ${treatment?.variantName || protocolResult.variant?.variantName || ''}
+Protocol type: ${treatment?.protocolType || protocolResult.variant?.protocolType || ''}
+Course: ${treatment?.course || ''}
 
 RULES:
 - Maximum 120 words.
 - Do not invent products.
 - Do not mention dermatologist.
+- Use only the requested language.
 - Say cosmetologist / Kosmetikerin / косметолог if professional control is needed.
-- Explain the professional logic: primary concern, secondary support, strategy.
+- Explain the logic: primary strategy, secondary support, selected line.
+- If the goal is hydration, do not describe barrier repair as the main strategy unless the primary strategy is barrier repair.
 - Return valid JSON only.
 
 Return exactly:
@@ -86,7 +101,7 @@ Return exactly:
       success: true,
       summary: ai.summary || '',
       strategy,
-      protocol,
+      protocol: protocolResult,
     })
   } catch (error) {
     console.error(error)
