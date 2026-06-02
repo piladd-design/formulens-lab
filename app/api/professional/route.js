@@ -1,5 +1,6 @@
 import { buildProfessionalProtocol } from '../../../lib/professional-protocols.js'
 import { buildStrategy } from '../../../lib/strategy-engine.js'
+import { buildSmartRecommendations } from '../../../lib/recommendations.js'
 
 function normalizeLang(lang = 'DE') {
   const value = String(lang).toUpperCase()
@@ -8,20 +9,28 @@ function normalizeLang(lang = 'DE') {
   return 'DE'
 }
 
-function buildFallbackSummary(strategy, protocolResult, lang) {
+function buildFallbackSummary(strategy, protocolResult, smartRecommendations, lang) {
   const primary = strategy.primaryStrategy?.name || ''
-  const line = protocolResult.protocol?.mainLine || protocolResult.decision?.mainLine || ''
-  const variant = protocolResult.protocol?.variantName || protocolResult.variant?.variantName || ''
+  const line =
+    smartRecommendations?.recommendedLines?.[0] ||
+    protocolResult.protocol?.mainLine ||
+    protocolResult.decision?.mainLine ||
+    ''
+
+  const variant =
+    protocolResult.protocol?.variantName ||
+    protocolResult.variant?.variantName ||
+    ''
 
   if (lang === 'RU') {
-    return `Основная стратегия: ${primary}. Выбран профессиональный протокол ${line}${variant ? ` — ${variant}` : ''}. Поддерживающие стратегии используются как дополнительная коррекция, без замены основной цели процедуры.`
+    return `Основная стратегия: ${primary}. Главная линия выбрана по цели процедуры: ${line}${variant ? ` — ${variant}` : ''}. Продукты и домашняя поддержка подобраны с учётом цели, проблем кожи, возраста, типа кожи и чувствительности.`
   }
 
   if (lang === 'EN') {
-    return `Primary strategy: ${primary}. Selected professional protocol: ${line}${variant ? ` — ${variant}` : ''}. Supporting strategies are used as additional correction without replacing the main treatment goal.`
+    return `Primary strategy: ${primary}. Main line selected by treatment goal: ${line}${variant ? ` — ${variant}` : ''}. Products and homecare are selected according to goal, skin concerns, age, skin type and sensitivity.`
   }
 
-  return `Primäre Strategie: ${primary}. Ausgewähltes professionelles Protokoll: ${line}${variant ? ` — ${variant}` : ''}. Unterstützende Strategien ergänzen die Korrektur, ersetzen aber nicht das Hauptziel der Behandlung.`
+  return `Primäre Strategie: ${primary}. Hauptlinie nach Behandlungsziel ausgewählt: ${line}${variant ? ` — ${variant}` : ''}. Produkte und Heimpflege werden nach Ziel, Hautproblemen, Alter, Hauttyp und Empfindlichkeit ausgewählt.`
 }
 
 export async function POST(req) {
@@ -35,21 +44,28 @@ export async function POST(req) {
 
     const strategy = buildStrategy(input)
     const protocolResult = buildProfessionalProtocol(input)
+    const smartRecommendations = buildSmartRecommendations(input)
 
     const compatibleProtocol = {
       ...protocolResult,
 
-      // новая структура
       protocol: protocolResult.protocol,
-
-      // старая структура, которую, скорее всего, ждёт page.js
       treatment: protocolResult.protocol,
+
+      smartRecommendations,
+      recommendations: smartRecommendations,
     }
 
     return Response.json({
       success: true,
-      summary: buildFallbackSummary(strategy, protocolResult, input.lang),
+      summary: buildFallbackSummary(
+        strategy,
+        protocolResult,
+        smartRecommendations,
+        input.lang
+      ),
       strategy,
+      recommendations: smartRecommendations,
       protocol: compatibleProtocol,
     })
   } catch (error) {
