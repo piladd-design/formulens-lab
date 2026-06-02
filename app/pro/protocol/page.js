@@ -9,84 +9,39 @@ const translations = {
     title: 'Protokoll Builder',
     subtitle:
       'Erstellen Sie ein professionelles Behandlungsprotokoll anhand von Alter, Hauttyp, Sensibilität, Fototyp, Hautproblemen und Behandlungsziel.',
-
     clientData: 'Kundendaten',
     age: 'Alter',
     agePlaceholder: 'Zum Beispiel: 45',
     skinType: 'Hauttyp',
-    skinTypePlaceholder: 'Zum Beispiel: trocken, sensibel, reaktiv',
+    skinTypePlaceholder: 'Zum Beispiel: trocken',
     sensitivity: 'Hautsensibilität',
     sensitivityPlaceholder: 'Niedrig, mittel oder hoch',
     phototype: 'Fototyp',
     phototypePlaceholder: 'I, II, III, IV, V oder VI',
     concerns: 'Hauptprobleme',
-    concernsPlaceholder:
-      'Zum Beispiel: Couperose, Rötungen, Dehydratation, Falten, Pigmentierung',
+    concernsPlaceholder: 'Zum Beispiel: Falten, Erschlaffung',
     goal: 'Behandlungsziel',
-    goalPlaceholder:
-      'Zum Beispiel: Haut beruhigen, Barriere stärken, Feuchtigkeit und Ton verbessern',
+    goalPlaceholder: 'Zum Beispiel: Feuchtigkeit',
     create: '✨ Protokoll erstellen',
-
+    creating: 'Protokoll wird erstellt...',
     empty:
       'Füllen Sie die Kundendaten aus, um ein professionelles Behandlungsprotokoll zu erstellen.',
-    strategyTitle: 'Professionelle Strategie',
-    priorities: 'Behandlungsprioritäten',
-    protocolTitle: 'Kabinenprotokoll',
-
-    strategyText:
-      'Für eine Kundin im Alter von {age} Jahren mit dem Hauttyp „{skinType}“, Sensibilität „{sensitivity}“, Fototyp „{phototype}“ und den Hauptproblemen „{concerns}“ empfiehlt sich ein strukturiertes, barriereorientiertes Protokoll. Das Ziel ist, die Haut zu stabilisieren, Reaktivität zu reduzieren, Komfort wiederherzustellen und die Haut auf weitere aktive Behandlungsschritte vorzubereiten.',
-
-    priorityList: [
-      'Reduktion von Reaktivität und Rötungen',
-      'Stärkung der Hautbarriere',
-      'Intensive Feuchtigkeitsversorgung',
-      'Sanfte Behandlung ohne aggressive Stimulation',
-      'Vorbereitung auf spätere aktive Protokolle',
-    ],
-
-    steps: [
-      {
-        title: 'Vorbereitung und Reinigung',
-        text:
-          'Sanfte Reinigung ohne Austrocknung. Empfohlene Richtung: ESSENTIAL CARE CONCEPT. Ziel: Haut reinigen, vorbereiten und Reaktivität nicht verstärken.',
-      },
-      {
-        title: 'Toner und Stabilisierung',
-        text:
-          'Wiederherstellung des Hautkomforts nach der Reinigung. Bei Sensibilität: NICELY. Bei Dehydratation: GLACIAR.',
-      },
-      {
-        title: 'Beruhigender Barriere-Schritt',
-        text:
-          'Kernphase des Protokolls: Reaktivität reduzieren, Barriere unterstützen und Hautstress mindern. Priorität: NICELY + GLACIAR.',
-      },
-      {
-        title: 'Problemorientierte Korrektur',
-        text:
-          'Bei entzündlichen Elementen: BALANCE. Bei Pigmentierung nach Stabilisierung: BECLARITY / CELL C. Aggressive Säuren bei starker Reaktivität vermeiden.',
-      },
-      {
-        title: 'Abschluss und Schutz',
-        text:
-          'Wiederherstellung, Schutz und Komfort. Bei Tagesbehandlung immer mit SPF-Richtung SUMMESUN abschließen.',
-      },
-    ],
-
-    homecareTitle: 'Homecare-Protokoll',
-    homecareText:
-      'Morgens: sanfte Reinigung, GLACIAR für Feuchtigkeit, NICELY für Barriere, SUMMESUN SPF. \nAbends: Reinigung, NICELY zur Regeneration, bei Unreinheiten BALANCE lokal oder kurweise.',
-
-    avoidTitle: 'Zu vermeiden',
-    avoidText:
-      'Aggressive Säuren, häufige Peelings, starke Retinoid-Belastung, Überhitzung und traumatische Behandlungen bis zur Stabilisierung der Hautbarriere.',
-
-    directionsTitle: 'Summecosmetics-Richtung',
-    directionsText:
-      'ESSENTIAL — Reinigung und Vorbereitung. \nNICELY — Sensibilität und Barriere. \nGLACIAR — Feuchtigkeit. \nBALANCE — Unreinheiten und Sebum. \nBECLARITY / CELL C — Hautton und Pigmentierung nach Stabilisierung.',
-
-    noteTitle: 'Professional Note',
-    noteText:
-      'Dieses Protokoll ist eine kosmetologische Strategie und keine medizinische Diagnose. Bei ausgeprägten dermatologischen Zuständen sollte eine ärztliche Abklärung empfohlen werden.',
+    diagnosis: 'PROFESSIONELLE DIAGNOSE',
+    aiSummary: 'AI Zusammenfassung',
+    strategy: 'FORMULENS STRATEGIE',
+    primaryStrategy: 'Primäre Strategie',
+    supportStrategies: 'Unterstützende Strategien',
+    recommendedLines: 'Empfohlene Linien',
+    activeFocus: 'Aktiver Fokus',
+    mainLine: 'Hauptlinie',
+    variant: 'Variante',
+    course: 'Kurs',
+    homecare: 'Homecare Unterstützung',
+    amount: 'Menge',
+    exposure: 'Einwirkzeit',
+    removal: 'Entfernung',
+    note: 'Hinweis',
+    error: 'Fehler',
   },
 
   RU: {
@@ -94,84 +49,39 @@ const translations = {
     title: 'Конструктор протоколов',
     subtitle:
       'Создание профессионального протокола процедуры по возрасту, типу кожи, чувствительности, фототипу, проблемам кожи и цели процедуры.',
-
     clientData: 'Данные клиента',
     age: 'Возраст',
-    agePlaceholder: 'Например: 45',
+    agePlaceholder: 'Например: 55',
     skinType: 'Тип кожи',
-    skinTypePlaceholder: 'Например: сухая, чувствительная, реактивная',
+    skinTypePlaceholder: 'Например: сухая',
     sensitivity: 'Чувствительность кожи',
     sensitivityPlaceholder: 'Низкая, средняя или высокая',
     phototype: 'Фототип',
     phototypePlaceholder: 'I, II, III, IV, V или VI',
     concerns: 'Основные проблемы',
-    concernsPlaceholder:
-      'Например: купероз, покраснение, обезвоженность, морщины, пигментация',
+    concernsPlaceholder: 'Например: морщины, дряблость',
     goal: 'Цель процедуры',
-    goalPlaceholder:
-      'Например: успокоить кожу, восстановить барьер, улучшить увлажнение и тон',
+    goalPlaceholder: 'Например: увлажнение',
     create: '✨ Создать протокол',
-
+    creating: 'Протокол создаётся...',
     empty:
       'Заполните данные клиента, чтобы создать профессиональный протокол.',
-    strategyTitle: 'Профессиональная стратегия',
-    priorities: 'Приоритеты процедуры',
-    protocolTitle: 'Кабинетный протокол',
-
-    strategyText:
-      'Для клиента {age} лет с типом кожи «{skinType}», чувствительностью «{sensitivity}», фототипом «{phototype}» и задачами «{concerns}» рекомендуется структурированный барьерно-восстанавливающий протокол. Основная цель — стабилизировать кожу, снизить реактивность, восстановить комфорт и подготовить кожу к дальнейшим активным этапам.',
-
-    priorityList: [
-      'Снижение реактивности и покраснения',
-      'Восстановление барьерной функции',
-      'Интенсивное увлажнение',
-      'Мягкая работа без агрессивной стимуляции',
-      'Подготовка кожи к последующим активным протоколам',
-    ],
-
-    steps: [
-      {
-        title: 'Подготовка и очищение',
-        text:
-          'Мягкое очищение кожи без пересушивания. Рекомендуемое направление: ESSENTIAL CARE CONCEPT. Цель — удалить загрязнения, подготовить кожу и не усилить реактивность.',
-      },
-      {
-        title: 'Тонизация и стабилизация',
-        text:
-          'Восстановление комфорта кожи после очищения. При чувствительности приоритет — NICELY. При обезвоженности можно подключить GLACIAR.',
-      },
-      {
-        title: 'Барьерно-успокаивающий этап',
-        text:
-          'Основной этап процедуры: снижение реактивности, поддержка барьера, уменьшение ощущения стресса кожи. Приоритетные линии: NICELY + GLACIAR.',
-      },
-      {
-        title: 'Коррекция по проблеме',
-        text:
-          'Если есть воспалительные элементы — мягко подключить BALANCE. При пигментации после стабилизации — BECLARITY / CELL C. Избегать агрессивных кислот при выраженной реактивности.',
-      },
-      {
-        title: 'Завершение процедуры',
-        text:
-          'Восстановление, защита и комфорт. При дневной процедуре обязательно завершить SPF-направлением SUMMESUN.',
-      },
-    ],
-
-    homecareTitle: 'Домашний протокол',
-    homecareText:
-      'Утро: мягкое очищение, GLACIAR для увлажнения, NICELY для барьера, SUMMESUN SPF. \nВечер: очищение, NICELY для восстановления, при воспалениях — BALANCE локально или курсом.',
-
-    avoidTitle: 'Чего избегать',
-    avoidText:
-      'Агрессивные кислоты, частые пилинги, сильная ретиноидная нагрузка, перегрев, травматичные процедуры до стабилизации барьера.',
-
-    directionsTitle: 'Summecosmetics-направления',
-    directionsText:
-      'ESSENTIAL — очищение и подготовка. \nNICELY — чувствительность и барьер. \nGLACIAR — увлажнение. \nBALANCE — воспалительные элементы. \nBECLARITY / CELL C — тон и пигментация после стабилизации.',
-
-    noteTitle: 'Профессиональное примечание',
-    noteText:
-      'Этот протокол является косметологической стратегией, а не медицинским диагнозом. При выраженных дерматологических состояниях клиенту следует рекомендовать консультацию врача.',
+    diagnosis: 'ПРОФЕССИОНАЛЬНАЯ ДИАГНОСТИКА',
+    aiSummary: 'AI резюме',
+    strategy: 'СТРАТЕГИЯ FORMULENS',
+    primaryStrategy: 'Основная стратегия',
+    supportStrategies: 'Поддерживающие стратегии',
+    recommendedLines: 'Рекомендуемые линии',
+    activeFocus: 'Активный фокус',
+    mainLine: 'Основная линия',
+    variant: 'Вариант',
+    course: 'Курс',
+    homecare: 'Домашняя поддержка',
+    amount: 'Количество',
+    exposure: 'Экспозиция',
+    removal: 'Удаление',
+    note: 'Примечание',
+    error: 'Ошибка',
   },
 
   EN: {
@@ -179,96 +89,55 @@ const translations = {
     title: 'Protocol Builder',
     subtitle:
       'Create a professional treatment protocol based on age, skin type, sensitivity, phototype, skin concerns and treatment goal.',
-
     clientData: 'Client Data',
     age: 'Age',
-    agePlaceholder: 'Example: 45',
+    agePlaceholder: 'Example: 55',
     skinType: 'Skin Type',
-    skinTypePlaceholder: 'Example: dry, sensitive, reactive',
+    skinTypePlaceholder: 'Example: dry',
     sensitivity: 'Skin Sensitivity',
     sensitivityPlaceholder: 'Low, medium or high',
     phototype: 'Phototype',
     phototypePlaceholder: 'I, II, III, IV, V or VI',
     concerns: 'Main Concerns',
-    concernsPlaceholder:
-      'Example: couperose, redness, dehydration, wrinkles, pigmentation',
+    concernsPlaceholder: 'Example: wrinkles, sagging',
     goal: 'Treatment Goal',
-    goalPlaceholder:
-      'Example: calm the skin, restore barrier, improve hydration and tone',
+    goalPlaceholder: 'Example: hydration',
     create: '✨ Create Protocol',
-
+    creating: 'Creating protocol...',
     empty:
       'Fill in the client data to create a professional treatment protocol.',
-    strategyTitle: 'Professional Strategy',
-    priorities: 'Treatment Priorities',
-    protocolTitle: 'Treatment Protocol',
-
-    strategyText:
-      'For a client aged {age} with skin type “{skinType}”, sensitivity “{sensitivity}”, phototype “{phototype}” and concerns “{concerns}”, a structured barrier-restoring protocol is recommended. The main goal is to stabilize the skin, reduce reactivity, restore comfort and prepare the skin for further active treatment steps.',
-
-    priorityList: [
-      'Reduce reactivity and redness',
-      'Restore barrier function',
-      'Intensive hydration',
-      'Gentle care without aggressive stimulation',
-      'Prepare the skin for later active protocols',
-    ],
-
-    steps: [
-      {
-        title: 'Preparation and Cleansing',
-        text:
-          'Gentle cleansing without drying the skin. Recommended direction: ESSENTIAL CARE CONCEPT. Goal: remove impurities, prepare the skin and avoid increasing reactivity.',
-      },
-      {
-        title: 'Toning and Stabilization',
-        text:
-          'Restore skin comfort after cleansing. For sensitivity: NICELY. For dehydration: GLACIAR.',
-      },
-      {
-        title: 'Calming Barrier Step',
-        text:
-          'Core step of the protocol: reduce reactivity, support barrier function and reduce skin stress. Priority lines: NICELY + GLACIAR.',
-      },
-      {
-        title: 'Concern-Oriented Correction',
-        text:
-          'For inflammatory elements: gently use BALANCE. For pigmentation after stabilization: BECLARITY / CELL C. Avoid aggressive acids with pronounced reactivity.',
-      },
-      {
-        title: 'Completion and Protection',
-        text:
-          'Restore, protect and comfort the skin. For daytime treatments, always finish with SPF direction SUMMESUN.',
-      },
-    ],
-
-    homecareTitle: 'Homecare Protocol',
-    homecareText:
-      'Morning: gentle cleansing, GLACIAR for hydration, NICELY for barrier support, SUMMESUN SPF. \nEvening: cleansing, NICELY for recovery, BALANCE locally or as a course when inflammatory elements are present.',
-
-    avoidTitle: 'Avoid',
-    avoidText:
-      'Aggressive acids, frequent peelings, strong retinoid load, overheating and traumatic procedures until the barrier is stabilized.',
-
-    directionsTitle: 'Summecosmetics Direction',
-    directionsText:
-      'ESSENTIAL — cleansing and preparation. \nNICELY — sensitivity and barrier. \nGLACIAR — hydration. \nBALANCE — inflammatory elements and sebum. \nBECLARITY / CELL C — tone and pigmentation after stabilization.',
-
-    noteTitle: 'Professional Note',
-    noteText:
-      'This protocol is a cosmetic strategy, not a medical diagnosis. In case of pronounced dermatological conditions, medical consultation should be recommended.',
+    diagnosis: 'PROFESSIONAL DIAGNOSIS',
+    aiSummary: 'AI Summary',
+    strategy: 'FORMULENS STRATEGY',
+    primaryStrategy: 'Primary Strategy',
+    supportStrategies: 'Supporting Strategies',
+    recommendedLines: 'Recommended Lines',
+    activeFocus: 'Active Focus',
+    mainLine: 'Main Line',
+    variant: 'Variant',
+    course: 'Course',
+    homecare: 'Homecare Support',
+    amount: 'Amount',
+    exposure: 'Exposure',
+    removal: 'Removal',
+    note: 'Note',
+    error: 'Error',
   },
 }
 
 export default function ProProtocolPage() {
-  const [lang, setLang] = useState('DE')
+  const [lang, setLang] = useState('RU')
   const [clientAge, setClientAge] = useState('')
   const [skinType, setSkinType] = useState('')
   const [sensitivity, setSensitivity] = useState('')
   const [phototype, setPhototype] = useState('')
   const [concerns, setConcerns] = useState('')
   const [goal, setGoal] = useState('')
+
   const [done, setDone] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [result, setResult] = useState(null)
+  const [error, setError] = useState('')
 
   const t = translations[lang]
 
@@ -280,17 +149,58 @@ export default function ProProtocolPage() {
     concerns.trim() &&
     goal.trim()
 
-  const createProtocol = () => {
-    if (!canCreate) return
-    setDone(true)
+  const resetResult = () => {
+    setDone(false)
+    setResult(null)
+    setError('')
   }
 
-  const strategyText = t.strategyText
-    .replace('{age}', clientAge)
-    .replace('{skinType}', skinType)
-    .replace('{sensitivity}', sensitivity)
-    .replace('{phototype}', phototype)
-    .replace('{concerns}', concerns)
+  const createProtocol = async () => {
+    if (!canCreate || loading) return
+
+    setLoading(true)
+    setError('')
+    setResult(null)
+    setDone(false)
+
+    try {
+      const res = await fetch('/api/professional', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          lang,
+          age: clientAge,
+          skinType,
+          sensitivity,
+          phototype,
+          concerns: concerns
+            .split(',')
+            .map((item) => item.trim())
+            .filter(Boolean),
+          goal,
+        }),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Protocol generation failed')
+      }
+
+      setResult(data)
+      setDone(true)
+    } catch (err) {
+      setError(err.message || 'Protocol generation failed')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const strategy = result?.strategy
+  const protocolRoot = result?.protocol
+  const treatment = protocolRoot?.treatment || protocolRoot?.protocol
+  const decision = protocolRoot?.decision
+  const variant = protocolRoot?.variant
 
   return (
     <main style={styles.main}>
@@ -304,7 +214,10 @@ export default function ProProtocolPage() {
             {['DE', 'RU', 'EN'].map((item) => (
               <button
                 key={item}
-                onClick={() => setLang(item)}
+                onClick={() => {
+                  setLang(item)
+                  resetResult()
+                }}
                 style={lang === item ? styles.langActive : styles.langBtn}
               >
                 {item}
@@ -314,131 +227,152 @@ export default function ProProtocolPage() {
         </div>
 
         <h1 style={styles.h1}>{t.title}</h1>
-
         <p style={styles.sub}>{t.subtitle}</p>
 
         <section style={styles.grid}>
           <div style={styles.panel}>
             <h2 style={styles.h2}>{t.clientData}</h2>
 
-            <Field
-              label={t.age}
-              value={clientAge}
-              setValue={setClientAge}
-              placeholder={t.agePlaceholder}
-              setDone={setDone}
-            />
-
-            <Field
-              label={t.skinType}
-              value={skinType}
-              setValue={setSkinType}
-              placeholder={t.skinTypePlaceholder}
-              setDone={setDone}
-            />
-
-            <Field
-              label={t.sensitivity}
-              value={sensitivity}
-              setValue={setSensitivity}
-              placeholder={t.sensitivityPlaceholder}
-              setDone={setDone}
-            />
-
-            <Field
-              label={t.phototype}
-              value={phototype}
-              setValue={setPhototype}
-              placeholder={t.phototypePlaceholder}
-              setDone={setDone}
-            />
-
-            <TextArea
-              label={t.concerns}
-              value={concerns}
-              setValue={setConcerns}
-              placeholder={t.concernsPlaceholder}
-              setDone={setDone}
-            />
-
-            <TextArea
-              label={t.goal}
-              value={goal}
-              setValue={setGoal}
-              placeholder={t.goalPlaceholder}
-              setDone={setDone}
-            />
+            <Field label={t.age} value={clientAge} setValue={setClientAge} placeholder={t.agePlaceholder} reset={resetResult} />
+            <Field label={t.skinType} value={skinType} setValue={setSkinType} placeholder={t.skinTypePlaceholder} reset={resetResult} />
+            <Field label={t.sensitivity} value={sensitivity} setValue={setSensitivity} placeholder={t.sensitivityPlaceholder} reset={resetResult} />
+            <Field label={t.phototype} value={phototype} setValue={setPhototype} placeholder={t.phototypePlaceholder} reset={resetResult} />
+            <TextArea label={t.concerns} value={concerns} setValue={setConcerns} placeholder={t.concernsPlaceholder} reset={resetResult} />
+            <TextArea label={t.goal} value={goal} setValue={setGoal} placeholder={t.goalPlaceholder} reset={resetResult} />
 
             <button
               onClick={createProtocol}
-              disabled={!canCreate}
+              disabled={!canCreate || loading}
               style={{
                 ...styles.primaryBtn,
-                opacity: canCreate ? 1 : 0.45,
-                cursor: canCreate ? 'pointer' : 'not-allowed',
+                opacity: canCreate && !loading ? 1 : 0.45,
+                cursor: canCreate && !loading ? 'pointer' : 'not-allowed',
               }}
             >
-              {t.create}
+              {loading ? t.creating : t.create}
             </button>
           </div>
 
           <div style={styles.panel}>
-            {!done ? (
+            {!done && !error ? (
               <div style={styles.empty}>{t.empty}</div>
-            ) : (
+            ) : null}
+
+            {error ? (
+              <div style={styles.errorBox}>
+                <h2 style={styles.h2}>{t.error}</h2>
+                <p style={styles.text}>{error}</p>
+              </div>
+            ) : null}
+
+            {done && result ? (
               <>
-                <h2 style={styles.h2}>{t.strategyTitle}</h2>
+                <h2 style={styles.h2}>{t.diagnosis}</h2>
 
-                <p style={styles.text}>{strategyText}</p>
+                <div style={styles.badge}>{treatment?.mainLine || decision?.mainLine}</div>
+                <div style={styles.protocolName}>
+                  {treatment?.variantName || variant?.variantName}
+                </div>
 
-                <div style={styles.priorityBox}>
-                  <h3 style={styles.infoTitle}>{t.priorities}</h3>
+                {result.summary ? (
+                  <div style={styles.infoBox}>
+                    <h3 style={styles.infoTitle}>{t.aiSummary}</h3>
+                    <p style={styles.text}>{result.summary}</p>
+                  </div>
+                ) : null}
 
-                  <ul style={styles.list}>
-                    {t.priorityList.map((item) => (
-                      <li key={item}>{item}</li>
+                <div style={styles.infoBox}>
+                  <h3 style={styles.infoTitle}>{t.strategy}</h3>
+
+                  <InfoLine title={t.primaryStrategy}>
+                    <strong>{strategy?.primaryStrategy?.name}</strong>
+                    <br />
+                    {strategy?.primaryStrategy?.reason}
+                  </InfoLine>
+
+                  <InfoLine title={t.supportStrategies}>
+                    {strategy?.secondaryStrategies?.map((item) => (
+                      <div key={item.id} style={styles.smallCard}>
+                        <strong>{item.name}</strong>
+                        <br />
+                        {item.reason}
+                      </div>
                     ))}
-                  </ul>
+                  </InfoLine>
+
+                  <InfoLine title={t.recommendedLines}>
+                    {strategy?.recommendedLines?.join(' / ')}
+                  </InfoLine>
+
+                  <InfoLine title={t.activeFocus}>
+                    {strategy?.activeIngredients?.join(' / ')}
+                  </InfoLine>
                 </div>
               </>
-            )}
+            ) : null}
           </div>
         </section>
 
-        {done && (
+        {done && treatment ? (
           <>
             <section style={styles.protocolSection}>
-              <h2 style={styles.h2}>{t.protocolTitle}</h2>
+              <h2 style={styles.h2}>{treatment.title}</h2>
 
-              <div style={styles.steps}>
-                {t.steps.map((step, index) => (
-                  <Step
-                    key={step.title}
-                    number={`0${index + 1}`}
-                    title={step.title}
-                    text={step.text}
-                  />
+              <div style={styles.metaGrid}>
+                <Meta title={t.mainLine}>{treatment.mainLine}</Meta>
+                <Meta title={t.variant}>{treatment.variantName}</Meta>
+                <Meta title={t.course}>{treatment.course}</Meta>
+              </div>
+
+              {treatment.courseNote ? (
+                <p style={styles.courseNote}>{treatment.courseNote}</p>
+              ) : null}
+
+              <div style={styles.phases}>
+                {treatment.phases?.map((phase) => (
+                  <div key={phase.title} style={styles.phase}>
+                    <h3 style={styles.phaseTitle}>{phase.title}</h3>
+
+                    <div style={styles.steps}>
+                      {phase.steps?.map((step, index) => (
+                        <StepCard
+                          key={step.id || `${phase.title}-${index}`}
+                          step={step}
+                          index={index}
+                          labels={t}
+                        />
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
             </section>
 
             <section style={styles.resultGrid}>
-              <Info title={t.homecareTitle}>{t.homecareText}</Info>
+              <Info title={t.homecare}>
+                {treatment.homecareSupport?.join('\n')}
+              </Info>
 
-              <Info title={t.avoidTitle}>{t.avoidText}</Info>
+              {treatment.equipment?.length ? (
+                <Info title="Equipment">
+                  {treatment.equipment
+                    .map((item) => `${item.name}${item.usage ? ` — ${item.usage}` : ''}`)
+                    .join('\n')}
+                </Info>
+              ) : null}
 
-              <Info title={t.directionsTitle}>{t.directionsText}</Info>
-
-              <Info title={t.noteTitle}>{t.noteText}</Info>
+              {treatment.reason ? (
+                <Info title="FORMULENS Reason">{treatment.reason}</Info>
+              ) : null}
             </section>
           </>
-        )}
+        ) : null}
       </div>
     </main>
   )
 }
 
-function Field({ label, value, setValue, placeholder, setDone }) {
+function Field({ label, value, setValue, placeholder, reset }) {
   return (
     <>
       <label style={styles.label}>{label}</label>
@@ -446,7 +380,7 @@ function Field({ label, value, setValue, placeholder, setDone }) {
         value={value}
         onChange={(e) => {
           setValue(e.target.value)
-          setDone(false)
+          reset()
         }}
         placeholder={placeholder}
         style={styles.input}
@@ -455,7 +389,7 @@ function Field({ label, value, setValue, placeholder, setDone }) {
   )
 }
 
-function TextArea({ label, value, setValue, placeholder, setDone }) {
+function TextArea({ label, value, setValue, placeholder, reset }) {
   return (
     <>
       <label style={styles.label}>{label}</label>
@@ -463,7 +397,7 @@ function TextArea({ label, value, setValue, placeholder, setDone }) {
         value={value}
         onChange={(e) => {
           setValue(e.target.value)
-          setDone(false)
+          reset()
         }}
         placeholder={placeholder}
         style={styles.textarea}
@@ -472,14 +406,60 @@ function TextArea({ label, value, setValue, placeholder, setDone }) {
   )
 }
 
-function Step({ number, title, text }) {
+function InfoLine({ title, children }) {
+  return (
+    <div style={styles.infoLine}>
+      <div style={styles.infoLabel}>{title}</div>
+      <div style={styles.infoValue}>{children}</div>
+    </div>
+  )
+}
+
+function Meta({ title, children }) {
+  return (
+    <div style={styles.meta}>
+      <div style={styles.metaTitle}>{title}</div>
+      <div style={styles.metaText}>{children}</div>
+    </div>
+  )
+}
+
+function StepCard({ step, index, labels }) {
   return (
     <div style={styles.step}>
-      <div style={styles.stepNumber}>{number}</div>
+      <div style={styles.stepNumber}>{String(index + 1).padStart(2, '0')}</div>
+
       <div>
-        <h3 style={styles.stepTitle}>{title}</h3>
-        <p style={styles.stepText}>{text}</p>
+        <h4 style={styles.stepTitle}>{step.name}</h4>
+        <div style={styles.stepLine}>{step.line}</div>
+        <div style={styles.stepCategory}>{step.category}</div>
+
+        {step.instruction ? (
+          <p style={styles.stepText}>{step.instruction}</p>
+        ) : null}
+
+        <div style={styles.stepMetaGrid}>
+          {step.amount ? <Mini title={labels.amount}>{step.amount}</Mini> : null}
+          {step.exposure ? <Mini title={labels.exposure}>{step.exposure}</Mini> : null}
+          {step.removal ? <Mini title={labels.removal}>{step.removal}</Mini> : null}
+        </div>
+
+        {step.note ? (
+          <p style={styles.note}>
+            <strong>{labels.note}: </strong>
+            {step.note}
+          </p>
+        ) : null}
       </div>
+    </div>
+  )
+}
+
+function Mini({ title, children }) {
+  return (
+    <div style={styles.mini}>
+      <div style={styles.miniTitle}>{title}</div>
+      <div style={styles.miniText}>{children}</div>
     </div>
   )
 }
@@ -587,7 +567,7 @@ const styles = {
   },
   textarea: {
     width: '100%',
-    minHeight: '135px',
+    minHeight: '120px',
     background: '#050505',
     border: '1px solid #262626',
     borderRadius: '18px',
@@ -618,23 +598,62 @@ const styles = {
     textAlign: 'center',
     lineHeight: 1.6,
   },
+  errorBox: {
+    background: 'rgba(255,0,100,0.12)',
+    border: '1px solid rgba(255,0,100,0.35)',
+    borderRadius: '22px',
+    padding: '24px',
+  },
   text: {
     color: '#d4d4d4',
     lineHeight: 1.7,
     fontSize: '18px',
   },
-  priorityBox: {
-    marginTop: '26px',
+  badge: {
+    display: 'inline-block',
+    padding: '10px 16px',
+    borderRadius: '999px',
+    background: 'linear-gradient(90deg,#7b2cff,#ff00aa)',
+    fontWeight: 900,
+    marginBottom: '14px',
+  },
+  protocolName: {
+    fontSize: '24px',
+    fontWeight: 900,
+    marginBottom: '24px',
+  },
+  infoBox: {
+    marginTop: '24px',
     background: '#0d0d18',
     border: '1px solid #252525',
     borderRadius: '22px',
     padding: '24px',
   },
-  list: {
-    color: '#d4d4d4',
-    lineHeight: 1.9,
+  infoTitle: {
+    fontSize: '24px',
+    marginBottom: '16px',
+  },
+  infoLine: {
+    borderTop: '1px solid #252525',
+    paddingTop: '16px',
+    marginTop: '16px',
+  },
+  infoLabel: {
+    color: '#aaa',
+    marginBottom: '8px',
+    fontSize: '15px',
+  },
+  infoValue: {
+    color: '#eee',
+    lineHeight: 1.7,
     fontSize: '17px',
-    paddingLeft: '22px',
+  },
+  smallCard: {
+    background: '#050505',
+    border: '1px solid #262626',
+    borderRadius: '16px',
+    padding: '14px',
+    marginBottom: '10px',
   },
   protocolSection: {
     marginTop: '34px',
@@ -642,6 +661,48 @@ const styles = {
     border: '1px solid #242424',
     borderRadius: '30px',
     padding: '34px',
+  },
+  metaGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))',
+    gap: '18px',
+    marginBottom: '20px',
+  },
+  meta: {
+    background: '#0d0d18',
+    border: '1px solid #252525',
+    borderRadius: '20px',
+    padding: '18px',
+  },
+  metaTitle: {
+    color: '#aaa',
+    fontSize: '14px',
+    marginBottom: '8px',
+  },
+  metaText: {
+    fontSize: '18px',
+    fontWeight: 800,
+    lineHeight: 1.5,
+  },
+  courseNote: {
+    color: '#d4d4d4',
+    lineHeight: 1.7,
+    fontSize: '17px',
+    marginBottom: '28px',
+  },
+  phases: {
+    display: 'grid',
+    gap: '26px',
+  },
+  phase: {
+    background: '#090912',
+    border: '1px solid #222',
+    borderRadius: '24px',
+    padding: '24px',
+  },
+  phaseTitle: {
+    fontSize: '26px',
+    marginBottom: '18px',
   },
   steps: {
     display: 'grid',
@@ -669,12 +730,48 @@ const styles = {
   },
   stepTitle: {
     fontSize: '22px',
-    marginBottom: '10px',
+    marginBottom: '8px',
+  },
+  stepLine: {
+    color: '#ff8bd8',
+    fontWeight: 800,
+    marginBottom: '6px',
+  },
+  stepCategory: {
+    color: '#aaa',
+    marginBottom: '12px',
   },
   stepText: {
     color: '#d4d4d4',
     lineHeight: 1.7,
     fontSize: '17px',
+  },
+  stepMetaGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit,minmax(160px,1fr))',
+    gap: '12px',
+    marginTop: '16px',
+  },
+  mini: {
+    background: '#050505',
+    border: '1px solid #262626',
+    borderRadius: '16px',
+    padding: '12px',
+  },
+  miniTitle: {
+    color: '#aaa',
+    fontSize: '13px',
+    marginBottom: '6px',
+  },
+  miniText: {
+    color: '#fff',
+    fontWeight: 800,
+    lineHeight: 1.4,
+  },
+  note: {
+    marginTop: '14px',
+    color: '#d4d4d4',
+    lineHeight: 1.6,
   },
   resultGrid: {
     display: 'grid',
@@ -687,10 +784,6 @@ const styles = {
     border: '1px solid #242424',
     borderRadius: '26px',
     padding: '28px',
-  },
-  infoTitle: {
-    fontSize: '24px',
-    marginBottom: '16px',
   },
   infoText: {
     color: '#d4d4d4',
