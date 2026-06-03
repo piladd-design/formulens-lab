@@ -29,13 +29,13 @@ const translations = {
     homecare: 'Homecare-Empfehlung',
     directions: 'Empfohlene Summecosmetics Linien',
 
-    hydration: 'Feuchtigkeit',
-    barrier: 'Hautbarriere',
+    hydration: 'Dehydrierung / Feuchtigkeit',
+    barrier: 'Barrierestörung',
     texture: 'Textur & Poren',
     pigmentation: 'Pigmentierung',
     sebum: 'Sebum',
     aging: 'Altersanzeichen',
-    firmness: 'Festigkeit & Elastizität',
+    firmness: 'Festigkeitsverlust',
 
     error: 'Analyse fehlgeschlagen. Bitte versuchen Sie es erneut.',
   },
@@ -64,13 +64,13 @@ const translations = {
     homecare: 'Домашний протокол',
     directions: 'Рекомендуемые линии Summecosmetics',
 
-    hydration: 'Увлажнение',
-    barrier: 'Барьер',
+    hydration: 'Обезвоженность',
+    barrier: 'Нарушение барьера',
     texture: 'Текстура и поры',
     pigmentation: 'Пигментация',
     sebum: 'Себум',
     aging: 'Возрастные признаки',
-    firmness: 'Упругость и эластичность',
+    firmness: 'Снижение упругости',
 
     error: 'Ошибка анализа. Попробуйте ещё раз.',
   },
@@ -99,13 +99,13 @@ const translations = {
     homecare: 'Homecare Protocol',
     directions: 'Recommended Summecosmetics Lines',
 
-    hydration: 'Hydration',
-    barrier: 'Barrier Condition',
+    hydration: 'Dehydration',
+    barrier: 'Barrier Disturbance',
     texture: 'Texture & Pores',
     pigmentation: 'Pigmentation',
-    sebum: 'Sebum Balance',
+    sebum: 'Sebum',
     aging: 'Aging Signs',
-    firmness: 'Firmness & Elasticity',
+    firmness: 'Firmness Loss',
 
     error: 'Analysis failed. Please try again.',
   },
@@ -178,13 +178,11 @@ export default function ProSkinPage() {
           label: t.hydration,
           value: analysis.hydration,
           status: analysis.hydrationStatus,
-          inverse: true,
         },
         {
           label: t.barrier,
           value: analysis.barrier,
           status: analysis.barrierStatus,
-          inverse: true,
         },
         {
           label: t.texture,
@@ -210,7 +208,6 @@ export default function ProSkinPage() {
           label: t.firmness,
           value: analysis.firmness,
           status: analysis.firmnessStatus,
-          inverse: true,
         },
       ]
     : []
@@ -381,14 +378,14 @@ function Metric({ metric }) {
           style={{
             width: `${value}%`,
             height: '100%',
-            background: getBarColor(value, metric.inverse),
+            background: getBarColor(value),
           }}
         />
       </div>
 
       <div style={styles.metricFooter}>
         <span>{value}/100</span>
-        <span>{getPriority(value, metric.inverse)}</span>
+        <span>{getPriority(value)}</span>
       </div>
     </div>
   )
@@ -409,25 +406,13 @@ function safeNumber(value) {
   return Math.max(0, Math.min(100, Number(value) || 0))
 }
 
-function getBarColor(value, inverse = false) {
-  if (inverse) {
-    if (value < 45) return 'linear-gradient(90deg,#ff4d6d,#ff00aa)'
-    if (value < 65) return 'linear-gradient(90deg,#f59e0b,#ff00aa)'
-    return 'linear-gradient(90deg,#7b2cff,#ff00aa)'
-  }
-
+function getBarColor(value) {
   if (value >= 70) return 'linear-gradient(90deg,#ff4d6d,#ff00aa)'
   if (value >= 45) return 'linear-gradient(90deg,#f59e0b,#ff00aa)'
   return 'linear-gradient(90deg,#7b2cff,#ff00aa)'
 }
 
-function getPriority(value, inverse = false) {
-  if (inverse) {
-    if (value < 45) return 'Высокий приоритет'
-    if (value < 65) return 'Средний приоритет'
-    return 'Стабильно'
-  }
-
+function getPriority(value) {
   if (value >= 70) return 'Высокий приоритет'
   if (value >= 45) return 'Средний приоритет'
   return 'Низкий приоритет'
