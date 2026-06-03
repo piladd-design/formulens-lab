@@ -83,19 +83,11 @@ function correctHomecareAnalysis(rawAnalysis = {}) {
     analysis.acne = 70
   }
 
-  if (
-    acneMentioned &&
-    analysis.texture >= 45 &&
-    analysis.acne < 65
-  ) {
+  if (acneMentioned && analysis.texture >= 45 && analysis.acne < 65) {
     analysis.acne = 65
   }
 
-  if (
-    acneMentioned &&
-    analysis.barrier <= 60 &&
-    analysis.acne < 65
-  ) {
+  if (acneMentioned && analysis.barrier <= 60 && analysis.acne < 65) {
     analysis.acne = 65
   }
 
@@ -116,7 +108,11 @@ function correctHomecareAnalysis(rawAnalysis = {}) {
   }
 
   if (analysis.acne >= 55) {
-    const required = ['Akne / Entzündungen', 'Barriere beruhigen', 'Sebum regulieren']
+    const required = [
+      'Воспалительные элементы',
+      'Поддержка барьера',
+      'Контроль себума',
+    ]
 
     required.forEach((item) => {
       if (!analysis.priorities.includes(item)) {
@@ -126,11 +122,11 @@ function correctHomecareAnalysis(rawAnalysis = {}) {
 
     analysis.summary =
       analysis.summary ||
-      'Die Haut zeigt sichtbare entzündliche Elemente, eine erhöhte Reaktivität und eine gestörte Hautbalance.'
+      'Кожа показывает признаки воспалительных элементов, повышенной реактивности и нарушения баланса.'
 
     analysis.professionalNote =
       analysis.professionalNote ||
-      'Priorität: beruhigende Reinigung, Sebumregulation, Barrierestärkung und täglicher SPF-Schutz.'
+      'Приоритет: мягкое очищение, контроль себума, поддержка кожного барьера и ежедневная SPF-защита.'
   }
 
   return analysis
@@ -145,20 +141,31 @@ function buildHomecareProtocol(analysis) {
   const hydration = Number(analysis.hydration || 0)
   const pigmentation = Number(analysis.pigmentation || 0)
   const barrier = Number(analysis.barrier || 100)
-  const wrinkles = Number(analysis.wrinkles || 0)
+  const aging = Number(analysis.aging || 0)
+  const firmness = Number(analysis.firmness || 100)
 
   let mainLine = 'GLACIAR'
   let secondaryLine = null
 
-  if (acne >= 45) mainLine = 'BALANCE'
-  else if (pigmentation >= 50) mainLine = 'BECLARITY'
-  else if (barrier <= 55) mainLine = 'NICELY'
-  else if (wrinkles >= 50) mainLine = 'MYCODE'
-  else if (hydration <= 55) mainLine = 'GLACIAR'
+  if (acne >= 55) {
+    mainLine = 'BALANCE'
+  } else if (aging >= 60 || firmness <= 55) {
+    mainLine = 'MYCODE'
+  } else if (pigmentation >= 55) {
+    mainLine = 'BECLARITY'
+  } else if (barrier <= 55) {
+    mainLine = 'NICELY'
+  } else {
+    mainLine = 'GLACIAR'
+  }
 
-  if (mainLine !== 'NICELY' && barrier <= 65) secondaryLine = 'NICELY'
-  else if (mainLine !== 'GLACIAR' && hydration <= 55) secondaryLine = 'GLACIAR'
-  else if (mainLine !== 'BECLARITY' && pigmentation >= 45) secondaryLine = 'BECLARITY'
+  if (mainLine !== 'NICELY' && barrier <= 65) {
+    secondaryLine = 'NICELY'
+  } else if (mainLine !== 'GLACIAR' && hydration <= 60) {
+    secondaryLine = 'GLACIAR'
+  } else if (mainLine !== 'BECLARITY' && pigmentation >= 45) {
+    secondaryLine = 'BECLARITY'
+  }
 
   const protocols = {
     GLACIAR: {
@@ -196,7 +203,7 @@ function buildHomecareProtocol(analysis) {
     },
 
     BALANCE: {
-      concern: 'Акне, воспаления, себум и расширенные поры.',
+      concern: 'Акне, воспалительные элементы, себум и расширенные поры.',
       morning: [
         getProduct('BALANCE Cleanning Mousse', 'BALANCE', 'Очищение'),
         getProduct('BALANCE Balancing Lotion', 'BALANCE', 'Тонизация'),
@@ -231,19 +238,35 @@ function buildHomecareProtocol(analysis) {
     },
 
     MYCODE: {
-      concern: 'Возрастные изменения и морщины.',
+      concern: 'Возрастные изменения, морщины и снижение упругости.',
       morning: [
         getProduct('ECC Remover Micellar Eyes & Face', 'ECC', 'Очищение'),
         getProduct('ECC Remover Mist', 'ECC', 'Тонизация'),
-        getProduct('MyCODE ADVANCED 05 Plumping Replenish Facial Serum', 'MYCODE', 'Сыворотка'),
-        getProduct('MyCODE ADVANCED Plumping Redensifying Face Cream', 'MYCODE', 'Крем'),
+        getProduct(
+          'MyCODE ADVANCED 05 Plumping Replenish Facial Serum',
+          'MYCODE',
+          'Сыворотка'
+        ),
+        getProduct(
+          'MyCODE ADVANCED Plumping Redensifying Face Cream',
+          'MYCODE',
+          'Крем'
+        ),
         getProduct('SUMMESUN SPF50+ Sensitive Skin', 'SUMMESUN', 'SPF'),
       ],
       evening: [
         getProduct('ECC Remover Micellar Eyes & Face', 'ECC', 'Очищение'),
         getProduct('ECC Remover Mist', 'ECC', 'Тонизация'),
-        getProduct('MyCODE ADVANCED 06 Firming Restructuring Facial Serum', 'MYCODE', 'Сыворотка'),
-        getProduct('MyCODE ADVANCED Firming Restructuring Face Cream', 'MYCODE', 'Крем'),
+        getProduct(
+          'MyCODE ADVANCED 06 Firming Restructuring Facial Serum',
+          'MYCODE',
+          'Сыворотка'
+        ),
+        getProduct(
+          'MyCODE ADVANCED Firming Restructuring Face Cream',
+          'MYCODE',
+          'Крем'
+        ),
       ],
       extra: [],
     },
@@ -319,10 +342,14 @@ CRITICAL:
 If inflammatory acne lesions, pimples, papules, pustules, comedones, red inflamed spots or many post-acne marks are visible, acne MUST NOT be 0.
 If more than 5 visible inflammatory spots are present, acne MUST be at least 55.
 If many red papules/pustules are visible across the cheek or chin, acne MUST be at least 70.
+If visible neck folds, facial laxity, mature skin texture or deep lines are present, aging MUST be at least 60 or firmness MUST be 55 or lower.
 If redness or irritation is visible, barrier should be lower.
 If post-acne marks are visible, pigmentation should increase.
 
-In summary, professionalNote and priorities, explicitly mention acne / inflammation when visible.
+In summary, professionalNote and priorities:
+- mention inflammatory elements when visible
+- mention aging / firmness loss when visible
+- avoid medical claims and avoid the word "treatment"
 
 No markdown. No text outside JSON.
               `,
