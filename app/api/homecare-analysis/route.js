@@ -17,6 +17,125 @@ function safeJsonParse(text) {
   }
 }
 
+function clamp(value, min = 0, max = 100) {
+  const number = Number(value || 0)
+  return Math.min(Math.max(number, min), max)
+}
+
+function hasAcneWords(analysis = {}) {
+  const text = [
+    analysis.summary,
+    analysis.professionalNote,
+    analysis.skinType,
+    ...(analysis.priorities || []),
+  ]
+    .join(' ')
+    .toLowerCase()
+
+  return [
+    'acne',
+    'akne',
+    'entzündung',
+    'entzündungen',
+    'inflammation',
+    'inflamed',
+    'pimple',
+    'pimples',
+    'papules',
+    'pustules',
+    'comedones',
+    'комедон',
+    'комедоны',
+    'акне',
+    'воспал',
+    'высып',
+    'прыщ',
+    'прыщи',
+    'папул',
+    'пустул',
+    'post-acne',
+    'post acne',
+    'постакне',
+  ].some((word) => text.includes(word))
+}
+
+function correctHomecareAnalysis(rawAnalysis = {}) {
+  const analysis = {
+    ...rawAnalysis,
+    overallScore: clamp(rawAnalysis.overallScore),
+    hydration: clamp(rawAnalysis.hydration),
+    pigmentation: clamp(rawAnalysis.pigmentation),
+    wrinkles: clamp(rawAnalysis.wrinkles),
+    acne: clamp(rawAnalysis.acne),
+    barrier: clamp(rawAnalysis.barrier, 0, 100),
+    texture: clamp(rawAnalysis.texture),
+    sebum: clamp(rawAnalysis.sebum),
+    aging: clamp(rawAnalysis.aging),
+    firmness: clamp(rawAnalysis.firmness),
+    priorities: Array.isArray(rawAnalysis.priorities)
+      ? rawAnalysis.priorities
+      : [],
+  }
+
+  const acneMentioned = hasAcneWords(analysis)
+
+  if (acneMentioned && analysis.acne < 55) {
+    analysis.acne = 70
+  }
+
+  if (
+    acneMentioned &&
+    analysis.texture >= 45 &&
+    analysis.acne < 65
+  ) {
+    analysis.acne = 65
+  }
+
+  if (
+    acneMentioned &&
+    analysis.barrier <= 60 &&
+    analysis.acne < 65
+  ) {
+    analysis.acne = 65
+  }
+
+  if (analysis.acne >= 55 && analysis.barrier > 70) {
+    analysis.barrier = 55
+  }
+
+  if (analysis.acne >= 55 && analysis.texture < 45) {
+    analysis.texture = 55
+  }
+
+  if (analysis.acne >= 55 && analysis.overallScore > 55) {
+    analysis.overallScore = 40
+  }
+
+  if (analysis.acne >= 70 && analysis.overallScore > 45) {
+    analysis.overallScore = 38
+  }
+
+  if (analysis.acne >= 55) {
+    const required = ['Akne / Entzündungen', 'Barriere beruhigen', 'Sebum regulieren']
+
+    required.forEach((item) => {
+      if (!analysis.priorities.includes(item)) {
+        analysis.priorities.push(item)
+      }
+    })
+
+    analysis.summary =
+      analysis.summary ||
+      'Die Haut zeigt sichtbare entzündliche Elemente, eine erhöhte Reaktivität und eine gestörte Hautbalance.'
+
+    analysis.professionalNote =
+      analysis.professionalNote ||
+      'Priorität: beruhigende Reinigung, Sebumregulation, Barrierestärkung und täglicher SPF-Schutz.'
+  }
+
+  return analysis
+}
+
 function getProduct(name, line, step, purpose = '') {
   return { name, line, step, purpose }
 }
@@ -202,6 +321,9 @@ If more than 5 visible inflammatory spots are present, acne MUST be at least 55.
 If many red papules/pustules are visible across the cheek or chin, acne MUST be at least 70.
 If redness or irritation is visible, barrier should be lower.
 If post-acne marks are visible, pigmentation should increase.
+
+In summary, professionalNote and priorities, explicitly mention acne / inflammation when visible.
+
 No markdown. No text outside JSON.
               `,
             },
@@ -214,7 +336,8 @@ No markdown. No text outside JSON.
       ],
     })
 
-    const analysis = safeJsonParse(response.output_text)
+    const rawAnalysis = safeJsonParse(response.output_text)
+    const analysis = correctHomecareAnalysis(rawAnalysis)
     const protocol = buildHomecareProtocol(analysis)
 
     return Response.json({
