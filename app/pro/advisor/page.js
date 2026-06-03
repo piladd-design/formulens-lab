@@ -29,13 +29,13 @@ const translations = {
     avoid: 'Vorübergehend vermeiden',
     lines: 'Empfohlene Summecosmetics Linien',
     recommendation: 'Professionelle Empfehlung',
-    whenToStop: 'Wann Behandlung stoppen / ärztlich abklären?',
+    whenToStop: 'Wann ist zusätzliche Vorsicht sinnvoll?',
     clientMessage: 'Nachricht an die Kundin',
   },
 
   RU: {
     back: '← Профессиональная панель',
-    title: 'AI Beauty Advisor',
+    title: 'AI Консультант Косметолога',
     subtitle:
       'Профессиональная быстрая помощь для косметолога: покраснение, реакция после пилинга, жжение, стянутость, нарушение барьера и выбор ухода.',
 
@@ -58,7 +58,7 @@ const translations = {
     avoid: 'Что временно исключить',
     lines: 'Рекомендуемые линии Summecosmetics',
     recommendation: 'Профессиональная рекомендация',
-    whenToStop: 'Когда остановить процедуру / направить к врачу?',
+    whenToStop: 'Когда необходима дополнительная консультация?',
     clientMessage: 'Сообщение для клиента',
   },
 
@@ -87,7 +87,7 @@ const translations = {
     avoid: 'Temporarily avoid',
     lines: 'Recommended Summecosmetics Lines',
     recommendation: 'Professional Recommendation',
-    whenToStop: 'When to stop treatment / refer?',
+    whenToStop: 'When is additional caution needed?',
     clientMessage: 'Client message',
   },
 }
