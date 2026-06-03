@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { getProductDetails } from '../../lib/product-resolver.js'
 
 const ui = {
   DE: {
@@ -13,11 +14,9 @@ const ui = {
     age: 'Alter',
     skinType: 'Hauttyp',
     sensitivity: 'Sensibilität',
-
     mainGoal: 'Hauptziel',
     ageSubGoal: 'Was stört am meisten?',
     additionalGoal: 'Zusätzliches Ziel',
-
     button: 'PROTOKOLL ERSTELLEN',
     loading: 'Protokoll wird erstellt...',
     report: 'Professional Report',
@@ -26,7 +25,6 @@ const ui = {
     summary: 'AI Summary',
     mainLine: 'Hauptlinie',
     variant: 'Variante',
-    course: 'Kurs',
     homecare: 'Heimpflege',
     strategy: 'FORMULENS STRATEGY',
     supportingLines: 'Unterstützende Linien',
@@ -36,7 +34,6 @@ const ui = {
     removal: 'Entfernung',
     note: 'Hinweis',
   },
-
   RU: {
     back: '← FORMULENS LAB',
     title: 'КОНСТРУКТОР ПРОТОКОЛОВ',
@@ -47,11 +44,9 @@ const ui = {
     age: 'Возраст',
     skinType: 'Тип кожи',
     sensitivity: 'Чувствительность',
-
     mainGoal: 'Главная задача',
     ageSubGoal: 'Что беспокоит больше всего?',
     additionalGoal: 'Дополнительная задача',
-
     button: 'СОЗДАТЬ ПРОТОКОЛ',
     loading: 'Протокол создаётся...',
     report: 'Профессиональный отчёт',
@@ -60,7 +55,6 @@ const ui = {
     summary: 'AI резюме',
     mainLine: 'Основная линия',
     variant: 'Вариант',
-    course: 'Курс',
     homecare: 'Домашняя поддержка',
     strategy: 'СТРАТЕГИЯ FORMULENS',
     supportingLines: 'Поддерживающие линии',
@@ -70,7 +64,6 @@ const ui = {
     removal: 'Удаление',
     note: 'Примечание',
   },
-
   EN: {
     back: '← FORMULENS LAB',
     title: 'PROTOCOL BUILDER',
@@ -81,11 +74,9 @@ const ui = {
     age: 'Age',
     skinType: 'Skin type',
     sensitivity: 'Sensitivity',
-
     mainGoal: 'Main goal',
     ageSubGoal: 'Main aging concern',
     additionalGoal: 'Additional goal',
-
     button: 'GENERATE PROTOCOL',
     loading: 'Generating protocol...',
     report: 'Professional Report',
@@ -94,7 +85,6 @@ const ui = {
     summary: 'AI Summary',
     mainLine: 'Main line',
     variant: 'Variant',
-    course: 'Course',
     homecare: 'Homecare Support',
     strategy: 'FORMULENS STRATEGY',
     supportingLines: 'Supporting lines',
@@ -108,22 +98,9 @@ const ui = {
 
 const options = {
   DE: {
-    gender: [
-      ['female', 'Frau'],
-      ['male', 'Mann'],
-      ['diverse', 'Divers'],
-    ],
-    skinTypes: [
-      ['dry', 'Trocken'],
-      ['normal', 'Normal'],
-      ['combination', 'Mischhaut'],
-      ['oily', 'Fettig'],
-    ],
-    sensitivities: [
-      ['low', 'Niedrig'],
-      ['medium', 'Mittel'],
-      ['high', 'Hoch'],
-    ],
+    gender: [['female', 'Frau'], ['male', 'Mann'], ['diverse', 'Divers']],
+    skinTypes: [['dry', 'Trocken'], ['normal', 'Normal'], ['combination', 'Mischhaut'], ['oily', 'Fettig']],
+    sensitivities: [['low', 'Niedrig'], ['medium', 'Mittel'], ['high', 'Hoch']],
     mainGoals: [
       ['hydration', 'Feuchtigkeit'],
       ['sensitivity', 'Empfindlichkeit'],
@@ -150,24 +127,10 @@ const options = {
       ['antioxidant', 'Antioxidativer Schutz'],
     ],
   },
-
   RU: {
-    gender: [
-      ['female', 'Женщина'],
-      ['male', 'Мужчина'],
-      ['diverse', 'Другое'],
-    ],
-    skinTypes: [
-      ['dry', 'Сухая'],
-      ['normal', 'Нормальная'],
-      ['combination', 'Комбинированная'],
-      ['oily', 'Жирная'],
-    ],
-    sensitivities: [
-      ['low', 'Низкая'],
-      ['medium', 'Средняя'],
-      ['high', 'Высокая'],
-    ],
+    gender: [['female', 'Женщина'], ['male', 'Мужчина'], ['diverse', 'Другое']],
+    skinTypes: [['dry', 'Сухая'], ['normal', 'Нормальная'], ['combination', 'Комбинированная'], ['oily', 'Жирная']],
+    sensitivities: [['low', 'Низкая'], ['medium', 'Средняя'], ['high', 'Высокая']],
     mainGoals: [
       ['hydration', 'Увлажнение'],
       ['sensitivity', 'Чувствительность'],
@@ -194,24 +157,10 @@ const options = {
       ['antioxidant', 'Антиоксидантная защита'],
     ],
   },
-
   EN: {
-    gender: [
-      ['female', 'Female'],
-      ['male', 'Male'],
-      ['diverse', 'Diverse'],
-    ],
-    skinTypes: [
-      ['dry', 'Dry'],
-      ['normal', 'Normal'],
-      ['combination', 'Combination'],
-      ['oily', 'Oily'],
-    ],
-    sensitivities: [
-      ['low', 'Low'],
-      ['medium', 'Medium'],
-      ['high', 'High'],
-    ],
+    gender: [['female', 'Female'], ['male', 'Male'], ['diverse', 'Diverse']],
+    skinTypes: [['dry', 'Dry'], ['normal', 'Normal'], ['combination', 'Combination'], ['oily', 'Oily']],
+    sensitivities: [['low', 'Low'], ['medium', 'Medium'], ['high', 'High']],
     mainGoals: [
       ['hydration', 'Hydration'],
       ['sensitivity', 'Sensitivity'],
@@ -246,11 +195,9 @@ export default function ProtocolBuilderPage() {
     age: 55,
     skinType: 'dry',
     sensitivity: 'medium',
-
     mainGoal: 'hydration',
-    ageSubGoal: 'wrinkles',
+    ageSubGoal: '',
     additionalGoal: 'none',
-
     lang: 'RU',
   })
 
@@ -265,13 +212,8 @@ export default function ProtocolBuilderPage() {
     setForm((prev) => {
       const next = { ...prev, [name]: value }
 
-      if (name === 'mainGoal' && value !== 'age') {
-        next.ageSubGoal = ''
-      }
-
-      if (name === 'mainGoal' && value === 'age' && !prev.ageSubGoal) {
-        next.ageSubGoal = 'wrinkles'
-      }
+      if (name === 'mainGoal' && value !== 'age') next.ageSubGoal = ''
+      if (name === 'mainGoal' && value === 'age' && !prev.ageSubGoal) next.ageSubGoal = 'wrinkles'
 
       return next
     })
@@ -377,12 +319,7 @@ export default function ProtocolBuilderPage() {
                 </div>
               </div>
 
-              <SelectField
-                label={text.gender}
-                value={form.gender}
-                onChange={(value) => updateField('gender', value)}
-                items={opt.gender}
-              />
+              <SelectField label={text.gender} value={form.gender} onChange={(value) => updateField('gender', value)} items={opt.gender} />
 
               <div>
                 <label className="block text-sm text-white/60 mb-2">
@@ -396,42 +333,17 @@ export default function ProtocolBuilderPage() {
                 />
               </div>
 
-              <SelectField
-                label={text.skinType}
-                value={form.skinType}
-                onChange={(value) => updateField('skinType', value)}
-                items={opt.skinTypes}
-              />
+              <SelectField label={text.skinType} value={form.skinType} onChange={(value) => updateField('skinType', value)} items={opt.skinTypes} />
 
-              <SelectField
-                label={text.sensitivity}
-                value={form.sensitivity}
-                onChange={(value) => updateField('sensitivity', value)}
-                items={opt.sensitivities}
-              />
+              <SelectField label={text.sensitivity} value={form.sensitivity} onChange={(value) => updateField('sensitivity', value)} items={opt.sensitivities} />
 
-              <SelectField
-                label={text.mainGoal}
-                value={form.mainGoal}
-                onChange={(value) => updateField('mainGoal', value)}
-                items={opt.mainGoals}
-              />
+              <SelectField label={text.mainGoal} value={form.mainGoal} onChange={(value) => updateField('mainGoal', value)} items={opt.mainGoals} />
 
               {form.mainGoal === 'age' && (
-                <SelectField
-                  label={text.ageSubGoal}
-                  value={form.ageSubGoal}
-                  onChange={(value) => updateField('ageSubGoal', value)}
-                  items={opt.ageSubGoals}
-                />
+                <SelectField label={text.ageSubGoal} value={form.ageSubGoal} onChange={(value) => updateField('ageSubGoal', value)} items={opt.ageSubGoals} />
               )}
 
-              <SelectField
-                label={text.additionalGoal}
-                value={form.additionalGoal}
-                onChange={(value) => updateField('additionalGoal', value)}
-                items={opt.additionalGoals}
-              />
+              <SelectField label={text.additionalGoal} value={form.additionalGoal} onChange={(value) => updateField('additionalGoal', value)} items={opt.additionalGoals} />
 
               <button
                 type="button"
@@ -501,10 +413,7 @@ export default function ProtocolBuilderPage() {
 
                       <div className="flex flex-wrap gap-2">
                         {protocolStrategy.supportingLineLabels.map((line) => (
-                          <span
-                            key={line}
-                            className="rounded-full bg-fuchsia-600/20 border border-fuchsia-500/30 px-3 py-1 text-sm"
-                          >
+                          <span key={line} className="rounded-full bg-fuchsia-600/20 border border-fuchsia-500/30 px-3 py-1 text-sm">
                             {line}
                           </span>
                         ))}
@@ -520,10 +429,7 @@ export default function ProtocolBuilderPage() {
 
                       <div className="flex flex-wrap gap-2">
                         {protocolBuilder.activeConcentrates.map((item) => (
-                          <span
-                            key={item}
-                            className="rounded-full bg-emerald-600/20 border border-emerald-500/30 px-3 py-1 text-sm"
-                          >
+                          <span key={item} className="rounded-full bg-emerald-600/20 border border-emerald-500/30 px-3 py-1 text-sm">
                             {item}
                           </span>
                         ))}
@@ -546,19 +452,12 @@ export default function ProtocolBuilderPage() {
 
                 {protocolPhases.length > 0 &&
                   protocolPhases.map((phase, index) => (
-                    <div
-                      key={index}
-                      className="rounded-2xl bg-black border border-white/10 p-5"
-                    >
+                    <div key={index} className="rounded-2xl bg-black border border-white/10 p-5">
                       <h3 className="text-xl font-bold mb-4">{phase.title}</h3>
 
                       <div className="space-y-3">
                         {phase.steps?.map((step, stepIndex) => (
-                          <ProtocolStep
-                            key={stepIndex}
-                            step={step}
-                            text={text}
-                          />
+                          <ProtocolStep key={stepIndex} step={step} text={text} />
                         ))}
                       </div>
                     </div>
@@ -584,10 +483,7 @@ export default function ProtocolBuilderPage() {
 
                     <div className="space-y-3">
                       {protocolBuilder.homecare.map((item, index) => (
-                        <div
-                          key={index}
-                          className="rounded-xl border border-white/10 bg-white/[0.03] p-4"
-                        >
+                        <div key={index} className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
                           <div className="font-bold">
                             {item.title || item.line}
                           </div>
@@ -595,20 +491,21 @@ export default function ProtocolBuilderPage() {
                           {item.role && (
                             <p className="text-white/65 mt-2">{item.role}</p>
                           )}
+
+                          {(item.morning?.length > 0 || item.evening?.length > 0) && (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+                              {item.morning?.length > 0 && (
+                                <HomecareColumn title="Утро" products={item.morning} />
+                              )}
+
+                              {item.evening?.length > 0 && (
+                                <HomecareColumn title="Вечер" products={item.evening} />
+                              )}
+                            </div>
+                          )}
                         </div>
                       ))}
                     </div>
-                  </div>
-                )}
-
-                {treatment?.homecareSupport?.length > 0 && (
-                  <div className="rounded-2xl bg-black border border-white/10 p-5">
-                    <h3 className="text-xl font-bold mb-3">{text.homecare}</h3>
-                    <ul className="list-disc pl-5 text-white/75">
-                      {treatment.homecareSupport.map((item, index) => (
-                        <li key={index}>{item}</li>
-                      ))}
-                    </ul>
                   </div>
                 )}
               </div>
@@ -666,35 +563,49 @@ function ProtocolStep({ step, text }) {
     <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
       <div className="font-bold">{title}</div>
 
-      {step.line && (
-        <div className="text-xs text-white/45 mt-1">{step.line}</div>
-      )}
-
-      {step.category && (
-        <div className="text-sm text-fuchsia-200 mt-2">{step.category}</div>
-      )}
-
       {description && (
         <p className="text-sm text-white/70 mt-2">{description}</p>
       )}
 
       {products.length > 0 && (
-        <ul className="list-disc pl-5 text-sm text-white/70 mt-3">
-          {products.map((product, index) => (
-            <li key={index}>{product}</li>
-          ))}
-        </ul>
+        <div className="space-y-3 mt-4">
+          {products.map((productId, index) => {
+            const product = getProductDetails(productId)
+
+            return (
+              <div key={index} className="rounded-xl border border-white/10 bg-black p-4">
+                <div className="font-bold text-white">{product.name}</div>
+
+                {product.line && (
+                  <div className="text-xs text-fuchsia-300 mt-1">{product.line}</div>
+                )}
+
+                {product.category && (
+                  <div className="text-xs text-white/40 mt-1">{product.category}</div>
+                )}
+
+                {product.application && (
+                  <p className="text-sm text-white/70 mt-3">{product.application}</p>
+                )}
+
+                {(product.amount || product.exposure || product.removal) && (
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-3">
+                    {product.amount && <MiniCard label={text.amount} value={product.amount} />}
+                    {product.exposure && <MiniCard label={text.exposure} value={product.exposure} />}
+                    {product.removal && <MiniCard label={text.removal} value={product.removal} />}
+                  </div>
+                )}
+              </div>
+            )
+          })}
+        </div>
       )}
 
       {(step.amount || step.exposure || step.removal) && (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-3">
           {step.amount && <MiniCard label={text.amount} value={step.amount} />}
-          {step.exposure && (
-            <MiniCard label={text.exposure} value={step.exposure} />
-          )}
-          {step.removal && (
-            <MiniCard label={text.removal} value={step.removal} />
-          )}
+          {step.exposure && <MiniCard label={text.exposure} value={step.exposure} />}
+          {step.removal && <MiniCard label={text.removal} value={step.removal} />}
         </div>
       )}
 
@@ -704,6 +615,26 @@ function ProtocolStep({ step, text }) {
           {step.note}
         </p>
       )}
+    </div>
+  )
+}
+
+function HomecareColumn({ title, products }) {
+  return (
+    <div className="rounded-xl border border-white/10 bg-black p-4">
+      <div className="font-bold mb-3">{title}</div>
+
+      <div className="space-y-2">
+        {products.map((productId, index) => {
+          const product = getProductDetails(productId)
+
+          return (
+            <div key={index} className="text-sm text-white/75">
+              {product.name}
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }
