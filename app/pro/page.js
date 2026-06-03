@@ -11,10 +11,6 @@ const translations = {
       'Professionelle AI-Systeme für Kosmetikerinnen: Hautanalyse, Formelanalyse, Behandlungsprotokolle, PDF-Berichte und Kundenhistorie.',
     badge: 'FOUNDER PRICE · 29 €/Monat · 7 Tage kostenlos · bis 01.07.2026',
 
-    formula: 'Formelanalyse PRO',
-    formulaText:
-      'Erweiterte INCI-Analyse: Wirksamkeit, Risiken, Wirkstoffe und professionelle Bewertung.',
-
     skin: 'Hautanalyse PRO',
     skinText:
       '7 Hautparameter: Feuchtigkeit, Barriere, Textur, Pigmentierung, Sebum, Alterungszeichen und Festigkeit.',
@@ -22,6 +18,14 @@ const translations = {
     advisor: 'AI Beauty Advisor',
     advisorText:
       'Soforthilfe für Kosmetikerinnen: Rötungen, Reaktionen, Barriereprobleme, Peelings und Behandlungssituationen.',
+
+    alternatives: 'AI Produkt-Alternative',
+    alternativesText:
+      'Intelligente Produktersatz-Suche nach Funktion, Hautziel, Protokollschritt und Summecosmetics Linie.',
+
+    formula: 'Formelanalyse PRO',
+    formulaText:
+      'Erweiterte INCI-Analyse: Wirksamkeit, Risiken, Wirkstoffe und professionelle Bewertung.',
 
     protocol: 'Protokoll Builder',
     protocolText:
@@ -31,13 +35,13 @@ const translations = {
     photoProtocolText:
       'Kundenfoto → Analyse → Kabinenprotokoll → Homecare-Empfehlung.',
 
-    reports: 'PDF-Berichte',
-    reportsText:
-      'Premium-Berichte für Kundinnen: Analyse, Strategie, Protokoll und Homecare.',
-
     clients: 'Kundenhistorie',
     clientsText:
       'Kundenhistorie, Analysen, Behandlungen und Empfehlungen für Folgeconsultations.',
+
+    reports: 'PDF-Berichte',
+    reportsText:
+      'Premium-Berichte für Kundinnen: Analyse, Strategie, Protokoll und Homecare.',
   },
 
   RU: {
@@ -47,17 +51,21 @@ const translations = {
       'Профессиональная AI-система для косметологов: анализ кожи, анализ формул, протоколы процедур, PDF-отчёты и история клиентов.',
     badge: 'FOUNDER PRICE · 29 €/месяц · 7 дней бесплатно · до 01.07.2026',
 
-    formula: 'Анализ формулы PRO',
-    formulaText:
-      'Расширенный анализ INCI-формул: эффективность, риски, активные компоненты и профессиональная оценка.',
-
     skin: 'Анализ кожи PRO',
     skinText:
       '7 параметров кожи: увлажнение, барьер, текстура, пигментация, себум, возрастные признаки и упругость.',
 
-    advisor: 'AI Beauty Advisor',
+    advisor: 'AI Консультант Косметолога',
     advisorText:
       'Быстрый AI-помощник для косметолога: покраснение, реакции после процедур, нарушение барьера, пилинги и сложные ситуации.',
+
+    alternatives: 'AI Подбор Альтернатив',
+    alternativesText:
+      'Подбор профессиональной замены по функции продукта, цели процедуры и линии Summecosmetics.',
+
+    formula: 'Анализ формулы PRO',
+    formulaText:
+      'Расширенный анализ INCI-формул: эффективность, риски, активные компоненты и профессиональная оценка.',
 
     protocol: 'Конструктор протоколов',
     protocolText:
@@ -67,13 +75,13 @@ const translations = {
     photoProtocolText:
       'Фото клиента → диагностика → кабинетный протокол → домашний уход.',
 
-    reports: 'PDF-отчёты',
-    reportsText:
-      'Премиальные отчёты для клиента: диагностика, стратегия, протокол и домашний уход.',
-
     clients: 'История клиентов',
     clientsText:
       'История клиентов, анализов, процедур и рекомендаций для повторных консультаций.',
+
+    reports: 'PDF-отчёты',
+    reportsText:
+      'Премиальные отчёты для клиента: диагностика, стратегия, протокол и домашний уход.',
   },
 
   EN: {
@@ -83,10 +91,6 @@ const translations = {
       'Professional AI system for beauty professionals: skin analysis, formula analysis, treatment protocols, PDF reports and client history.',
     badge: 'FOUNDER PRICE · 29 €/month · 7 days free · until 01.07.2026',
 
-    formula: 'Formula Analyzer PRO',
-    formulaText:
-      'Advanced INCI analysis: effectiveness, risks, active ingredients and professional evaluation.',
-
     skin: 'Skin Analysis PRO',
     skinText:
       '7 skin parameters: hydration, barrier, texture, pigmentation, sebum, aging signs and firmness.',
@@ -94,6 +98,14 @@ const translations = {
     advisor: 'AI Beauty Advisor',
     advisorText:
       'Instant support for beauty professionals: redness, reactions, barrier issues, peels and treatment situations.',
+
+    alternatives: 'AI Product Alternative',
+    alternativesText:
+      'Professional replacement finder based on function, skin goal, protocol step and Summecosmetics line.',
+
+    formula: 'Formula Analyzer PRO',
+    formulaText:
+      'Advanced INCI analysis: effectiveness, risks, active ingredients and professional evaluation.',
 
     protocol: 'Protocol Builder',
     protocolText:
@@ -103,13 +115,13 @@ const translations = {
     photoProtocolText:
       'Client photo → analysis → treatment protocol → homecare recommendation.',
 
-    reports: 'PDF Reports',
-    reportsText:
-      'Premium client reports: analysis, strategy, treatment protocol and homecare.',
-
     clients: 'Client History',
     clientsText:
       'Client history, analyses, treatments and recommendations for follow-up consultations.',
+
+    reports: 'PDF Reports',
+    reportsText:
+      'Premium client reports: analysis, strategy, treatment protocol and homecare.',
   },
 }
 
@@ -217,13 +229,6 @@ export default function ProDashboard() {
           }}
         >
           <ServiceCard
-            href="/pro/formula"
-            icon="🔬"
-            title={t.formula}
-            text={t.formulaText}
-          />
-
-          <ServiceCard
             href="/pro/skin"
             icon="📷"
             title={t.skin}
@@ -235,6 +240,20 @@ export default function ProDashboard() {
             icon="🧠"
             title={t.advisor}
             text={t.advisorText}
+          />
+
+          <ServiceCard
+            href="/pro/alternatives"
+            icon="🔄"
+            title={t.alternatives}
+            text={t.alternativesText}
+          />
+
+          <ServiceCard
+            href="/pro/formula"
+            icon="🔬"
+            title={t.formula}
+            text={t.formulaText}
           />
 
           <ServiceCard
@@ -252,17 +271,17 @@ export default function ProDashboard() {
           />
 
           <ServiceCard
-            href="/pro/reports"
-            icon="📄"
-            title={t.reports}
-            text={t.reportsText}
-          />
-
-          <ServiceCard
             href="/pro/clients"
             icon="👥"
             title={t.clients}
             text={t.clientsText}
+          />
+
+          <ServiceCard
+            href="/pro/reports"
+            icon="📄"
+            title={t.reports}
+            text={t.reportsText}
           />
         </div>
       </div>
