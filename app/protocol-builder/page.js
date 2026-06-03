@@ -13,29 +13,30 @@ const ui = {
     age: 'Alter',
     skinType: 'Hauttyp',
     sensitivity: 'Sensibilität',
-    concerns: 'Hauptprobleme',
-    goal: 'Behandlungsziel',
+
+    mainGoal: 'Hauptziel',
+    ageSubGoal: 'Was stört am meisten?',
+    additionalGoal: 'Zusätzliches Ziel',
+
     button: 'PROTOKOLL ERSTELLEN',
     loading: 'Protokoll wird erstellt...',
     report: 'Professional Report',
     empty: 'Fülle die Analyse aus und erstelle ein personalisiertes Behandlungsprotokoll.',
     diagnosis: 'PROFESSIONAL DIAGNOSIS',
     summary: 'AI Summary',
-    mainLine: 'Main line',
-    variant: 'Variant',
-    course: 'Course',
-    equipment: 'Equipment',
-    homecare: 'Homecare Support',
+    mainLine: 'Hauptlinie',
+    variant: 'Variante',
+    course: 'Kurs',
+    homecare: 'Heimpflege',
     strategy: 'FORMULENS STRATEGY',
-    primaryStrategy: 'Primary Strategy',
-    secondaryStrategies: 'Secondary Strategies',
-    recommendedLines: 'Recommended Lines',
-    activeFocus: 'Active Focus',
+    supportingLines: 'Unterstützende Linien',
+    activeConcentrates: 'Aktive Konzentrate',
     amount: 'Menge',
     exposure: 'Einwirkzeit',
     removal: 'Entfernung',
     note: 'Hinweis',
   },
+
   RU: {
     back: '← FORMULENS LAB',
     title: 'КОНСТРУКТОР ПРОТОКОЛОВ',
@@ -46,8 +47,11 @@ const ui = {
     age: 'Возраст',
     skinType: 'Тип кожи',
     sensitivity: 'Чувствительность',
-    concerns: 'Основные проблемы',
-    goal: 'Цель процедуры',
+
+    mainGoal: 'Главная задача',
+    ageSubGoal: 'Что беспокоит больше всего?',
+    additionalGoal: 'Дополнительная задача',
+
     button: 'СОЗДАТЬ ПРОТОКОЛ',
     loading: 'Протокол создаётся...',
     report: 'Профессиональный отчёт',
@@ -57,18 +61,16 @@ const ui = {
     mainLine: 'Основная линия',
     variant: 'Вариант',
     course: 'Курс',
-    equipment: 'Оборудование',
     homecare: 'Домашняя поддержка',
     strategy: 'СТРАТЕГИЯ FORMULENS',
-    primaryStrategy: 'Основная стратегия',
-    secondaryStrategies: 'Поддерживающие стратегии',
-    recommendedLines: 'Рекомендуемые линии',
-    activeFocus: 'Активный фокус',
+    supportingLines: 'Поддерживающие линии',
+    activeConcentrates: 'Активные концентраты',
     amount: 'Количество',
     exposure: 'Экспозиция',
     removal: 'Удаление',
     note: 'Примечание',
   },
+
   EN: {
     back: '← FORMULENS LAB',
     title: 'PROTOCOL BUILDER',
@@ -79,8 +81,11 @@ const ui = {
     age: 'Age',
     skinType: 'Skin type',
     sensitivity: 'Sensitivity',
-    concerns: 'Main concerns',
-    goal: 'Treatment goal',
+
+    mainGoal: 'Main goal',
+    ageSubGoal: 'Main aging concern',
+    additionalGoal: 'Additional goal',
+
     button: 'GENERATE PROTOCOL',
     loading: 'Generating protocol...',
     report: 'Professional Report',
@@ -90,13 +95,10 @@ const ui = {
     mainLine: 'Main line',
     variant: 'Variant',
     course: 'Course',
-    equipment: 'Equipment',
     homecare: 'Homecare Support',
     strategy: 'FORMULENS STRATEGY',
-    primaryStrategy: 'Primary Strategy',
-    secondaryStrategies: 'Secondary Strategies',
-    recommendedLines: 'Recommended Lines',
-    activeFocus: 'Active Focus',
+    supportingLines: 'Supporting lines',
+    activeConcentrates: 'Active concentrates',
     amount: 'Amount',
     exposure: 'Exposure',
     removal: 'Removal',
@@ -122,17 +124,33 @@ const options = {
       ['medium', 'Mittel'],
       ['high', 'Hoch'],
     ],
-    concerns: [
-      ['wrinkles', 'Falten'],
-      ['lifting', 'Erschlaffung / Lifting'],
+    mainGoals: [
+      ['hydration', 'Feuchtigkeit'],
+      ['sensitivity', 'Empfindlichkeit'],
+      ['acne', 'Akne / Sebum'],
       ['pigmentation', 'Pigmentierung'],
-      ['acne', 'Akne / Unreinheiten'],
-      ['redness', 'Rötungen / Couperose'],
-      ['dehydration', 'Dehydrierung'],
-      ['dullness', 'Fahler Teint'],
+      ['age', 'Altersveränderungen'],
+      ['antioxidant', 'Antioxidativer Schutz / fahler Teint'],
       ['regeneration', 'Regeneration'],
     ],
+    ageSubGoals: [
+      ['wrinkles', 'Falten'],
+      ['firmness', 'Festigkeitsverlust'],
+      ['oval', 'Konturverlust'],
+      ['age_pigmentation', 'Altersbedingte Pigmentierung'],
+      ['dryness', 'Trockenheit'],
+      ['dullness', 'Fahler Teint'],
+    ],
+    additionalGoals: [
+      ['none', 'Nein'],
+      ['dehydration', 'Dehydrierung'],
+      ['sensitivity', 'Empfindlichkeit'],
+      ['pigmentation', 'Pigmentierung'],
+      ['regeneration', 'Regeneration'],
+      ['antioxidant', 'Antioxidativer Schutz'],
+    ],
   },
+
   RU: {
     gender: [
       ['female', 'Женщина'],
@@ -150,17 +168,33 @@ const options = {
       ['medium', 'Средняя'],
       ['high', 'Высокая'],
     ],
-    concerns: [
-      ['wrinkles', 'Морщины'],
-      ['lifting', 'Дряблость / Лифтинг'],
+    mainGoals: [
+      ['hydration', 'Увлажнение'],
+      ['sensitivity', 'Чувствительность'],
+      ['acne', 'Акне / Себум'],
       ['pigmentation', 'Пигментация'],
-      ['acne', 'Акне / Высыпания'],
-      ['redness', 'Покраснения / Купероз'],
-      ['dehydration', 'Обезвоженность'],
-      ['dullness', 'Тусклый тон'],
+      ['age', 'Возрастные изменения'],
+      ['antioxidant', 'Антиоксидантная защита / Тусклая кожа'],
       ['regeneration', 'Регенерация'],
     ],
+    ageSubGoals: [
+      ['wrinkles', 'Морщины'],
+      ['firmness', 'Потеря упругости'],
+      ['oval', 'Потеря овала'],
+      ['age_pigmentation', 'Возрастная пигментация'],
+      ['dryness', 'Сухость'],
+      ['dullness', 'Тусклая кожа'],
+    ],
+    additionalGoals: [
+      ['none', 'Нет'],
+      ['dehydration', 'Обезвоженность'],
+      ['sensitivity', 'Чувствительность'],
+      ['pigmentation', 'Пигментация'],
+      ['regeneration', 'Регенерация'],
+      ['antioxidant', 'Антиоксидантная защита'],
+    ],
   },
+
   EN: {
     gender: [
       ['female', 'Female'],
@@ -178,15 +212,30 @@ const options = {
       ['medium', 'Medium'],
       ['high', 'High'],
     ],
-    concerns: [
-      ['wrinkles', 'Wrinkles'],
-      ['lifting', 'Sagging / Lifting'],
+    mainGoals: [
+      ['hydration', 'Hydration'],
+      ['sensitivity', 'Sensitivity'],
+      ['acne', 'Acne / Sebum'],
       ['pigmentation', 'Pigmentation'],
-      ['acne', 'Acne / Impurities'],
-      ['redness', 'Redness / Couperose'],
-      ['dehydration', 'Dehydration'],
-      ['dullness', 'Dull tone'],
+      ['age', 'Age-related changes'],
+      ['antioxidant', 'Antioxidant protection / Dull skin'],
       ['regeneration', 'Regeneration'],
+    ],
+    ageSubGoals: [
+      ['wrinkles', 'Wrinkles'],
+      ['firmness', 'Loss of firmness'],
+      ['oval', 'Loss of facial oval'],
+      ['age_pigmentation', 'Age-related pigmentation'],
+      ['dryness', 'Dryness'],
+      ['dullness', 'Dull skin'],
+    ],
+    additionalGoals: [
+      ['none', 'None'],
+      ['dehydration', 'Dehydration'],
+      ['sensitivity', 'Sensitivity'],
+      ['pigmentation', 'Pigmentation'],
+      ['regeneration', 'Regeneration'],
+      ['antioxidant', 'Antioxidant protection'],
     ],
   },
 }
@@ -197,8 +246,11 @@ export default function ProtocolBuilderPage() {
     age: 55,
     skinType: 'dry',
     sensitivity: 'medium',
-    concerns: ['wrinkles', 'lifting'],
-    goal: 'увлажнение',
+
+    mainGoal: 'hydration',
+    ageSubGoal: 'wrinkles',
+    additionalGoal: 'none',
+
     lang: 'RU',
   })
 
@@ -210,18 +262,20 @@ export default function ProtocolBuilderPage() {
   const opt = options[form.lang] || options.DE
 
   function updateField(name, value) {
-    setForm((prev) => ({ ...prev, [name]: value }))
-    setResult(null)
-    setError('')
-  }
+    setForm((prev) => {
+      const next = { ...prev, [name]: value }
 
-  function toggleConcern(value) {
-    setForm((prev) => ({
-      ...prev,
-      concerns: prev.concerns.includes(value)
-        ? prev.concerns.filter((item) => item !== value)
-        : [...prev.concerns, value],
-    }))
+      if (name === 'mainGoal' && value !== 'age') {
+        next.ageSubGoal = ''
+      }
+
+      if (name === 'mainGoal' && value === 'age' && !prev.ageSubGoal) {
+        next.ageSubGoal = 'wrinkles'
+      }
+
+      return next
+    })
+
     setResult(null)
     setError('')
   }
@@ -253,10 +307,30 @@ export default function ProtocolBuilderPage() {
     }
   }
 
-  const treatment = result?.protocol?.treatment || result?.protocol?.protocol
-  const decision = result?.protocol?.decision
-  const variant = result?.protocol?.variant
+  const protocolBuilder = result?.protocol?.protocolBuilder
+  const treatment =
+    result?.protocol?.treatment ||
+    result?.protocol?.protocol ||
+    protocolBuilder?.protocol
+
+  const protocolStrategy = protocolBuilder?.strategy
   const strategy = result?.strategy
+
+  const mainLine =
+    protocolStrategy?.mainLineLabel ||
+    treatment?.mainLine ||
+    treatment?.line ||
+    treatment?.mainLineLabel ||
+    '—'
+
+  const variant =
+    protocolStrategy?.mycodeVariant ||
+    treatment?.variantName ||
+    treatment?.variant ||
+    '—'
+
+  const protocolSteps = treatment?.steps || []
+  const protocolPhases = treatment?.phases || []
 
   return (
     <main className="min-h-screen bg-black text-white px-6 py-10">
@@ -289,6 +363,7 @@ export default function ProtocolBuilderPage() {
                   {['DE', 'RU', 'EN'].map((lang) => (
                     <button
                       key={lang}
+                      type="button"
                       onClick={() => updateField('lang', lang)}
                       className={`px-4 py-2 rounded-xl border ${
                         form.lang === lang
@@ -335,46 +410,31 @@ export default function ProtocolBuilderPage() {
                 items={opt.sensitivities}
               />
 
-              <div>
-                <label className="block text-sm text-white/60 mb-3">
-                  {text.concerns}
-                </label>
+              <SelectField
+                label={text.mainGoal}
+                value={form.mainGoal}
+                onChange={(value) => updateField('mainGoal', value)}
+                items={opt.mainGoals}
+              />
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {opt.concerns.map(([value, label]) => {
-                    const active = form.concerns.includes(value)
-
-                    return (
-                      <button
-                        key={value}
-                        onClick={() => toggleConcern(value)}
-                        className={`text-left rounded-xl border px-4 py-3 ${
-                          active
-                            ? 'bg-fuchsia-600/30 border-fuchsia-500 text-white'
-                            : 'bg-black border-white/15 text-white/70'
-                        }`}
-                      >
-                        {label}
-                      </button>
-                    )
-                  })}
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm text-white/60 mb-2">
-                  {text.goal}
-                </label>
-
-                <textarea
-                  value={form.goal}
-                  onChange={(e) => updateField('goal', e.target.value)}
-                  rows={4}
-                  className="w-full rounded-xl bg-black border border-white/15 px-4 py-3"
+              {form.mainGoal === 'age' && (
+                <SelectField
+                  label={text.ageSubGoal}
+                  value={form.ageSubGoal}
+                  onChange={(value) => updateField('ageSubGoal', value)}
+                  items={opt.ageSubGoals}
                 />
-              </div>
+              )}
+
+              <SelectField
+                label={text.additionalGoal}
+                value={form.additionalGoal}
+                onChange={(value) => updateField('additionalGoal', value)}
+                items={opt.additionalGoals}
+              />
 
               <button
+                type="button"
                 onClick={generateProtocol}
                 disabled={loading}
                 className="w-full rounded-2xl bg-white text-black font-bold px-6 py-4 hover:bg-white/90 disabled:opacity-60"
@@ -407,12 +467,10 @@ export default function ProtocolBuilderPage() {
                     {text.diagnosis}
                   </div>
 
-                  <h2 className="text-3xl font-black">
-                    {treatment.mainLine}
-                  </h2>
+                  <h2 className="text-3xl font-black">{mainLine}</h2>
 
                   <p className="text-white/60 mt-2">
-                    {treatment.protocolType}
+                    {treatment?.name || treatment?.protocolType || 'Professional Protocol'}
                   </p>
                 </div>
 
@@ -425,173 +483,125 @@ export default function ProtocolBuilderPage() {
                   </div>
                 )}
 
-                {strategy && (
-                  <div className="rounded-2xl bg-black border border-fuchsia-500/30 p-5">
-                    <h3 className="font-bold mb-4 text-fuchsia-300">
-                      {text.strategy}
-                    </h3>
+                <div className="rounded-2xl bg-black border border-fuchsia-500/30 p-5">
+                  <h3 className="font-bold mb-4 text-fuchsia-300">
+                    {text.strategy}
+                  </h3>
 
-                    <div className="space-y-5">
-                      <div>
-                        <div className="text-xs text-white/40 mb-1">
-                          {text.primaryStrategy}
-                        </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <InfoCard label={text.mainLine} value={mainLine} />
+                    <InfoCard label={text.variant} value={variant} />
+                  </div>
 
-                        <div className="font-bold text-xl">
-                          {strategy.primaryStrategy?.name || '—'}
-                        </div>
-
-                        {strategy.primaryStrategy?.reason && (
-                          <p className="text-white/65 mt-2">
-                            {strategy.primaryStrategy.reason}
-                          </p>
-                        )}
+                  {protocolStrategy?.supportingLineLabels?.length > 0 && (
+                    <div className="mt-5">
+                      <div className="text-xs text-white/40 mb-2">
+                        {text.supportingLines}
                       </div>
 
-                      {strategy.secondaryStrategies?.length > 0 && (
-                        <div>
-                          <div className="text-xs text-white/40 mb-2">
-                            {text.secondaryStrategies}
-                          </div>
+                      <div className="flex flex-wrap gap-2">
+                        {protocolStrategy.supportingLineLabels.map((line) => (
+                          <span
+                            key={line}
+                            className="rounded-full bg-fuchsia-600/20 border border-fuchsia-500/30 px-3 py-1 text-sm"
+                          >
+                            {line}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
-                          <div className="flex flex-wrap gap-2">
-                            {strategy.secondaryStrategies.map((item, index) => (
-                              <span
-                                key={index}
-                                className="rounded-full bg-white/5 border border-white/10 px-3 py-1 text-sm"
-                              >
-                                {item.name}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
+                  {protocolBuilder?.activeConcentrates?.length > 0 && (
+                    <div className="mt-5">
+                      <div className="text-xs text-white/40 mb-2">
+                        {text.activeConcentrates}
+                      </div>
+
+                      <div className="flex flex-wrap gap-2">
+                        {protocolBuilder.activeConcentrates.map((item) => (
+                          <span
+                            key={item}
+                            className="rounded-full bg-emerald-600/20 border border-emerald-500/30 px-3 py-1 text-sm"
+                          >
+                            {item}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {strategy?.primaryStrategy?.name && (
+                    <div className="mt-5 text-white/70">
+                      <div className="font-bold text-white">
+                        {strategy.primaryStrategy.name}
+                      </div>
+
+                      {strategy.primaryStrategy.reason && (
+                        <p className="mt-2">{strategy.primaryStrategy.reason}</p>
                       )}
+                    </div>
+                  )}
+                </div>
 
-                      {strategy.recommendedLines?.length > 0 && (
-                        <div>
-                          <div className="text-xs text-white/40 mb-2">
-                            {text.recommendedLines}
-                          </div>
+                {protocolPhases.length > 0 &&
+                  protocolPhases.map((phase, index) => (
+                    <div
+                      key={index}
+                      className="rounded-2xl bg-black border border-white/10 p-5"
+                    >
+                      <h3 className="text-xl font-bold mb-4">{phase.title}</h3>
 
-                          <div className="flex flex-wrap gap-2">
-                            {strategy.recommendedLines.map((line) => (
-                              <span
-                                key={line}
-                                className="rounded-full bg-fuchsia-600/20 border border-fuchsia-500/30 px-3 py-1 text-sm"
-                              >
-                                {line}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
+                      <div className="space-y-3">
+                        {phase.steps?.map((step, stepIndex) => (
+                          <ProtocolStep
+                            key={stepIndex}
+                            step={step}
+                            text={text}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  ))}
 
-                      {strategy.activeIngredients?.length > 0 && (
-                        <div>
-                          <div className="text-xs text-white/40 mb-2">
-                            {text.activeFocus}
-                          </div>
+                {protocolSteps.length > 0 && (
+                  <div className="rounded-2xl bg-black border border-white/10 p-5">
+                    <h3 className="text-xl font-bold mb-4">
+                      {treatment?.name || 'Protocol steps'}
+                    </h3>
 
-                          <div className="flex flex-wrap gap-2">
-                            {strategy.activeIngredients.map((item) => (
-                              <span
-                                key={item}
-                                className="rounded-full bg-emerald-600/20 border border-emerald-500/30 px-3 py-1 text-sm"
-                              >
-                                {item}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
+                    <div className="space-y-3">
+                      {protocolSteps.map((step, index) => (
+                        <ProtocolStep key={index} step={step} text={text} />
+                      ))}
                     </div>
                   </div>
                 )}
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <InfoCard label={text.mainLine} value={decision?.mainLine || treatment.mainLine} />
-                  <InfoCard label={text.variant} value={variant?.variantName || treatment.variantName} />
-                  <InfoCard label={text.course} value={treatment.course} />
-                </div>
-
-                {treatment.courseNote && (
-                  <div className="rounded-2xl bg-fuchsia-600/10 border border-fuchsia-500/30 p-5 text-white/80">
-                    {treatment.courseNote}
-                  </div>
-                )}
-
-                {treatment.phases?.map((phase, index) => (
-                  <div
-                    key={index}
-                    className="rounded-2xl bg-black border border-white/10 p-5"
-                  >
-                    <h3 className="text-xl font-bold mb-4">{phase.title}</h3>
+                {protocolBuilder?.homecare?.length > 0 && (
+                  <div className="rounded-2xl bg-black border border-white/10 p-5">
+                    <h3 className="text-xl font-bold mb-3">{text.homecare}</h3>
 
                     <div className="space-y-3">
-                      {phase.steps?.map((step, stepIndex) => (
+                      {protocolBuilder.homecare.map((item, index) => (
                         <div
-                          key={stepIndex}
+                          key={index}
                           className="rounded-xl border border-white/10 bg-white/[0.03] p-4"
                         >
-                          <div className="font-bold">{step.name}</div>
-
-                          <div className="text-xs text-white/45 mt-1">
-                            {step.line}
+                          <div className="font-bold">
+                            {item.title || item.line}
                           </div>
 
-                          <div className="text-sm text-fuchsia-200 mt-2">
-                            {step.category}
-                          </div>
-
-                          {step.instruction && (
-                            <p className="text-sm text-white/70 mt-2">
-                              {step.instruction}
-                            </p>
-                          )}
-
-                          {(step.amount || step.exposure || step.removal) && (
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-3">
-                              {step.amount && (
-                                <MiniCard label={text.amount} value={step.amount} />
-                              )}
-
-                              {step.exposure && (
-                                <MiniCard label={text.exposure} value={step.exposure} />
-                              )}
-
-                              {step.removal && (
-                                <MiniCard label={text.removal} value={step.removal} />
-                              )}
-                            </div>
-                          )}
-
-                          {step.note && (
-                            <p className="text-xs text-white/50 mt-3">
-                              <strong>{text.note}: </strong>
-                              {step.note}
-                            </p>
+                          {item.role && (
+                            <p className="text-white/65 mt-2">{item.role}</p>
                           )}
                         </div>
                       ))}
                     </div>
                   </div>
-                ))}
-
-                {treatment.equipment?.length > 0 && (
-                  <div className="rounded-2xl bg-black border border-white/10 p-5">
-                    <h3 className="text-xl font-bold mb-3">{text.equipment}</h3>
-                    {treatment.equipment.map((item, index) => (
-                      <div key={index}>
-                        <div className="font-bold">{item.name}</div>
-                        {item.usage && (
-                          <p className="text-white/70">{item.usage}</p>
-                        )}
-                      </div>
-                    ))}
-                  </div>
                 )}
 
-                {treatment.homecareSupport?.length > 0 && (
+                {treatment?.homecareSupport?.length > 0 && (
                   <div className="rounded-2xl bg-black border border-white/10 p-5">
                     <h3 className="text-xl font-bold mb-3">{text.homecare}</h3>
                     <ul className="list-disc pl-5 text-white/75">
@@ -643,6 +653,57 @@ function MiniCard({ label, value }) {
     <div className="rounded-lg bg-black border border-white/10 p-3">
       <div className="text-xs text-white/40">{label}</div>
       <div className="font-bold text-sm">{value}</div>
+    </div>
+  )
+}
+
+function ProtocolStep({ step, text }) {
+  const title = step.title || step.name || '—'
+  const description = step.description || step.instruction || ''
+  const products = step.products || []
+
+  return (
+    <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
+      <div className="font-bold">{title}</div>
+
+      {step.line && (
+        <div className="text-xs text-white/45 mt-1">{step.line}</div>
+      )}
+
+      {step.category && (
+        <div className="text-sm text-fuchsia-200 mt-2">{step.category}</div>
+      )}
+
+      {description && (
+        <p className="text-sm text-white/70 mt-2">{description}</p>
+      )}
+
+      {products.length > 0 && (
+        <ul className="list-disc pl-5 text-sm text-white/70 mt-3">
+          {products.map((product, index) => (
+            <li key={index}>{product}</li>
+          ))}
+        </ul>
+      )}
+
+      {(step.amount || step.exposure || step.removal) && (
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-3">
+          {step.amount && <MiniCard label={text.amount} value={step.amount} />}
+          {step.exposure && (
+            <MiniCard label={text.exposure} value={step.exposure} />
+          )}
+          {step.removal && (
+            <MiniCard label={text.removal} value={step.removal} />
+          )}
+        </div>
+      )}
+
+      {step.note && (
+        <p className="text-xs text-white/50 mt-3">
+          <strong>{text.note}: </strong>
+          {step.note}
+        </p>
+      )}
     </div>
   )
 }
