@@ -14,16 +14,11 @@ const translations = {
     uploadPhoto: 'Kundenfoto hochladen',
     analyze: '✨ Haut analysieren',
     analyzing: 'AI analysiert die Haut...',
-    uploadHint: 'Laden Sie ein Kundenfoto hoch und ergänzen Sie die Kundendaten.',
+    uploadHint:
+      'Laden Sie ein Kundenfoto hoch und geben Sie das Alter der Kundin ein.',
 
     age: 'Alter',
-    concern: 'Hauptanliegen',
-    skinType: 'Hauttyp',
-    sensitivity: 'Sensibilität',
     agePlaceholder: 'z.B. 45',
-    concernPlaceholder: 'z.B. Pigmentierung, Rötungen, Poren...',
-    skinTypePlaceholder: 'z.B. trocken, ölig, Mischhaut...',
-    sensitivityPlaceholder: 'z.B. empfindlich, normal, reaktiv...',
 
     overview: 'Professionelle Hautbewertung',
     score: 'Professioneller Hautindex',
@@ -55,16 +50,10 @@ const translations = {
     uploadPhoto: 'Загрузить фото клиента',
     analyze: '✨ Анализировать кожу',
     analyzing: 'AI анализирует кожу...',
-    uploadHint: 'Загрузите фото клиента и добавьте данные для профессионального анализа.',
+    uploadHint: 'Загрузите фото клиента и укажите возраст.',
 
     age: 'Возраст',
-    concern: 'Главная жалоба',
-    skinType: 'Тип кожи',
-    sensitivity: 'Чувствительность',
     agePlaceholder: 'например: 45',
-    concernPlaceholder: 'например: пигментация, покраснение, поры...',
-    skinTypePlaceholder: 'например: сухая, жирная, комбинированная...',
-    sensitivityPlaceholder: 'например: чувствительная, нормальная, реактивная...',
 
     overview: 'Профессиональная оценка кожи',
     score: 'Профессиональный индекс кожи',
@@ -96,16 +85,10 @@ const translations = {
     uploadPhoto: 'Upload Client Photo',
     analyze: '✨ Analyze Skin',
     analyzing: 'AI is analyzing the skin...',
-    uploadHint: 'Upload a client photo and add client context for professional analysis.',
+    uploadHint: 'Upload a client photo and enter the client age.',
 
     age: 'Age',
-    concern: 'Main concern',
-    skinType: 'Skin type',
-    sensitivity: 'Sensitivity',
     agePlaceholder: 'e.g. 45',
-    concernPlaceholder: 'e.g. pigmentation, redness, pores...',
-    skinTypePlaceholder: 'e.g. dry, oily, combination...',
-    sensitivityPlaceholder: 'e.g. sensitive, normal, reactive...',
 
     overview: 'Professional Skin Overview',
     score: 'Professional Skin Score',
@@ -133,9 +116,6 @@ export default function ProSkinPage() {
   const [image, setImage] = useState(null)
   const [imageData, setImageData] = useState('')
   const [age, setAge] = useState('')
-  const [concern, setConcern] = useState('')
-  const [skinType, setSkinType] = useState('')
-  const [sensitivity, setSensitivity] = useState('')
   const [analysis, setAnalysis] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -174,9 +154,6 @@ export default function ProSkinPage() {
           image: imageData,
           lang,
           age,
-          concern,
-          skinType,
-          sensitivity,
         }),
       })
 
@@ -271,35 +248,12 @@ export default function ProSkinPage() {
           <div style={styles.panel}>
             <h2 style={styles.h2}>{t.uploadTitle}</h2>
 
-            <div style={styles.formGrid}>
-              <Field
-                label={t.age}
-                value={age}
-                onChange={setAge}
-                placeholder={t.agePlaceholder}
-              />
-              <Field
-                label={t.skinType}
-                value={skinType}
-                onChange={setSkinType}
-                placeholder={t.skinTypePlaceholder}
-              />
-              <Field
-                label={t.sensitivity}
-                value={sensitivity}
-                onChange={setSensitivity}
-                placeholder={t.sensitivityPlaceholder}
-              />
-            </div>
-
-            <div style={{ marginTop: '18px' }}>
-              <Field
-                label={t.concern}
-                value={concern}
-                onChange={setConcern}
-                placeholder={t.concernPlaceholder}
-              />
-            </div>
+            <Field
+              label={t.age}
+              value={age}
+              onChange={setAge}
+              placeholder={t.agePlaceholder}
+            />
 
             <label style={{ cursor: 'pointer' }}>
               <div style={styles.uploadBox}>
@@ -387,11 +341,8 @@ export default function ProSkinPage() {
 
             <section style={styles.resultGrid}>
               <Info title={t.interpretation}>{analysis.interpretation}</Info>
-
               <Info title={t.strategy}>{analysis.strategy}</Info>
-
               <Info title={t.homecare}>{analysis.homecare}</Info>
-
               <Info title={t.directions}>{analysis.recommendedLines}</Info>
             </section>
           </>
@@ -557,11 +508,6 @@ const styles = {
     borderRadius: '30px',
     padding: '34px',
   },
-  formGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit,minmax(140px,1fr))',
-    gap: '14px',
-  },
   fieldLabel: {
     display: 'grid',
     gap: '8px',
@@ -571,6 +517,7 @@ const styles = {
   },
   input: {
     width: '100%',
+    maxWidth: '220px',
     borderRadius: '14px',
     border: '1px solid #262626',
     background: '#050505',
@@ -580,7 +527,7 @@ const styles = {
     outline: 'none',
   },
   uploadBox: {
-    height: '360px',
+    height: '390px',
     marginTop: '22px',
     borderRadius: '24px',
     border: '1px dashed #444',
