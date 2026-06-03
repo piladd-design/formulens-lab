@@ -1,5 +1,10 @@
 import OpenAI from 'openai'
 
+import {
+  findProductByName,
+  getAlternativeCandidates,
+} from '../../../lib/product-selector.js'
+
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 })
@@ -17,13 +22,62 @@ function safeJsonParse(text) {
   }
 }
 
+function buildProductContext(product) {
+  if (!product) {
+    return 'Product was not found in FORMULENS product database.'
+  }
+
+  return `
+Detected product from FORMULENS database:
+
+ID: ${product.id}
+Name: ${product.name}
+Line: ${product.line}
+Category: ${product.category}
+Step: ${product.step}
+Professional: ${product.professional ? 'yes' : 'no'}
+Retail: ${product.retail ? 'yes' : 'no'}
+
+Goals:
+${(product.goals || []).join(', ')}
+
+Concerns:
+${(product.concerns || []).join(', ')}
+`
+}
+
+function buildAlternativesContext(alternatives = []) {
+  if (!alternatives.length) {
+    return 'No preselected alternatives were found in FORMULENS product database.'
+  }
+
+  return alternatives
+    .map(
+      (item, index) => `
+Alternative ${index + 1}
+
+ID: ${item.id}
+Name: ${item.name}
+Line: ${item.line}
+Category: ${item.category}
+Step: ${item.step}
+Match: ${item.match}
+Professional: ${item.professional ? 'yes' : 'no'}
+Retail: ${item.retail ? 'yes' : 'no'}
+
+Goals:
+${(item.goals || []).join(', ')}
+
+Concerns:
+${(item.concerns || []).join(', ')}
+`
+    )
+    .join('\n')
+}
+
 export async function POST(req) {
   try {
-    const {
-      product = '',
-      lang = 'DE',
-      context = '',
-    } = await req.json()
+    const { product = '', lang = 'DE', context = '' } = await req.json()
 
     if (!product.trim()) {
       return Response.json(
@@ -39,6 +93,15 @@ export async function POST(req) {
         ? 'English'
         : 'German'
 
+    const sourceProduct = findProductByName(product)
+
+    const alternatives = sourceProduct
+      ? getAlternativeCandidates(sourceProduct, 5)
+      : []
+
+    const productContext = buildProductContext(sourceProduct)
+    const alternativesContext = buildAlternativesContext(alternatives)
+
     const response = await client.responses.create({
       model: 'gpt-4.1-mini',
       input: `
@@ -48,11 +111,19 @@ You help professional cosmetologists find safe and logical cosmetic alternatives
 
 Language: ${language}
 
-Unavailable product:
+Unavailable product entered by user:
 ${product}
 
 Additional context:
 ${context || 'not provided'}
+
+CATALOG PRODUCT DATA:
+
+${productContext}
+
+PRESELECTED ALTERNATIVES FROM FORMULENS DATABASE:
+
+${alternativesContext}
 
 IMPORTANT:
 This is professional cosmetic decision support.
@@ -60,26 +131,27 @@ This is NOT medical advice.
 Do not recommend medication or invasive procedures.
 
 CORE LOGIC:
-Do NOT search by similar product names.
-Search by product FUNCTION in protocol.
+Use the FORMULENS product database first.
+The database alternatives are preselected by category, protocol step, goals and concerns.
+Prefer database alternatives when available.
+Do not invent products when database alternatives are available.
+
+Do NOT recommend the original product again.
+Do NOT recommend the same product under another synonym.
+Do NOT recommend the same functional family as an alternative.
+
+Examples:
+- NICELY Toner, NICELY Tonic, NICELY Mist, NICELY Sweet Toner are the same functional product family.
+- GLACIAR Toner, GLACIAR Mist, GLACIAR Soft Lotion are the same functional product family.
+- CELL Activator Serum, CELL serum, CELL Activator Nourishing Anti-Ageing Serum are the same product family.
+- ESSENTIAL, ECC and Essential Care Concept may refer to the same universal preparation family.
 
 Think in this order:
 1. What category is the missing product?
 2. What protocol step does it close?
 3. What cosmetic function does it perform?
-4. What Summecosmetics product line can cover this function?
-5. What is preserved and what is lost with the alternative?
-
-VERY IMPORTANT:
-Do not offer the same product under a different synonym as an alternative.
-
-Examples:
-- NICELY Toner, NICELY Tonic, NICELY Mist, NICELY Soft Lotion direction = same functional product family.
-If NICELY toner is missing, do NOT recommend NICELY mist/toner as the main alternative.
-- GLACIAR Toner, GLACIAR Mist, GLACIAR Soft Lotion direction = same functional product family.
-- ESSENTIAL, ECC and Essential Care Concept may refer to the same universal preparation family.
-
-If a toner / mist / lotion is unavailable, choose another line that can close the same protocol step.
+4. Which database alternative best covers that function?
+5. What is preserved and what is reduced with the replacement?
 
 Known Summecosmetics line logic:
 
@@ -88,15 +160,12 @@ universal preparation, cleansing, mist, toner direction, pH comfort, basic sooth
 
 NICELY:
 sensitive skin, redness, comfort, barrier support, delicate cleansing, calming hydration.
-Best for reactive and sensitive skin.
 
 GLACIAR:
 hydration, dehydration, comfort, moisture reservoir, soft lotion / toner direction, hydration cream, hydration serum direction.
-Best for dehydration and comfort support.
 
 BALANCE:
 sebum regulation, oily skin, pores, comedones, acne-prone skin, clarifying care.
-Best for seborrhea, pores and inflammatory tendency.
 
 BECLARITY:
 pigmentation, dark spots, uneven tone, post-inflammatory marks, brightening support.
@@ -112,35 +181,6 @@ professional codes, targeted anti-age, firming, plumping, comforting, depigmenti
 
 SUMMESUN:
 daily SPF protection, post-peel protection, pigmentation protection, anti-age protection.
-
-TONER / MIST REPLACEMENT LOGIC:
-
-If missing product is NICELY toner / tonic / mist / lotion:
-Main alternatives should normally be:
-1. GLACIAR Soft Lotion / Toner direction
-2. ESSENTIAL / ECC Mist or Toner direction
-
-Reason:
-NICELY toner function = sensitive skin comfort + barrier support + calming preparation.
-GLACIAR covers comfort + hydration.
-ESSENTIAL / ECC covers universal preparation + basic soothing.
-
-Do NOT recommend NICELY toner/mist/lotion as its own replacement.
-
-If missing product is GLACIAR toner / mist / soft lotion:
-Main alternatives should normally be:
-1. ESSENTIAL / ECC Mist or Toner direction
-2. NICELY Toner / Mist direction if sensitivity or redness is present
-
-If missing product is ESSENTIAL / ECC mist / toner:
-Main alternatives should normally be:
-1. GLACIAR Soft Lotion / Toner direction for hydration
-2. NICELY Toner / Mist direction for sensitivity
-
-If missing product is BALANCE toner / lotion:
-Main alternatives may close the toning step, but explain that seboregulation may be reduced.
-Use ESSENTIAL / ECC or GLACIAR depending on skin comfort.
-Do not claim full seboregulating equivalence unless BALANCE product is available.
 
 Return ONLY valid JSON with this exact structure:
 
@@ -175,27 +215,28 @@ title:
 Short title for the answer.
 
 missingProduct:
-Repeat the unavailable product name.
+Use the detected database product name if available.
+If not found, repeat the user's unavailable product.
 
 productRole:
-Explain the role by function, not by brand name.
-Example:
-"toning / mist step for calming, comfort and barrier support"
+Explain the product role by function, not only by brand name.
 
 mainAlternative:
-Give the best logical replacement from a DIFFERENT functional product family when the missing product is unavailable.
-Do not recommend the same product under a different synonym.
+Use the best preselected database alternative when available.
+Use its real product name and line.
+Use its match score.
+
+otherAlternatives:
+Use remaining preselected database alternatives when available.
+Each alternative must include match score.
 
 match:
-Compatibility score from 0 to 100.
+Use database match score when available.
+If product was not found in database, estimate compatibility:
 100 = almost identical functional coverage.
 70-90 = good functional replacement.
 40-69 = partial replacement.
 Below 40 = only emergency / weak replacement.
-
-otherAlternatives:
-Give 2-3 additional alternatives if useful.
-Each alternative must include match.
 
 protocolAdjustment:
 Explain how the procedure or homecare should be adjusted.
@@ -213,14 +254,6 @@ Write a short message the cosmetologist can say/send to the client.
 Use soft professional wording.
 For Russian, use "косметолог", not "доктор".
 
-Important:
-Do not invent exact product names unless they are clearly likely from Summecosmetics lines.
-If unsure, use product direction instead of fake exact names.
-Examples:
-"GLACIAR Soft Lotion / Toner direction"
-"ESSENTIAL / ECC Mist or Toner direction"
-"NICELY calming toner direction"
-
 Language rule:
 All text fields must be strictly in ${language}.
 Use English only for brand and product line names.
@@ -233,7 +266,28 @@ No extra text.
 
     const result = safeJsonParse(response.output_text)
 
-    return Response.json({ result })
+    return Response.json({
+      result,
+      debug: {
+        foundProduct: sourceProduct
+          ? {
+              id: sourceProduct.id,
+              name: sourceProduct.name,
+              line: sourceProduct.line,
+              category: sourceProduct.category,
+              step: sourceProduct.step,
+            }
+          : null,
+        alternatives: alternatives.map((item) => ({
+          id: item.id,
+          name: item.name,
+          line: item.line,
+          category: item.category,
+          step: item.step,
+          match: item.match,
+        })),
+      },
+    })
   } catch (error) {
     console.error(error)
 
