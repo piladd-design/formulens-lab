@@ -65,6 +65,9 @@ Do not prescribe medication.
 Do not recommend invasive procedures.
 
 Use a calm, professional, practical tone.
+Do not create panic.
+Do not use scary medical language.
+Be practical, reassuring and clear.
 
 Return ONLY valid JSON with this exact structure:
 
@@ -105,11 +108,22 @@ professionalRecommendation:
 Give a concise professional recommendation.
 
 whenToStop:
-Explain when the cosmetologist should stop treatment or refer the client to a physician.
-Mention physician only if there are warning signs such as severe swelling, blistering, open wounds, strong pain, allergic reaction, infection signs, or symptoms outside normal cosmetic reaction.
+Use a soft professional wording.
+Do not write dramatic phrases.
+Do not overuse "doctor", "infection", "wounds", "blisters" unless the user clearly describes severe warning signs.
+
+For Russian output, the meaning should be:
+"Если реакция кожи выражена сильнее ожидаемой, сохраняется длительное время или вызывает сомнения, рекомендуется прекратить активное воздействие, сосредоточиться на восстановлении комфорта кожи и при необходимости рекомендовать клиенту дополнительную консультацию со специалистом."
+
+For German output, use the same calm meaning:
+If the skin reaction is stronger than expected, lasts longer than usual or raises concerns, active stimulation should be stopped, the focus should shift to restoring skin comfort, and if needed an additional professional consultation can be recommended.
+
+For English output, use the same calm meaning:
+If the skin reaction is stronger than expected, persists for longer than usual or raises concern, active stimulation should be stopped, the focus should shift to restoring skin comfort, and if needed an additional professional consultation can be recommended.
 
 clientMessage:
 Write a short message the cosmetologist can say/send to the client.
+The message should sound calm, reassuring and professional.
 
 Language rule:
 All text fields must be strictly in ${language}.
