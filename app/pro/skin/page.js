@@ -165,7 +165,7 @@ export default function ProSkinPage() {
     setAnalysis(null)
 
     try {
-      const response = await fetch('/api/skin-analysis', {
+      const response = await fetch('/api/pro-skin-analysis', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
