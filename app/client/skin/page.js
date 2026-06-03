@@ -7,7 +7,7 @@ const ui = {
     back: '← Home Care Dashboard',
     title: 'Hautanalyse',
     subtitle:
-      'AI-Analyse für Homecare: Feuchtigkeit, Pigmentierung, Falten und Akne / Entzündungen.',
+      'AI-Analyse für Homecare: Feuchtigkeit, Barriere, Textur, Sebum, Pigmentierung und Aging.',
     photo: 'Foto der Haut',
     uploadHint: 'Laden Sie ein klares Gesichtsfoto hoch.',
     uploadClick: 'Klicken zum Hochladen',
@@ -15,10 +15,15 @@ const ui = {
     analyzing: 'Analyse läuft...',
     uploadFirst: 'Bitte zuerst ein Foto hochladen.',
     score: 'Hautindex Homecare',
+
     hydration: 'Feuchtigkeit',
+    barrier: 'Barriere',
+    texture: 'Textur',
+    sebum: 'Sebum',
     pigmentation: 'Pigmentierung',
-    wrinkles: 'Falten',
-    acne: 'Akne / Entzündungen',
+    aging: 'Aging',
+    firmness: 'Festigkeit',
+
     priorities: 'Prioritäten',
     skinType: 'Hauttyp',
     professionalNote: 'Professionelle Empfehlung',
@@ -31,11 +36,12 @@ const ui = {
     noResult: 'Laden Sie ein Foto hoch und starten Sie die Analyse.',
     noExtra: 'Keine zusätzlichen Produkte erforderlich.',
   },
+
   RU: {
     back: '← Домашний уход',
     title: 'Анализ кожи',
     subtitle:
-      'AI-диагностика для домашнего ухода: увлажнение, пигментация, морщины и акне / воспалительные элементы.',
+      'AI-диагностика для домашнего ухода: увлажнение, барьер, текстура, себум, пигментация и возрастные признаки.',
     photo: 'Фото кожи',
     uploadHint: 'Загрузите чёткое фото лица.',
     uploadClick: 'Нажмите для загрузки фото',
@@ -43,10 +49,15 @@ const ui = {
     analyzing: 'Анализ...',
     uploadFirst: 'Сначала загрузите фото.',
     score: 'Индекс кожи Homecare',
+
     hydration: 'Увлажнение',
+    barrier: 'Барьер',
+    texture: 'Текстура',
+    sebum: 'Себум',
     pigmentation: 'Пигментация',
-    wrinkles: 'Морщины',
-    acne: 'Акне / воспаления',
+    aging: 'Возрастные признаки',
+    firmness: 'Упругость',
+
     priorities: 'Приоритеты',
     skinType: 'Тип кожи',
     professionalNote: 'Профессиональная рекомендация',
@@ -59,11 +70,12 @@ const ui = {
     noResult: 'Загрузите фото и запустите анализ.',
     noExtra: 'Дополнительные продукты не требуются.',
   },
+
   EN: {
     back: '← Home Care Dashboard',
     title: 'Skin Analysis',
     subtitle:
-      'AI homecare analysis: hydration, pigmentation, wrinkles and acne / inflammatory elements.',
+      'AI homecare analysis: hydration, barrier, texture, sebum, pigmentation and aging.',
     photo: 'Skin photo',
     uploadHint: 'Upload a clear face photo.',
     uploadClick: 'Click to upload photo',
@@ -71,10 +83,15 @@ const ui = {
     analyzing: 'Analyzing...',
     uploadFirst: 'Please upload a photo first.',
     score: 'Homecare Skin Index',
+
     hydration: 'Hydration',
+    barrier: 'Barrier',
+    texture: 'Texture',
+    sebum: 'Sebum',
     pigmentation: 'Pigmentation',
-    wrinkles: 'Wrinkles',
-    acne: 'Acne / inflammation',
+    aging: 'Aging',
+    firmness: 'Firmness',
+
     priorities: 'Priorities',
     skinType: 'Skin type',
     professionalNote: 'Professional recommendation',
@@ -129,7 +146,7 @@ export default function SkinAnalysisPage() {
     setResult(null)
 
     try {
-      const res = await fetch('/api/skin-analysis', {
+      const res = await fetch('/api/homecare-analysis', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ image, lang }),
@@ -138,7 +155,7 @@ export default function SkinAnalysisPage() {
       const data = await res.json()
 
       if (!res.ok) {
-        throw new Error(data.error || 'Skin analysis failed')
+        throw new Error(data.error || 'Homecare analysis failed')
       }
 
       setResult(data)
@@ -264,9 +281,12 @@ export default function SkinAnalysisPage() {
 
                 <div className="space-y-4">
                   <Score label={t.hydration} value={analysis.hydration} />
+                  <Score label={t.barrier} value={analysis.barrier} />
+                  <Score label={t.texture} value={analysis.texture} />
+                  <Score label={t.sebum} value={analysis.sebum} />
                   <Score label={t.pigmentation} value={analysis.pigmentation} />
-                  <Score label={t.wrinkles} value={analysis.wrinkles} />
-                  <Score label={t.acne} value={analysis.acne} />
+                  <Score label={t.aging} value={analysis.aging} />
+                  <Score label={t.firmness} value={analysis.firmness} />
                 </div>
 
                 <div className="mt-8">
@@ -366,7 +386,7 @@ export default function SkinAnalysisPage() {
 }
 
 function Score({ label, value }) {
-  const safeValue = Math.min(Math.max(value || 0, 0), 100)
+  const safeValue = Math.min(Math.max(Number(value || 0), 0), 100)
 
   return (
     <div className="rounded-2xl border border-white/10 bg-black/20 p-5">
