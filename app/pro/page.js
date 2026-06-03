@@ -19,6 +19,10 @@ const translations = {
     skinText:
       '7 Hautparameter: Feuchtigkeit, Barriere, Textur, Pigmentierung, Sebum, Alterungszeichen und Festigkeit.',
 
+    advisor: 'AI Beauty Advisor',
+    advisorText:
+      'Soforthilfe für Kosmetikerinnen: Rötungen, Reaktionen, Barriereprobleme, Peelings und Behandlungssituationen.',
+
     protocol: 'Protokoll Builder',
     protocolText:
       'Erstellung professioneller Behandlungsprotokolle nach Hautbeschreibung und Kundenzielen.',
@@ -51,6 +55,10 @@ const translations = {
     skinText:
       '7 параметров кожи: увлажнение, барьер, текстура, пигментация, себум, возрастные признаки и упругость.',
 
+    advisor: 'AI Beauty Advisor',
+    advisorText:
+      'Быстрый AI-помощник для косметолога: покраснение, реакции после процедур, нарушение барьера, пилинги и сложные ситуации.',
+
     protocol: 'Конструктор протоколов',
     protocolText:
       'Создание профессионального протокола процедуры по описанию кожи и задач клиента.',
@@ -82,6 +90,10 @@ const translations = {
     skin: 'Skin Analysis PRO',
     skinText:
       '7 skin parameters: hydration, barrier, texture, pigmentation, sebum, aging signs and firmness.',
+
+    advisor: 'AI Beauty Advisor',
+    advisorText:
+      'Instant support for beauty professionals: redness, reactions, barrier issues, peels and treatment situations.',
 
     protocol: 'Protocol Builder',
     protocolText:
@@ -216,6 +228,13 @@ export default function ProDashboard() {
             icon="📷"
             title={t.skin}
             text={t.skinText}
+          />
+
+          <ServiceCard
+            href="/pro/advisor"
+            icon="🧠"
+            title={t.advisor}
+            text={t.advisorText}
           />
 
           <ServiceCard
