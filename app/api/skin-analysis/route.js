@@ -1,13 +1,32 @@
 import OpenAI from 'openai'
-import { getRecommendedProtocol } from '../../../lib/recommendations'
 
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 })
 
+function safeJsonParse(text) {
+  try {
+    return JSON.parse(text)
+  } catch {
+    const cleaned = String(text)
+      .replace(/```json/g, '')
+      .replace(/```/g, '')
+      .trim()
+
+    return JSON.parse(cleaned)
+  }
+}
+
 export async function POST(req) {
   try {
-    const { image, lang = 'DE' } = await req.json()
+    const {
+      image,
+      lang = 'DE',
+      age = '',
+      concern = '',
+      skinType = '',
+      sensitivity = '',
+    } = await req.json()
 
     if (!image) {
       return Response.json({ error: 'Image is required' }, { status: 400 })
@@ -25,123 +44,105 @@ export async function POST(req) {
             {
               type: 'input_text',
               text: `
-You are a cosmetic homecare skin analysis assistant for FORMULENS LAB.
-
-Analyze the visible skin condition from the photo for a homecare user.
+You are FORMULENS LAB professional cosmetic skin analysis engine.
 
 Language: ${language}
 
-This is NOT a medical diagnosis.
-This is a cosmetic homecare analysis only.
+Analyze the visible facial skin condition from the photo.
+This is cosmetic analysis only, not medical diagnosis.
 
-Return ONLY valid JSON.
+Client context:
+Age: ${age || 'not provided'}
+Main concern: ${concern || 'not provided'}
+Skin type: ${skinType || 'not provided'}
+Sensitivity: ${sensitivity || 'not provided'}
 
-Use this exact structure:
+IMPORTANT SCORING LOGIC:
 
-{
-  "overallScore": 54,
-  "hydration": 58,
-  "pigmentation": 46,
-  "wrinkles": 52,
-  "acne": 68,
-  "skinType": "text",
-  "recommendedLines": {
-    "main": "BALANCE",
-    "secondary": "GLACIAR",
-    "spf": "SUMMESUN SPF50+"
-  },
-  "priorities": ["text", "text", "text"],
-  "summary": "text",
-  "morningRoutine": "text",
-  "eveningRoutine": "text",
-  "summecosmetics": "text",
-  "professionalNote": "text"
-}
-
-Score logic:
-
-overallScore:
-Higher score means better overall cosmetic skin condition.
+Return 7 professional parameters.
 
 hydration:
-Higher score means better hydration.
-Lower score means more visible dehydration or dryness.
+0 = very dehydrated / dry-looking
+100 = very well hydrated
+
+barrier:
+0 = visibly weakened / irritated / reactive barrier
+100 = stable barrier
+
+texture:
+0 = very smooth texture
+100 = very uneven texture / enlarged pores / roughness
 
 pigmentation:
-Higher score means more visible pigmentation, uneven tone, dark spots or post-inflammatory marks.
+0 = no visible pigmentation
+100 = very strong pigmentation / dark spots / melasma-like uneven tone
 
-wrinkles:
-Higher score means more visible wrinkles, lines, texture changes or ageing signs.
+sebum:
+0 = no visible oiliness
+100 = strong oiliness / enlarged pores / sebaceous look
 
-acne:
-Higher score means more visible acne, redness, irritation, inflammatory elements, blemishes or reactive-looking skin.
+aging:
+0 = no visible aging signs
+100 = strong visible lines, wrinkles, laxity or mature skin signs
 
-Important:
+firmness:
+0 = low firmness / visible laxity
+100 = good firmness and elasticity
 
-If visible redness, irritation or inflammatory elements are present, increase acne score significantly.
-If strong redness dominates the image, acne score should normally be above 70.
-If severe visible irritation dominates the image, acne score should normally be above 80.
-If uneven tone, dark spots or post-inflammatory marks are visible, increase pigmentation score.
-If visible lines, wrinkles or ageing signs are present, increase wrinkles score.
-If dryness, tight-looking skin or dullness is visible, reduce hydration score.
+overallScore:
+0 = very problematic cosmetic condition
+100 = very good cosmetic condition
 
-Recommended line logic:
+CRITICAL RULES:
+If visible brown spots, sun spots, freckles, melasma-like patches or strong uneven tone are visible, pigmentation MUST be high.
+Mild pigmentation: 35-55.
+Clear multiple pigmentation spots: 60-75.
+Strong visible pigmentation: 75-90.
 
-BALANCE:
-Use as main line when acne, blemishes, excess sebum, enlarged pores or inflammatory elements are the main issue.
+If client age is above 40, do not underestimate aging signs.
+If client age is above 50, aging and firmness must be evaluated more critically.
 
-NICELY:
-Use as main line when sensitivity, redness, reactive skin, irritation, couperose-like redness or weakened barrier is the main issue.
+If redness or irritation is visible, barrier should be lower and sensitivity must be mentioned.
 
-GLACIAR:
-Use as main or secondary line when dehydration, dryness, tightness, dullness or lack of comfort is visible.
+Return ONLY valid JSON with this exact structure:
 
-BECLARITY:
-Use as main or secondary line when pigmentation, dark spots, post-inflammatory marks or uneven tone are visible.
+{
+  "overallScore": 0,
+  "hydration": 0,
+  "barrier": 0,
+  "texture": 0,
+  "pigmentation": 0,
+  "sebum": 0,
+  "aging": 0,
+  "firmness": 0,
 
-CELL:
-Use when visible ageing, wrinkles, loss of density or mature skin signs are present.
+  "hydrationStatus": "text",
+  "barrierStatus": "text",
+  "textureStatus": "text",
+  "pigmentationStatus": "text",
+  "sebumStatus": "text",
+  "agingStatus": "text",
+  "firmnessStatus": "text",
 
-CELL C:
-Use when glow, antioxidant support, early ageing, uneven tone and mild pigmentation are important.
+  "overview": "text",
+  "interpretation": "text",
+  "strategy": "text",
+  "homecare": "text",
+  "recommendedLines": "text",
+  "topPriorities": ["text", "text", "text"]
+}
 
-SUMMESUN SPF50+:
-Always recommend as daily protection, especially with pigmentation, redness, anti-ageing, acids, retinol-like care or vitamin C.
+Recommended Summecosmetics logic:
+NICELY = sensitivity, redness, barrier support.
+GLACIAR = dehydration, moisture support.
+BALANCE = sebum, pores, acne-prone or inflammatory tendency.
+BECLARITY = pigmentation, dark spots, uneven tone.
+CELL = regeneration, mature skin, loss of quality.
+CELL C = glow, antioxidant support, uneven tone.
+SUMMESUN = daily SPF, mandatory with pigmentation and anti-aging care.
 
-Priorities:
-Return the top 3 cosmetic priorities based on the visible skin condition.
-Examples:
-- Hydration
-- Pigmentation
-- Wrinkles
-- Acne / inflammation
-- Sensitivity
-- Barrier support
-- Sebum control
-- Daily UV protection
-
-Summecosmetics recommendation:
-Mention concrete Summecosmetics lines and, when possible, product direction:
-BALANCE for acne and oily skin.
-NICELY for sensitivity and redness.
-GLACIAR for dehydration.
-BECLARITY for pigmentation.
-CELL or CELL C for anti-ageing and glow.
-SUMMESUN SPF50+ for daily protection.
-
-Do not diagnose diseases.
-Do not use scary medical language.
-Do not recommend dermatologist unless there are obvious severe medical concerns.
-Focus on improving skin condition through regular cosmetic homecare and professional cosmetic support if needed.
-
-Tone:
-Premium, clear, reassuring, motivating.
-
-Return ONLY valid JSON.
 No markdown.
-No explanations.
-No code blocks.
-No additional text outside JSON.
+No explanations outside JSON.
               `,
             },
             {
@@ -153,15 +154,9 @@ No additional text outside JSON.
       ],
     })
 
-    const content = response.output_text
-    const analysis = JSON.parse(content)
+    const analysis = safeJsonParse(response.output_text)
 
-    const protocol = getRecommendedProtocol(analysis)
-
-    return Response.json({
-      analysis,
-      protocol,
-    })
+    return Response.json({ analysis })
   } catch (error) {
     console.error(error)
 
