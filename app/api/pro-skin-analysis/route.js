@@ -55,6 +55,14 @@ Client age: ${age || 'unknown'}
 This is NOT a medical diagnosis.
 This is a cosmetic visual skin assessment only.
 
+LANGUAGE RULE:
+All text fields in JSON must be written strictly in ${language}.
+If Russian is selected, write all descriptions in Russian only.
+If German is selected, write all descriptions in German only.
+If English is selected, write all descriptions in English only.
+Use English only for brand names:
+NICELY, GLACIAR, BALANCE, BECLARITY, CELL, CELL C, MYCODE, SUMMESUN.
+
 IMPORTANT:
 Analyze only what is clearly visible in the uploaded image.
 
@@ -64,7 +72,7 @@ Do NOT mention:
 - full face if only one area is visible
 - wrinkles in areas that are not clearly visible
 - pigmentation if it is not clearly visible
-- acne if only redness without lesions is visible
+- acne if only redness without visible lesions is present
 
 Return ONLY valid JSON.
 No markdown.
@@ -105,49 +113,33 @@ Use this exact structure:
   "recommendedLines": ""
 }
 
-SCORING SYSTEM — VERY IMPORTANT:
+SCORING SYSTEM:
 
 For the 7 diagnostic parameters, use SEVERITY scores.
 
 0 = no visible cosmetic issue
 100 = very strong visible cosmetic issue
 
-Therefore:
-
 hydration =
 severity of dehydration / dryness / dull lack of moisture.
-0 = no visible dehydration.
-100 = severe visible dryness or dehydration.
 
 barrier =
 severity of barrier disturbance / redness / irritation / reactivity.
-0 = calm stable-looking skin.
-100 = strongly compromised barrier with strong redness or irritation.
 
 texture =
 severity of texture irregularity, visible pores, roughness, acne marks.
-0 = smooth texture.
-100 = very uneven texture or very visible pores.
 
 pigmentation =
 severity of visible pigmentation, dark spots, sun spots, melasma-like patches, uneven tone.
-0 = no visible pigmentation.
-100 = very strong visible pigmentation.
 
 sebum =
 severity of oiliness, shine, sebaceous congestion, oily pores.
-0 = no visible excess sebum.
-100 = strong visible oiliness / congestion.
 
 aging =
 severity of visible aging signs, lines, wrinkles, loss of density.
-0 = no visible aging signs.
-100 = strong visible aging signs.
 
 firmness =
 severity of firmness loss / elasticity loss / laxity.
-0 = no visible firmness loss.
-100 = strong visible loss of firmness.
 
 overallScore:
 This is NOT severity.
@@ -158,21 +150,29 @@ overallScore is cosmetic condition quality:
 STATUS WORDING:
 
 Because diagnostic parameters are severity scores:
-- 0-25 = minimal / low visible concern
+- 0-25 = minimal visible concern
 - 26-45 = mild concern
-- 46-65 = moderate concern
+- 46-65 = noticeable concern
 - 66-80 = pronounced concern
 - 81-100 = strong / high priority concern
 
-Make status wording consistent with the score.
+Do not overuse the word "moderate".
+For firmness specifically:
+- 0-25: minimal firmness loss
+- 26-45: mild firmness loss
+- 46-65: firmness loss
+- 66-80: pronounced firmness loss
+- 81-100: strong firmness loss
 
-Examples:
-barrier 75 = pronounced barrier disturbance / visible redness and reactivity.
-barrier 30 = mild barrier concern.
-firmness 65 = moderate firmness loss.
-firmness 25 = minimal firmness loss.
-pigmentation 80 = pronounced pigmentation.
-pigmentation 20 = minimal pigmentation.
+If language is Russian:
+For firmnessStatus use:
+- 0-25: "минимальное снижение упругости"
+- 26-45: "лёгкое снижение упругости"
+- 46-65: "потеря упругости"
+- 66-80: "выраженная потеря упругости"
+- 81-100: "сильная потеря упругости"
+
+Do NOT write "умеренная потеря упругости" for firmness.
 
 VISUAL ACCURACY RULES:
 
@@ -208,8 +208,10 @@ If age is above 40:
 evaluate aging and firmness more carefully,
 but do not invent wrinkles if they are not visible.
 
-If age is below 35:
-do not exaggerate aging unless clearly visible.
+If age is above 60:
+firmness loss may be age-consistent,
+but still score the visible firmness loss according to severity.
+Do not automatically reduce firmness severity just because it is age-consistent.
 
 RECOMMENDED SUMMECOSMETICS LINES:
 
@@ -231,8 +233,34 @@ aging signs, regeneration, mature skin, density support.
 CELL C:
 glow, antioxidant support, mild uneven tone, early aging support.
 
+MYCODE:
+lifting, firmness loss, wrinkles, plumping, mature skin protocols.
+
 SUMMESUN:
 daily SPF, especially with pigmentation, redness, anti-aging care, acids, vitamin C or retinol-like care.
+
+LINE SELECTION RULES:
+
+If firmness loss or lifting need is one of the top visual priorities:
+recommendedLines must include MYCODE and CELL.
+Use GLACIAR only if visible dehydration is also an important priority.
+
+If aging signs are one of the top priorities:
+recommendedLines should include CELL and MYCODE.
+
+If pigmentation is one of the top priorities:
+recommendedLines should include BECLARITY and SUMMESUN.
+CELL C may be added for antioxidant support and glow.
+
+If barrier disturbance or redness is one of the top priorities:
+recommendedLines should include NICELY.
+SUMMESUN may be added for daily protection.
+
+If pores, sebum or congestion are one of the top priorities:
+recommendedLines should include BALANCE.
+
+If dehydration is one of the top priorities:
+recommendedLines should include GLACIAR.
 
 Prioritize recommendedLines based on the highest visual priorities.
 
