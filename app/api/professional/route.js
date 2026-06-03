@@ -1,6 +1,7 @@
 import { buildProfessionalProtocol } from '../../../lib/professional-protocols.js'
 import { buildStrategy } from '../../../lib/strategy-engine.js'
 import { buildSmartRecommendations } from '../../../lib/recommendations.js'
+import { buildProtocol } from '../../../lib/protocol-builder.js'
 
 function normalizeLang(lang = 'DE') {
   const value = String(lang).toUpperCase()
@@ -43,14 +44,25 @@ export async function POST(req) {
     }
 
     const strategy = buildStrategy(input)
-    const protocolResult = buildProfessionalProtocol(input)
+    const oldProtocolResult = buildProfessionalProtocol(input)
     const smartRecommendations = buildSmartRecommendations(input)
 
-    const compatibleProtocol = {
-      ...protocolResult,
+    const protocolBuilderResult = buildProtocol({
+      age: input.age,
+      mainGoal: input.mainGoal || input.goal || input.treatmentGoal,
+      ageSubGoal: input.ageSubGoal || input.agingConcern || input.ageConcern,
+      additionalGoal: input.additionalGoal || input.secondaryGoal || 'none',
+      sensitivity: input.sensitivity,
+      skinType: input.skinType,
+    })
 
-      protocol: protocolResult.protocol,
-      treatment: protocolResult.protocol,
+    const compatibleProtocol = {
+      ...oldProtocolResult,
+
+      protocol: protocolBuilderResult.protocol,
+      treatment: protocolBuilderResult.protocol,
+
+      protocolBuilder: protocolBuilderResult,
 
       smartRecommendations,
       recommendations: smartRecommendations,
@@ -58,14 +70,23 @@ export async function POST(req) {
 
     return Response.json({
       success: true,
-      summary: buildFallbackSummary(
-        strategy,
-        protocolResult,
-        smartRecommendations,
-        input.lang
-      ),
-      strategy,
+
+      summary:
+        protocolBuilderResult?.summary?.text ||
+        buildFallbackSummary(
+          strategy,
+          oldProtocolResult,
+          smartRecommendations,
+          input.lang
+        ),
+
+      strategy: {
+        ...strategy,
+        protocolBuilder: protocolBuilderResult.strategy,
+      },
+
       recommendations: smartRecommendations,
+
       protocol: compatibleProtocol,
     })
   } catch (error) {
