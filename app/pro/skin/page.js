@@ -13,7 +13,17 @@ const translations = {
     uploadTitle: 'Kundenfoto',
     uploadPhoto: 'Kundenfoto hochladen',
     analyze: '✨ Haut analysieren',
-    uploadHint: 'Laden Sie ein Kundenfoto für die professionelle Hautanalyse hoch.',
+    analyzing: 'AI analysiert die Haut...',
+    uploadHint: 'Laden Sie ein Kundenfoto hoch und ergänzen Sie die Kundendaten.',
+
+    age: 'Alter',
+    concern: 'Hauptanliegen',
+    skinType: 'Hauttyp',
+    sensitivity: 'Sensibilität',
+    agePlaceholder: 'z.B. 45',
+    concernPlaceholder: 'z.B. Pigmentierung, Rötungen, Poren...',
+    skinTypePlaceholder: 'z.B. trocken, ölig, Mischhaut...',
+    sensitivityPlaceholder: 'z.B. empfindlich, normal, reaktiv...',
 
     overview: 'Professionelle Hautbewertung',
     score: 'Professioneller Hautindex',
@@ -24,21 +34,6 @@ const translations = {
     homecare: 'Homecare-Empfehlung',
     directions: 'Empfohlene Summecosmetics Linien',
 
-    overviewText:
-      'Sichtbar sind Hinweise auf reduzierte Feuchtigkeitsspeicherung, ausgeprägte Reaktivität, geschwächte Barrierefunktion, entzündliche Aktivität und ungleichmäßigen Hautton. Die primäre Strategie: zuerst Barriere und Entzündungsreaktionen stabilisieren, danach schrittweise an Textur, Pigmentierung und Altersanzeichen arbeiten.',
-
-    interpretationText:
-      'Die Priorität liegt nicht in aggressiver Stimulation, sondern in der Stabilisierung der Haut: Reduktion der Reaktivität, Unterstützung der Barrierefunktion, Wiederaufbau der Feuchtigkeitsspeicherung und Kontrolle entzündlicher Tendenzen. Nach der Stabilisierung können Strategien für Textur, Pigmentierung und Altersanzeichen schrittweise integriert werden.',
-
-    strategyText:
-      '1. Sanfte Reinigung und Vorbereitung der Haut. \n2. Beruhigendes Barriere-Protokoll. \n3. Feuchtigkeit und Wiederherstellung des Hautkomforts. \n4. Erst nach Stabilisierung: sanfte Korrektur von Textur und Pigmentierung.',
-
-    homecareText:
-      'Morgens: sanfte Reinigung, Feuchtigkeit, Barriereunterstützung, SPF. \nAbends: Reinigung, beruhigender Wirkstoff, Barriereaufbau. \nVorübergehend aggressive Säuren und starke Retinoid-Belastung vermeiden.',
-
-    directionsText:
-      'NICELY — Barriere und Sensibilität. \nGLACIAR — Feuchtigkeit. \nBALANCE — Entzündungen und Sebum. \nBECLARITY — Pigmentierung nach Stabilisierung. \nCELL C — Glow und antioxidative Unterstützung.',
-
     hydration: 'Feuchtigkeit',
     barrier: 'Hautbarriere',
     texture: 'Textur & Poren',
@@ -47,15 +42,7 @@ const translations = {
     aging: 'Altersanzeichen',
     firmness: 'Festigkeit & Elastizität',
 
-    reduced: 'Reduziert',
-    compromised: 'Geschwächt',
-    moderate: 'Mittel',
-    uneven: 'Ungleichmäßig',
-    early: 'Frühe Anzeichen',
-
-    highPriority: 'Hohe Priorität',
-    moderatePriority: 'Mittlere Priorität',
-    stable: 'Stabil',
+    error: 'Analyse fehlgeschlagen. Bitte versuchen Sie es erneut.',
   },
 
   RU: {
@@ -67,7 +54,17 @@ const translations = {
     uploadTitle: 'Фото клиента',
     uploadPhoto: 'Загрузить фото клиента',
     analyze: '✨ Анализировать кожу',
-    uploadHint: 'Загрузите фото клиента для профессионального анализа кожи.',
+    analyzing: 'AI анализирует кожу...',
+    uploadHint: 'Загрузите фото клиента и добавьте данные для профессионального анализа.',
+
+    age: 'Возраст',
+    concern: 'Главная жалоба',
+    skinType: 'Тип кожи',
+    sensitivity: 'Чувствительность',
+    agePlaceholder: 'например: 45',
+    concernPlaceholder: 'например: пигментация, покраснение, поры...',
+    skinTypePlaceholder: 'например: сухая, жирная, комбинированная...',
+    sensitivityPlaceholder: 'например: чувствительная, нормальная, реактивная...',
 
     overview: 'Профессиональная оценка кожи',
     score: 'Профессиональный индекс кожи',
@@ -78,21 +75,6 @@ const translations = {
     homecare: 'Домашний протокол',
     directions: 'Рекомендуемые линии Summecosmetics',
 
-    overviewText:
-      'Визуально наблюдаются признаки сниженного влагоудержания, выраженной реактивности, ослабленной барьерной функции, воспалительной активности и неравномерности тона. Основная стратегия: сначала стабилизация барьера и воспаления, затем работа с текстурой, пигментацией и возрастными признаками.',
-
-    interpretationText:
-      'Приоритетная задача — не агрессивная стимуляция, а стабилизация кожи: снижение реактивности, поддержка барьерной функции, восстановление влагоудержания и контроль воспалительных проявлений. После стабилизации можно постепенно подключать стратегии для текстуры, пигментации и возрастных признаков.',
-
-    strategyText:
-      '1. Мягкое очищение и подготовка кожи. \n2. Успокаивающий барьерный протокол. \n3. Увлажнение и восстановление комфорта. \n4. Только после стабилизации — мягкая коррекция текстуры и пигментации.',
-
-    homecareText:
-      'Утро: мягкое очищение, увлажнение, барьерная поддержка, SPF. \nВечер: очищение, успокаивающий актив, восстановление барьера. \nВременно избегать агрессивных кислот и сильной ретиноидной нагрузки.',
-
-    directionsText:
-      'NICELY — барьер и чувствительность. \nGLACIAR — увлажнение. \nBALANCE — воспаления и себум. \nBECLARITY — пигментация после стабилизации. \nCELL C — сияние и антиоксидантная поддержка.',
-
     hydration: 'Увлажнение',
     barrier: 'Барьер',
     texture: 'Текстура и поры',
@@ -101,15 +83,7 @@ const translations = {
     aging: 'Возрастные признаки',
     firmness: 'Упругость и эластичность',
 
-    reduced: 'Снижено',
-    compromised: 'Ослаблен',
-    moderate: 'Умеренно',
-    uneven: 'Неравномерно',
-    early: 'Ранние признаки',
-
-    highPriority: 'Высокий приоритет',
-    moderatePriority: 'Средний приоритет',
-    stable: 'Стабильно',
+    error: 'Ошибка анализа. Попробуйте ещё раз.',
   },
 
   EN: {
@@ -121,7 +95,17 @@ const translations = {
     uploadTitle: 'Client Photo',
     uploadPhoto: 'Upload Client Photo',
     analyze: '✨ Analyze Skin',
-    uploadHint: 'Upload a client photo for professional skin analysis.',
+    analyzing: 'AI is analyzing the skin...',
+    uploadHint: 'Upload a client photo and add client context for professional analysis.',
+
+    age: 'Age',
+    concern: 'Main concern',
+    skinType: 'Skin type',
+    sensitivity: 'Sensitivity',
+    agePlaceholder: 'e.g. 45',
+    concernPlaceholder: 'e.g. pigmentation, redness, pores...',
+    skinTypePlaceholder: 'e.g. dry, oily, combination...',
+    sensitivityPlaceholder: 'e.g. sensitive, normal, reactive...',
 
     overview: 'Professional Skin Overview',
     score: 'Professional Skin Score',
@@ -132,21 +116,6 @@ const translations = {
     homecare: 'Homecare Protocol',
     directions: 'Recommended Summecosmetics Lines',
 
-    overviewText:
-      'Visible signs suggest reduced moisture retention, pronounced reactivity, weakened barrier function, inflammatory activity and uneven skin tone. The primary strategy: first stabilize barrier function and inflammation, then gradually address texture, pigmentation and aging signs.',
-
-    interpretationText:
-      'The priority is not aggressive stimulation, but skin stabilization: reducing reactivity, supporting barrier function, restoring moisture retention and controlling inflammatory tendencies. After stabilization, strategies for texture, pigmentation and aging signs can be gradually introduced.',
-
-    strategyText:
-      '1. Gentle cleansing and skin preparation. \n2. Calming barrier-support protocol. \n3. Hydration and restoration of comfort. \n4. Only after stabilization: gentle correction of texture and pigmentation.',
-
-    homecareText:
-      'Morning: gentle cleansing, hydration, barrier support, SPF. \nEvening: cleansing, calming active support, barrier restoration. \nTemporarily avoid aggressive acids and strong retinoid load.',
-
-    directionsText:
-      'NICELY — barrier and sensitivity. \nGLACIAR — hydration. \nBALANCE — inflammation and sebum. \nBECLARITY — pigmentation after stabilization. \nCELL C — glow and antioxidant support.',
-
     hydration: 'Hydration',
     barrier: 'Barrier Condition',
     texture: 'Texture & Pores',
@@ -155,22 +124,21 @@ const translations = {
     aging: 'Aging Signs',
     firmness: 'Firmness & Elasticity',
 
-    reduced: 'Reduced',
-    compromised: 'Compromised',
-    moderate: 'Moderate',
-    uneven: 'Uneven',
-    early: 'Early Signs',
-
-    highPriority: 'High priority',
-    moderatePriority: 'Moderate priority',
-    stable: 'Stable',
+    error: 'Analysis failed. Please try again.',
   },
 }
 
 export default function ProSkinPage() {
   const [lang, setLang] = useState('DE')
   const [image, setImage] = useState(null)
-  const [done, setDone] = useState(false)
+  const [imageData, setImageData] = useState('')
+  const [age, setAge] = useState('')
+  const [concern, setConcern] = useState('')
+  const [skinType, setSkinType] = useState('')
+  const [sensitivity, setSensitivity] = useState('')
+  const [analysis, setAnalysis] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const t = translations[lang]
 
@@ -179,18 +147,96 @@ export default function ProSkinPage() {
     if (!file) return
 
     setImage(URL.createObjectURL(file))
-    setDone(false)
+    setAnalysis(null)
+    setError('')
+
+    const reader = new FileReader()
+    reader.onload = () => {
+      setImageData(reader.result)
+    }
+    reader.readAsDataURL(file)
   }
 
-  const metrics = [
-    { label: t.hydration, value: 58, status: t.reduced },
-    { label: t.barrier, value: 34, status: t.compromised },
-    { label: t.texture, value: 52, status: t.moderate },
-    { label: t.pigmentation, value: 46, status: t.uneven },
-    { label: t.sebum, value: 61, status: t.moderate },
-    { label: t.aging, value: 49, status: t.early },
-    { label: t.firmness, value: 51, status: t.moderate },
-  ]
+  async function analyzeSkin() {
+    if (!imageData) return
+
+    setLoading(true)
+    setError('')
+    setAnalysis(null)
+
+    try {
+      const response = await fetch('/api/skin-analysis', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          image: imageData,
+          lang,
+          age,
+          concern,
+          skinType,
+          sensitivity,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok || data.error) {
+        throw new Error(data.error || 'Skin analysis failed')
+      }
+
+      setAnalysis(data.analysis)
+    } catch (err) {
+      console.error(err)
+      setError(t.error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const metrics = analysis
+    ? [
+        {
+          label: t.hydration,
+          value: analysis.hydration,
+          status: analysis.hydrationStatus,
+          inverse: true,
+        },
+        {
+          label: t.barrier,
+          value: analysis.barrier,
+          status: analysis.barrierStatus,
+          inverse: true,
+        },
+        {
+          label: t.texture,
+          value: analysis.texture,
+          status: analysis.textureStatus,
+        },
+        {
+          label: t.pigmentation,
+          value: analysis.pigmentation,
+          status: analysis.pigmentationStatus,
+        },
+        {
+          label: t.sebum,
+          value: analysis.sebum,
+          status: analysis.sebumStatus,
+        },
+        {
+          label: t.aging,
+          value: analysis.aging,
+          status: analysis.agingStatus,
+        },
+        {
+          label: t.firmness,
+          value: analysis.firmness,
+          status: analysis.firmnessStatus,
+          inverse: true,
+        },
+      ]
+    : []
 
   return (
     <main style={styles.main}>
@@ -204,7 +250,11 @@ export default function ProSkinPage() {
             {['DE', 'RU', 'EN'].map((item) => (
               <button
                 key={item}
-                onClick={() => setLang(item)}
+                onClick={() => {
+                  setLang(item)
+                  setAnalysis(null)
+                  setError('')
+                }}
                 style={lang === item ? styles.langActive : styles.langBtn}
               >
                 {item}
@@ -220,6 +270,36 @@ export default function ProSkinPage() {
         <section style={styles.grid}>
           <div style={styles.panel}>
             <h2 style={styles.h2}>{t.uploadTitle}</h2>
+
+            <div style={styles.formGrid}>
+              <Field
+                label={t.age}
+                value={age}
+                onChange={setAge}
+                placeholder={t.agePlaceholder}
+              />
+              <Field
+                label={t.skinType}
+                value={skinType}
+                onChange={setSkinType}
+                placeholder={t.skinTypePlaceholder}
+              />
+              <Field
+                label={t.sensitivity}
+                value={sensitivity}
+                onChange={setSensitivity}
+                placeholder={t.sensitivityPlaceholder}
+              />
+            </div>
+
+            <div style={{ marginTop: '18px' }}>
+              <Field
+                label={t.concern}
+                value={concern}
+                onChange={setConcern}
+                placeholder={t.concernPlaceholder}
+              />
+            </div>
 
             <label style={{ cursor: 'pointer' }}>
               <div style={styles.uploadBox}>
@@ -239,59 +319,80 @@ export default function ProSkinPage() {
             </label>
 
             <button
-              onClick={() => image && setDone(true)}
-              disabled={!image}
+              onClick={analyzeSkin}
+              disabled={!imageData || loading}
               style={{
                 ...styles.primaryBtn,
-                opacity: image ? 1 : 0.45,
-                cursor: image ? 'pointer' : 'not-allowed',
+                opacity: imageData && !loading ? 1 : 0.45,
+                cursor: imageData && !loading ? 'pointer' : 'not-allowed',
               }}
             >
-              {t.analyze}
+              {loading ? t.analyzing : t.analyze}
             </button>
           </div>
 
           <div style={styles.panel}>
-            {!done ? (
+            {!analysis && !error && !loading && (
               <div style={styles.empty}>{t.uploadHint}</div>
-            ) : (
+            )}
+
+            {loading && <div style={styles.empty}>{t.analyzing}</div>}
+
+            {error && <div style={styles.error}>{error}</div>}
+
+            {analysis && (
               <>
                 <h2 style={styles.h2}>{t.overview}</h2>
 
-                <p style={styles.text}>{t.overviewText}</p>
+                <p style={styles.text}>{analysis.overview}</p>
 
                 <div style={styles.scoreBox}>
-                  <div style={styles.scoreCircle}>54</div>
+                  <div style={styles.scoreCircle}>
+                    {safeNumber(analysis.overallScore)}
+                  </div>
+
                   <div>
-                    <div style={styles.scoreText}>54/100</div>
+                    <div style={styles.scoreText}>
+                      {safeNumber(analysis.overallScore)}/100
+                    </div>
                     <div style={styles.scoreLabel}>{t.score}</div>
                   </div>
                 </div>
+
+                {Array.isArray(analysis.topPriorities) && (
+                  <div style={styles.priorityBox}>
+                    {analysis.topPriorities.map((item, index) => (
+                      <span key={index} style={styles.priority}>
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </>
             )}
           </div>
         </section>
 
-        {done && (
+        {analysis && (
           <>
             <section style={styles.visualSection}>
               <h2 style={styles.h2}>{t.diagnosticMap}</h2>
 
               <div style={styles.metricGrid}>
                 {metrics.map((metric) => (
-                  <Metric key={metric.label} metric={metric} t={t} />
+                  <Metric key={metric.label} metric={metric} />
                 ))}
               </div>
             </section>
 
             <section style={styles.resultGrid}>
-              <Info title={t.interpretation}>{t.interpretationText}</Info>
+              <Info title={t.interpretation}>{analysis.interpretation}</Info>
 
-              <Info title={t.strategy}>{t.strategyText}</Info>
+              <Info title={t.strategy}>{analysis.strategy}</Info>
 
-              <Info title={t.homecare}>{t.homecareText}</Info>
+              <Info title={t.homecare}>{analysis.homecare}</Info>
 
-              <Info title={t.directions}>{t.directionsText}</Info>
+              <Info title={t.directions}>{analysis.recommendedLines}</Info>
             </section>
           </>
         )}
@@ -300,51 +401,85 @@ export default function ProSkinPage() {
   )
 }
 
-function Metric({ metric, t }) {
+function Field({ label, value, onChange, placeholder }) {
+  return (
+    <label style={styles.fieldLabel}>
+      <span>{label}</span>
+      <input
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        style={styles.input}
+      />
+    </label>
+  )
+}
+
+function Metric({ metric }) {
+  const value = safeNumber(metric.value)
+
   return (
     <div style={styles.metric}>
       <div style={styles.metricHeader}>
         <span>{metric.label}</span>
-        <strong>{metric.status}</strong>
+        <strong>{metric.status || ''}</strong>
       </div>
 
       <div style={styles.barBg}>
         <div
           style={{
-            width: `${metric.value}%`,
+            width: `${value}%`,
             height: '100%',
-            background: getBarColor(metric.value),
+            background: getBarColor(value, metric.inverse),
           }}
         />
       </div>
 
       <div style={styles.metricFooter}>
-        <span>{metric.value}/100</span>
-        <span>{getPriority(metric.value, t)}</span>
+        <span>{value}/100</span>
+        <span>{getPriority(value, metric.inverse)}</span>
       </div>
     </div>
   )
 }
 
-function getBarColor(value) {
-  if (value < 45) return 'linear-gradient(90deg,#ff4d6d,#ff00aa)'
-  if (value < 65) return 'linear-gradient(90deg,#f59e0b,#ff00aa)'
-  return 'linear-gradient(90deg,#7b2cff,#ff00aa)'
-}
-
-function getPriority(value, t) {
-  if (value < 45) return t.highPriority
-  if (value < 65) return t.moderatePriority
-  return t.stable
-}
-
 function Info({ title, children }) {
+  if (!children) return null
+
   return (
     <div style={styles.info}>
       <h3 style={styles.infoTitle}>{title}</h3>
       <p style={styles.infoText}>{children}</p>
     </div>
   )
+}
+
+function safeNumber(value) {
+  return Math.max(0, Math.min(100, Number(value) || 0))
+}
+
+function getBarColor(value, inverse = false) {
+  if (inverse) {
+    if (value < 45) return 'linear-gradient(90deg,#ff4d6d,#ff00aa)'
+    if (value < 65) return 'linear-gradient(90deg,#f59e0b,#ff00aa)'
+    return 'linear-gradient(90deg,#7b2cff,#ff00aa)'
+  }
+
+  if (value >= 70) return 'linear-gradient(90deg,#ff4d6d,#ff00aa)'
+  if (value >= 45) return 'linear-gradient(90deg,#f59e0b,#ff00aa)'
+  return 'linear-gradient(90deg,#7b2cff,#ff00aa)'
+}
+
+function getPriority(value, inverse = false) {
+  if (inverse) {
+    if (value < 45) return 'Высокий приоритет'
+    if (value < 65) return 'Средний приоритет'
+    return 'Стабильно'
+  }
+
+  if (value >= 70) return 'Высокий приоритет'
+  if (value >= 45) return 'Средний приоритет'
+  return 'Низкий приоритет'
 }
 
 const styles = {
@@ -422,8 +557,31 @@ const styles = {
     borderRadius: '30px',
     padding: '34px',
   },
+  formGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit,minmax(140px,1fr))',
+    gap: '14px',
+  },
+  fieldLabel: {
+    display: 'grid',
+    gap: '8px',
+    color: '#d8d8d8',
+    fontSize: '14px',
+    fontWeight: 700,
+  },
+  input: {
+    width: '100%',
+    borderRadius: '14px',
+    border: '1px solid #262626',
+    background: '#050505',
+    color: 'white',
+    padding: '14px',
+    fontSize: '15px',
+    outline: 'none',
+  },
   uploadBox: {
-    height: '380px',
+    height: '360px',
+    marginTop: '22px',
     borderRadius: '24px',
     border: '1px dashed #444',
     background: '#050505',
@@ -452,13 +610,22 @@ const styles = {
     fontWeight: 900,
   },
   empty: {
-    minHeight: '380px',
+    minHeight: '420px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     color: '#888',
     fontSize: '22px',
     textAlign: 'center',
+    lineHeight: 1.6,
+  },
+  error: {
+    background: '#3b1111',
+    border: '1px solid #7f1d1d',
+    color: '#ffb4b4',
+    borderRadius: '20px',
+    padding: '22px',
+    fontSize: '18px',
     lineHeight: 1.6,
   },
   text: {
@@ -494,6 +661,21 @@ const styles = {
   scoreLabel: {
     color: '#aaa',
     marginTop: '8px',
+  },
+  priorityBox: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: '10px',
+    marginTop: '22px',
+  },
+  priority: {
+    padding: '9px 13px',
+    borderRadius: '999px',
+    background: 'rgba(255,0,170,0.14)',
+    border: '1px solid rgba(255,0,170,0.35)',
+    color: '#ff8adc',
+    fontWeight: 800,
+    fontSize: '14px',
   },
   visualSection: {
     marginTop: '34px',
